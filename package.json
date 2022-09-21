@@ -1,37 +1,37 @@
 {
-  "name": "arabic-service",
-  "version": "0.0.1",
-  "description": "Utility functions on Arabic text",
-  "main": "index.js",
-  "scripts": {
-    "test": "mocha"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Seen-Arabic/arabic-service-js.git"
-  },
-  "keywords": [
-    "arabic",
-    "arabic-service",
-    "services",
-    "old-arabic",
-    "nlp",
-    "tashkeel",
-    "tatweel",
-    "dotless arabic",
-    "language"
-  ],
-  "author": {
-    "name": "Seen Arabic",
-    "email": "SeenDevelopment@gmail.com",
-    "url": "http://seen-arabic.github.io"
-  },
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Seen-Arabic/arabic-service-js/issues"
-  },
-  "homepage": "https://github.com/Seen-Arabic/arabic-service-js#readme",
-  "devDependencies": {
-    "mocha": "^10.0.0"
-  }
+	"name": "arabic-service",
+	"version": "0.0.1",
+	"description": "Utility functions on Arabic text",
+	"main": "./src/index.js",
+	"scripts": {
+		"test": "mocha"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/Seen-Arabic/arabic-service-js.git"
+	},
+	"keywords": [
+		"arabic",
+		"arabic-service",
+		"services",
+		"old-arabic",
+		"nlp",
+		"tashkeel",
+		"tatweel",
+		"dotless arabic",
+		"language"
+	],
+	"author": {
+		"name": "Seen Arabic",
+		"email": "SeenDevelopment@gmail.com",
+		"url": "http://seen-arabic.github.io"
+	},
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/Seen-Arabic/arabic-service-js/issues"
+	},
+	"homepage": "https://github.com/Seen-Arabic/arabic-service-js#readme",
+	"devDependencies": {
+		"mocha": "^10.0.0"
+	}
 }

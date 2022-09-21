@@ -1,5 +1,5 @@
 const assert = require("assert");
-const ArabicService = require("../index");
+const ArabicService = require("../src");
 
 describe("#removeTashkeel()", () => {
     describe("Test with Poetry Text", () => {
