@@ -61,9 +61,9 @@ describe("#toOldArabic()", () => {
 
 describe("#removeTatweel()", () => {
     it("should remove all tatweel 'ـ' from text", () => {
-        const text = "جميــــل";
+        const text = "رائـــــــع";
         const actual = ArabicService.removeTatweel(text);
-        const expected = "جميل";
+        const expected = "رائع";
         assert.equal(expected, actual);
     });
 });
