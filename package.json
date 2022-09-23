@@ -1,5 +1,5 @@
 {
-	"name": "arabic-service",
+	"name": "arabic-services",
 	"version": "0.0.1",
 	"description": "Utility functions on Arabic text",
 	"main": "./src/index.js",
@@ -8,11 +8,11 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/Seen-Arabic/arabic-service-js.git"
+		"url": "git+https://github.com/Seen-Arabic/Arabic-Services-JavaScript.git"
 	},
 	"keywords": [
 		"arabic",
-		"arabic-service",
+		"arabic-services",
 		"services",
 		"old-arabic",
 		"nlp",
@@ -28,9 +28,9 @@
 	},
 	"license": "ISC",
 	"bugs": {
-		"url": "https://github.com/Seen-Arabic/arabic-service-js/issues"
+		"url": "https://github.com/Seen-Arabic/Arabic-Services-JavaScript/issues"
 	},
-	"homepage": "https://github.com/Seen-Arabic/arabic-service-js#readme",
+	"homepage": "https://github.com/Seen-Arabic/Arabic-Services-JavaScript#readme",
 	"devDependencies": {
 		"mocha": "^10.0.0"
 	}

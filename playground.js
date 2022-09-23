@@ -1,3 +1,3 @@
-const ArabicService = require("./src");
+const ArabicServices = require("./src");
 
-console.log(ArabicService);
+console.log(ArabicServices);

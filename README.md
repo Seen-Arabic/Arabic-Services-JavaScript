@@ -1,4 +1,4 @@
-<h1 align=center>arabic-service-js</h1>
+<h1 align=center>Arabic-Services-JavaScript</h1>
 
 <p align=center>
 بعض الخدمات البرمجية على نصوص اللغة العربية
@@ -14,7 +14,7 @@
 # Tashkeel Removal
 
 ```javascript
-const ArabicService = require('arabic-service');
+const ArabicServices = require('arabic-services');
 ArabicService.removeTashkeel('الخَيْلُ وَاللّيْلُ وَالبَيْداءُ تَعرِفُني');
 ```
 
@@ -26,7 +26,7 @@ Output:
 # Tatweel Removal
 
 ```javascript
-const ArabicService = require('arabic-service');
+const ArabicServices = require('arabic-services');
 ArabicService.removeTatweel('كن جميـــلا ترى الوجــود جميـــــلا');
 ```
 
@@ -38,7 +38,7 @@ Output:
 # Convert To Old Arabic
 
 ```javascript
-const ArabicService = require('arabic-service');
+const ArabicServices = require('arabic-services');
 ArabicService.toOldArabic('الخَيْلُ وَاللّيْلُ وَالبَيْداءُ تَعرِفُني');
 ```
 
