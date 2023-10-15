@@ -5,7 +5,7 @@
 </p>
 
 <p align=center>
-<a href="https://www.npmjs.com/package/arabic-service-npm-test"><img src="https://img.shields.io/npm/v/arabic-service-npm-test.svg" alt="npm"></a>
+<a href="https://www.npmjs.com/package/arabic-service-npm-test"><img src="https://img.shields.io/npm/v/arabic-service-npm-test.svg" alt="npm"></a> <img src="https://github.com/Seen-Arabic/Arabic-Services-JavaScript/actions/workflows/test.yml/badge.svg" alt="workflows">
 </p>
 
 📋 Features currently supported:
