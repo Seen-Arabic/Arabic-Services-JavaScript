@@ -1,0 +1,18 @@
+{
+	"cSpell.words": ["DOTLESS", "Tashkeel", "Tatweel"],
+	"formattingToggle.affects": ["editor.formatOnSave"],
+	"editor.formatOnSave": true,
+	"editor.defaultFormatter": "esbenp.prettier-vscode",
+	"editor.codeActionsOnSave": {
+		"source.organizeImports": true
+	},
+	"prettier.configPath": ".prettierrc",
+	"prettier.printWidth": 120,
+	"prettier.tabWidth": 4,
+	"prettier.singleQuote": true,
+	"prettier.trailingComma": "all",
+	"javascript.updateImportsOnFileMove.enabled": "always",
+	"typescript.updateImportsOnFileMove.enabled": "always",
+	"javascript.preferences.importModuleSpecifier": "relative",
+	"typescript.preferences.importModuleSpecifier": "relative"
+}
