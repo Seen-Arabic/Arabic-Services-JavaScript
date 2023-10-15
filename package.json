@@ -1,6 +1,6 @@
 {
 	"name": "arabic-services",
-	"version": "0.0.1",
+	"version": "1.0.0-rc.1",
 	"description": "Utility functions on Arabic text",
 	"main": "./dist/index.js",
 	"types": "./dist/index.d.ts",
@@ -33,7 +33,7 @@
 		"email": "SeenDevelopment@gmail.com",
 		"url": "http://seen-arabic.github.io"
 	},
-	"license": "ISC",
+	"license": "GPL-3.0",
 	"bugs": {
 		"url": "https://github.com/Seen-Arabic/Arabic-Services-JavaScript/issues"
 	},
