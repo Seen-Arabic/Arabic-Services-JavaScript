@@ -1,12 +1,12 @@
 {
-  "compilerOptions": {
-    "target": "es5",
-    "module": "CommonJS",
-    "strict": true,
-    "declaration": true,
-    "outDir": "./dist",
-    "esModuleInterop": true
-  },
-  "include": ["src/**/*.ts", "src/script.js"],
-  "exclude": ["node_modules", "**/tests/*"]
+	"compilerOptions": {
+		"target": "es5",
+		"module": "CommonJS",
+		"strict": true,
+		"declaration": true,
+		"outDir": "./dist",
+		"esModuleInterop": true
+	},
+	"include": ["src/**/*.ts", "src/script.js"],
+	"exclude": ["node_modules", "**/tests/*"]
 }
