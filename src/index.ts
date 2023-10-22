@@ -1,5 +1,5 @@
 import * as constants from './constants';
-import * as script from './scripts/scripts';
+import * as script from './scripts';
 
 export const ArabicServices = {
 	constants,

@@ -1,4 +1,4 @@
-import { ArabicServices } from '../src';
+import { ArabicServices } from '../dist';
 
 describe('#removeTashkeel()', () => {
 	describe('Test with Poetry Text', () => {
