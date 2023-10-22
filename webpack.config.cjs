@@ -20,10 +20,11 @@ module.exports = [
 		},
 		output: {
 			filename: 'arabic-services.umd.js',
-			path: path.resolve(__dirname, 'dist'),
+			path: path.resolve(__dirname, 'dist/umd'),
 			library: 'ArabicServices',
 			libraryTarget: 'umd',
 			globalObject: 'this',
+			libraryExport: 'ArabicServices',
 		},
 	},
 	{
@@ -44,8 +45,9 @@ module.exports = [
 		},
 		output: {
 			filename: 'arabic-services.esm.js',
-			path: path.resolve(__dirname, 'dist'),
+			path: path.resolve(__dirname, 'dist/esm'),
 			libraryTarget: 'module',
+			libraryExport: 'ArabicServices',
 		},
 		experiments: {
 			outputModule: true,

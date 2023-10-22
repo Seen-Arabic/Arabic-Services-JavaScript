@@ -1,9 +1,8 @@
 {
 	"name": "arabic-services",
-	"version": "1.0.0-rc.1",
+	"version": "1.0.0-rc.4",
 	"description": "Utility functions on Arabic text",
 	"main": "./dist/index.js",
-	"type": "module",
 	"types": "./dist/index.d.ts",
 	"scripts": {
 		"build": "tsc",

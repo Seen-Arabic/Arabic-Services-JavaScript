@@ -8,7 +8,7 @@ import { ARABIC_DOTLESS_DICT, TASHKEEL } from '../constants';
  *   Input: "الخَيْلُ وَاللّيْلُ وَالبَيْداءُ تَعرِفُني"
  *   Output: "الخيل والليل والبيداء تعرفني"
  */
-function removeTashkeel(text: string): string {
+export function removeTashkeel(text: string): string {
 	return text.replace(new RegExp('[' + TASHKEEL.join('') + ']', 'g'), '').replace(/ٱ/g, 'ا');
 }
 
@@ -20,7 +20,7 @@ function removeTashkeel(text: string): string {
  *   Input: "الخَيْلُ وَاللّيْلُ وَالبَيْداءُ تَعرِفُني"
  *   Output: "الحىل واللىل والٮىدا ٮعرڡٮى"
  */
-function toOldArabic(sentence: string): string {
+export function toOldArabic(sentence: string): string {
 	sentence = removeTashkeel(sentence);
 	let newSentence = '';
 	for (let letter = 0; letter < sentence.length; letter++) {
@@ -55,8 +55,6 @@ function toOldArabic(sentence: string): string {
  *   Input: "رائـــــــع"
  *   Output: "رائع"
  */
-function removeTatweel(text: string): string {
+export function removeTatweel(text: string): string {
 	return text.replace(/ـ/g, '');
 }
-
-export { removeTashkeel, removeTatweel, toOldArabic };

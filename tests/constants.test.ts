@@ -1,4 +1,4 @@
-import { ArabicServices } from '../src';
+import { ArabicServices } from '../dist';
 
 describe('STANDARD_LETTERS', () => {
 	it('should have array length of 34', () => {
