@@ -73,14 +73,14 @@ export function removeTatweel(text: string): string {
  * @param {number} [level=0] - The encryption level (default is 0).
  * @returns {string} The encrypted word.
  */
-export function tashfeer(word: string, level: number = 0): string {
+function tashfeerHandler(word: string, level: number = 0): string {
 	const wordLength = word.length;
 	// Calculate the encryption level based on the input level and word length
 	const n = calculateEncryptionLevel(level, wordLength);
 	// Generate a list of random indexes for encryption
 	const randomIndexes = getRandomIndexes(n, wordLength);
 	// Process the word for encryption using random indexes
-	const outputWord = encryptWord(word, randomIndexes);
+	const outputWord = tashfeerWord(word, randomIndexes);
 	return outputWord;
 }
 
@@ -132,7 +132,7 @@ function getRandomIndexes(numOfIndexesToNeeded: number, wordLength: number): num
  * @param {number[]} randomIndexes - The random indexes for encryption.
  * @returns {string} The encrypted word.
  */
-function encryptWord(word: string, randomIndexes: number[]): string {
+function tashfeerWord(word: string, randomIndexes: number[]): string {
 	let outputWord = '';
 
 	for (let i = 0; i < word.length; i++) {
@@ -141,7 +141,7 @@ function encryptWord(word: string, randomIndexes: number[]): string {
 		// Also, check if the current index is in the list of random indexes for replacement
 		if (STANDARD_LETTERS.includes(word[i]) && randomIndexes.includes(i)) {
 			// Get the replacement letter for the current character
-			const letter = encryptCharacter(word[i]);
+			const letter = tashfeerCharacter(word[i]);
 
 			// Check if the previous character is not an "alone" letter
 			if (i !== 0 && !ALONE_LETTERS.includes(word[i - 1])) {
@@ -165,7 +165,7 @@ function encryptWord(word: string, randomIndexes: number[]): string {
  * @param {string} character - The input character to be replaced.
  * @returns {string} The randomly selected replacement character.
  */
-function encryptCharacter(character: string): string {
+function tashfeerCharacter(character: string): string {
 	if (ALEF.includes(character)) {
 		character = 'ا';
 	}
@@ -190,11 +190,11 @@ function encryptCharacter(character: string): string {
  * @param {string} sentence - The input sentence to be encrypted.
  * @returns {string} The encrypted sentence.
  */
-export function tashfeerSentence(sentence: string): string {
+export function tashfeer(sentence: string): string {
 	let new_sentence = '';
 	for (const i of sentence.split(' ')) {
 		const level = 1;
-		new_sentence += tashfeer(i, level) + ' ';
+		new_sentence += tashfeerHandler(i, level) + ' ';
 	}
 	return new_sentence.trim();
 }
