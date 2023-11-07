@@ -66,3 +66,12 @@ describe('#removeTatweel()', () => {
 		expect(actual).toBe(expected);
 	});
 });
+
+describe('#tashfeer', () => {
+	it('should return a string with tashfeer-ed characters', () => {
+		const inputWord = 'هذه الجملة مشفرة';
+		const result = ArabicServices.tashfeer(inputWord);
+		expect(result).toEqual(expect.any(String));
+		expect(result).not.toEqual(inputWord);
+	});
+});
