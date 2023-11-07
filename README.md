@@ -41,7 +41,7 @@ Arabic-Services was designed to work in both the browser and NodeJS applications
 ### Browser
 
 We provide both ESM and UMD bundles for use in the browser.
-Download the latest release and check under /dist.
+You can find it with the latest release files.
 
 ```html
 <script src="arabic-services.umd.js"></script>
