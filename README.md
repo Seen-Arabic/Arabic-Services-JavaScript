@@ -100,6 +100,14 @@ console.log(ArabicServices.toOldArabic('الخَيْلُ وَاللّيْلُ و
 // Output: 'الحىل واللىل والٮىدا ٮعرڡٮى'
 ```
 
+### Tashfeer
+
+```javascript
+const { ArabicServices } = require('arabic-services');
+console.log(ArabicServices.tashfeer('هذا النص مشفر'));
+// Output: 'هـۮו اڵـݔص مـݭفـݛ'
+```
+
 <br>
 
 ## 💡 Contributing
