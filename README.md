@@ -32,6 +32,7 @@ Can be used in Node.js and the browser.
 -   **Tashkeel Removal**: Easily remove Tashkeel from Arabic text.
 -   **Tatweel Removal**: Remove unnecessary Tatweel characters from Arabic phrases.
 -   **Convert To Old Arabic**: Transform Arabic text into old script.
+-   **Tashfeer**: Replaces Arabic text with visually similar characters for encoding purposes.
 
 ## ⬇️ Installation
 
