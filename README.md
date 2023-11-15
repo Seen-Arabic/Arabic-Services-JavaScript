@@ -33,6 +33,7 @@ Can be used in Node.js and the browser.
 -   **Tatweel Removal**: Remove unnecessary Tatweel characters from Arabic phrases.
 -   **Convert To Old Arabic**: Transform Arabic text into old script.
 -   **Tashfeer**: Replaces Arabic text with visually similar characters for encoding purposes.
+-   **Word To Letters**: Convert Arabic word to its pronounced letters.
 
 ## ⬇️ Installation
 
@@ -107,6 +108,14 @@ console.log(ArabicServices.toOldArabic('الخَيْلُ وَاللّيْلُ و
 const { ArabicServices } = require('arabic-services');
 console.log(ArabicServices.tashfeer('هذا النص مشفر'));
 // Output: 'هـۮו اڵـݔص مـݭفـݛ'
+```
+
+## Word To Letters
+
+```javascript
+const { ArabicServices } = require('arabic-services');
+console.log(ArabicServices.wordToLetters('شجرة'));
+// Output: شين جيم راء تاء_مربوطة
 ```
 
 <br>
