@@ -15,6 +15,7 @@
 		<script src="./dist/umd/arabic-services.umd.js"></script>
 		<script>
 			console.log('ArabicServices:', ArabicServices);
+			console.log('-------- Functions --------');
 			console.log('removeTashkeel:', ArabicServices.removeTashkeel('الخَيْلُ وَاللّيْلُ وَالبَيْداءُ تَعرِفُني'));
 			console.log('removeTatweel:', ArabicServices.removeTatweel('رائـــــــع'));
 			console.log(
@@ -24,9 +25,12 @@
 				),
 			);
 			console.log('Tashfeer:', ArabicServices.tashfeer('هذا النص مشفر'));
+			console.log('wordToLetters:', ArabicServices.wordToLetters('شجرة'));
+			console.log('-------- Constants --------');
 			console.log('ARABIC_DOTLESS_DICT:', ArabicServices.constants.ARABIC_DOTLESS_DICT);
 			console.log('STANDARD_LETTERS:', ArabicServices.constants.STANDARD_LETTERS);
 			console.log('TASHKEEL:', ArabicServices.constants.TASHKEEL);
+			console.log('PRONOUNCED_LETTERS:', ArabicServices.constants.PRONOUNCED_LETTERS);
 		</script>
 	</body>
 </html>

@@ -75,3 +75,30 @@ describe('#tashfeer', () => {
 		expect(result).not.toEqual(inputWord);
 	});
 });
+
+describe('#wordToLetters', () => {
+	it('should return a string with pronounced Arabic letters', () => {
+		const inputWord = 'هذه جملة عربية';
+		const result = ArabicServices.wordToLetters(inputWord);
+		expect(result).toEqual(expect.any(String));
+		expect(result).not.toEqual(inputWord);
+	});
+
+	it('should handle empty input', () => {
+		const inputWord = '';
+		const result = ArabicServices.wordToLetters(inputWord);
+		expect(result).toEqual('');
+	});
+
+	it('should handle input with no pronounced Arabic letters', () => {
+		const inputWord = '12345 not in Arabic letters';
+		const result = ArabicServices.wordToLetters(inputWord);
+		expect(result).toEqual(inputWord);
+	});
+
+	it('should handle input with spaces', () => {
+		const inputWord = 'هذه جملة اخرى';
+		const result = ArabicServices.wordToLetters(inputWord);
+		expect(result).toEqual('هاء ذال هاء  جيم ميم لام تاء_مربوطة  ألف خاء راء ألف_لينة');
+	});
+});

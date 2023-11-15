@@ -3,6 +3,7 @@ import {
 	ALEF,
 	ALONE_LETTERS,
 	LETTERS_TASHFEER_REPLACEMENT_DICT,
+	PRONOUNCED_LETTERS,
 	STANDARD_LETTERS,
 	WAW,
 	YAA,
@@ -197,4 +198,33 @@ export function tashfeer(sentence: string): string {
 		new_sentence += tashfeerHandler(i, level) + ' ';
 	}
 	return new_sentence.trim();
+}
+
+/**
+ * Converts a word to its pronounced letter representations based on PRONOUNCED_LETTERS.
+ * @param {string} word - The word to convert.
+ * @returns {string} The word with pronounced letters separated by spaces.
+ */
+export function wordToLetters(word: string): string {
+	let newWord = '';
+
+	// Loop through each character in the input word
+	for (let i = 0; i < word.length; i++) {
+		const letter = word[i];
+
+		// Check if the current letter has a pronunciation in PRONOUNCED_LETTERS
+		if (PRONOUNCED_LETTERS.hasOwnProperty(letter)) {
+			newWord += PRONOUNCED_LETTERS[letter];
+
+			// Add a space after the pronounced letter unless it's the last letter in the word
+			if (i !== word.length - 1) {
+				newWord += ' ';
+			}
+		} else {
+			// If the letter is not in PRONOUNCED_LETTERS, keep it unchanged
+			newWord += letter;
+		}
+	}
+
+	return newWord.trim();
 }
