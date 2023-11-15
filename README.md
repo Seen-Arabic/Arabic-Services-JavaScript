@@ -110,7 +110,7 @@ console.log(ArabicServices.tashfeer('هذا النص مشفر'));
 // Output: 'هـۮו اڵـݔص مـݭفـݛ'
 ```
 
-## Word To Letters
+### Word To Letters
 
 ```javascript
 const { ArabicServices } = require('arabic-services');
