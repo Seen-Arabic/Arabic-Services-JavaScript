@@ -102,3 +102,163 @@ describe('#wordToLetters', () => {
 		expect(result).toEqual('هاء ذال هاء  جيم ميم لام تاء_مربوطة  ألف خاء راء ألف_لينة');
 	});
 });
+
+describe('#removeArabicAffixes', () => {
+	it('should remove "أ" prefix from a word', () => {
+		const word = 'أمل';
+		const result = ArabicServices.removeArabicAffixes(word);
+		expect(result).toEqual('مل');
+	});
+
+	it('should remove "ا" prefix & suffix "ة" from a word', () => {
+		const word = 'امرأة';
+		const result = ArabicServices.removeArabicAffixes(word);
+		expect(result).toEqual('مرأ');
+	});
+
+	it('should remove "إ" prefix from a word', () => {
+		const word = 'إنسان';
+		const result = ArabicServices.removeArabicAffixes(word);
+		expect(result).toEqual('نسان');
+	});
+
+	it('should remove "ال" prefix from a word', () => {
+		const word = 'الكتاب';
+		const result = ArabicServices.removeArabicAffixes(word);
+		expect(result).toEqual('كتاب');
+	});
+
+	it('should remove "ي" prefix from a word', () => {
+		const word = 'يوم';
+		const result = ArabicServices.removeArabicAffixes(word);
+		expect(result).toEqual('وم');
+	});
+
+	it('should remove "ت" prefix from a word', () => {
+		const word = 'تفاح';
+		const result = ArabicServices.removeArabicAffixes(word);
+		expect(result).toEqual('فاح');
+	});
+
+	it('should remove "ن" prefix from a word', () => {
+		const word = 'نجم';
+		const result = ArabicServices.removeArabicAffixes(word);
+		expect(result).toEqual('جم');
+	});
+
+	it('should remove "ب" prefix from a word', () => {
+		const word = 'بيت';
+		const result = ArabicServices.removeArabicAffixes(word);
+		expect(result).toEqual('يت');
+	});
+
+	it('should remove "ة" suffix from a word', () => {
+		const word = 'كتابة';
+		const result = ArabicServices.removeArabicAffixes(word);
+		expect(result).toEqual('كتاب');
+	});
+
+	it('should remove "ه" suffix from a word', () => {
+		const word = 'جديه';
+		const result = ArabicServices.removeArabicAffixes(word);
+		expect(result).toEqual('جدي');
+	});
+
+	it('should remove "ي" suffix from a word', () => {
+		const word = 'ذهبي';
+		const result = ArabicServices.removeArabicAffixes(word);
+		expect(result).toEqual('ذهب');
+	});
+
+	it('should remove "ى" suffix from a word', () => {
+		const word = 'منزلي';
+		const result = ArabicServices.removeArabicAffixes(word);
+		expect(result).toEqual('منزل');
+	});
+
+	it('should remove "ية" suffix from a word', () => {
+		const word = 'علمية';
+		const result = ArabicServices.removeArabicAffixes(word);
+		expect(result).toEqual('علم');
+	});
+
+	it('should remove "ين" suffix from a word', () => {
+		const word = 'موظفين';
+		const result = ArabicServices.removeArabicAffixes(word);
+		expect(result).toEqual('موظف');
+	});
+
+	it('should remove "ون" suffix from a word', () => {
+		const word = 'موظفون';
+		const result = ArabicServices.removeArabicAffixes(word);
+		expect(result).toEqual('موظف');
+	});
+
+	it('should remove "هم" suffix from a word', () => {
+		const word = 'طلابهم';
+		const result = ArabicServices.removeArabicAffixes(word);
+		expect(result).toEqual('طلاب');
+	});
+});
+
+describe('#similarityScore', () => {
+	it('should return 1 for identical strings', () => {
+		const s1 = 'مرحبا';
+		const s2 = 'مرحبا';
+		const result = ArabicServices.utils.similarityScore(s1, s2);
+		expect(result).toEqual(1.0);
+	});
+
+	it('should return 0 for completely different strings', () => {
+		const s1 = 'شجرة';
+		const s2 = 'طفل';
+		const result = ArabicServices.utils.similarityScore(s1, s2);
+		expect(result).toEqual(0.0);
+	});
+
+	it('should return a value between 0 and 1 for similar strings', () => {
+		const s1 = 'مرحبا';
+		const s2 = 'مرحب';
+		const result = ArabicServices.utils.similarityScore(s1, s2);
+		expect(result).toBeGreaterThan(0.0);
+		expect(result).toBeLessThan(1.0);
+	});
+
+	it('should handle empty strings', () => {
+		const s1 = '';
+		const s2 = '';
+		const result = ArabicServices.utils.similarityScore(s1, s2);
+		expect(result).toEqual(1.0);
+	});
+
+	it('should handle one empty string', () => {
+		const s1 = 'مرحبا';
+		const s2 = '';
+		const result = ArabicServices.utils.similarityScore(s1, s2);
+		expect(result).toEqual(0.0);
+	});
+});
+
+describe('#tashfeerPannedWords', () => {
+	it('should perform tashfeer encryption on panned words only', () => {
+		const sentence = 'جيش العدو يقتل الأطفال';
+		const result = ArabicServices.tashfeerPannedWords(sentence);
+		expect(result).not.toEqual(sentence);
+		expect(result).toMatch(/الأطفال/);
+		expect(result).not.toMatch(/جيش/);
+		expect(result).not.toMatch(/العدو/);
+		expect(result).not.toMatch(/يقتل/);
+	});
+
+	it('should not perform tashfeer encryption on non-panned words', () => {
+		const sentence = 'هذه جملة غير مشفرة';
+		const result = ArabicServices.tashfeerPannedWords(sentence);
+		expect(result).toEqual(sentence);
+	});
+
+	it('should handle empty input', () => {
+		const sentence = '';
+		const result = ArabicServices.tashfeerPannedWords(sentence);
+		expect(result).toEqual('');
+	});
+});

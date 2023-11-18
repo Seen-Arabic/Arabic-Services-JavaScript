@@ -1,4 +1,4 @@
-import { ARABIC_DOTLESS_DICT, TASHKEEL } from '../constants';
+import { ARABIC_DOTLESS_DICT, PANNED_WORDS, TASHKEEL } from '../constants';
 import {
 	ALEF,
 	ALONE_LETTERS,
@@ -10,7 +10,7 @@ import {
 	WAW,
 	YAA,
 } from '../constants/arabic-letters';
-import { setCharAt } from '../utils';
+import { setCharAt, similarityScore } from '../utils';
 
 /**
  * Remove all tashkeel from text
@@ -69,6 +69,35 @@ export function toOldArabic(sentence: string): string {
  */
 export function removeTatweel(text: string): string {
 	return text.replace(/ـ/g, '');
+}
+
+/**
+ * Converts a word to its pronounced letter representations based on PRONOUNCED_LETTERS.
+ * @param {string} word - The word to convert.
+ * @returns {string} The word with pronounced letters separated by spaces.
+ */
+export function wordToLetters(word: string): string {
+	let newWord = '';
+
+	// Loop through each character in the input word
+	for (let i = 0; i < word.length; i++) {
+		const letter = word[i];
+
+		// Check if the current letter has a pronunciation in PRONOUNCED_LETTERS
+		if (PRONOUNCED_LETTERS.hasOwnProperty(letter)) {
+			newWord += PRONOUNCED_LETTERS[letter];
+
+			// Add a space after the pronounced letter unless it's the last letter in the word
+			if (i !== word.length - 1) {
+				newWord += ' ';
+			}
+		} else {
+			// If the letter is not in PRONOUNCED_LETTERS, keep it unchanged
+			newWord += letter;
+		}
+	}
+
+	return newWord.trim();
 }
 
 /**
@@ -200,6 +229,23 @@ function tashfeerCharacter(character: string): string {
 }
 
 /**
+ * Performs tashfeer encryption on a given word.
+ * @param {string} word - The input word to be encrypted.
+ * @param {number} [level=0] - The encryption level (default is 0).
+ * @returns {string} The encrypted word.
+ */
+function tashfeerHandler(word: string, level: number = 0): string {
+	const wordLength = word.length;
+	// Calculate the encryption level based on the input level and word length
+	const n = calculateEncryptionLevel(level, wordLength);
+	// Generate a list of random indexes for encryption
+	const randomIndexes = getRandomIndexes(n, wordLength);
+	// Process the word for encryption using random indexes
+	const outputWord = tashfeerWord(word, randomIndexes);
+	return outputWord;
+}
+
+/**
  * Performs tashfeer encryption on a given sentence.
  * @param {string} sentence - The input sentence to be encrypted.
  * @returns {string} The encrypted sentence.
@@ -207,44 +253,55 @@ function tashfeerCharacter(character: string): string {
 export function tashfeer(sentence: string, levelOfTashfeer: number = 1): string {
 	let new_sentence = '';
 	for (const word of sentence.split(' ')) {
-		const wordLength = word.length;
-		// Calculate the encryption level based on the input level and word length
-		// encryptionLevel is used to determine the number of characters to be replaced (encrypted)
-		const encryptionLevel = calculateEncryptionLevel(levelOfTashfeer, wordLength);
-		// Generate a list of random indexes for encryption
-		const randomIndexes = getRandomIndexes(encryptionLevel, wordLength);
-		// Process the word for encryption using random indexes
-		const outputWord = tashfeerWord(word, randomIndexes);
-		new_sentence += outputWord + ' ';
+		new_sentence += tashfeerHandler(word, levelOfTashfeer) + ' ';
 	}
 	return new_sentence.trim();
 }
 
 /**
- * Converts a word to its pronounced letter representations based on PRONOUNCED_LETTERS.
- * @param {string} word - The word to convert.
- * @returns {string} The word with pronounced letters separated by spaces.
+ * Calculates a ratio that likely represents the degree of similarity of a given string to elements in a 'panned' array.
+ *
+ * @param {string} string - The string to be compared against the elements in the 'panned' array.
+ * @returns {number} The highest similarity ratio found between the string and elements in 'panned'.
  */
-export function wordToLetters(word: string): string {
-	let newWord = '';
-
-	// Loop through each character in the input word
-	for (let i = 0; i < word.length; i++) {
-		const letter = word[i];
-
-		// Check if the current letter has a pronunciation in PRONOUNCED_LETTERS
-		if (PRONOUNCED_LETTERS.hasOwnProperty(letter)) {
-			newWord += PRONOUNCED_LETTERS[letter];
-
-			// Add a space after the pronounced letter unless it's the last letter in the word
-			if (i !== word.length - 1) {
-				newWord += ' ';
-			}
-		} else {
-			// If the letter is not in PRONOUNCED_LETTERS, keep it unchanged
-			newWord += letter;
+function pannedSimilarityRatio(string: string): number {
+	let maximumSimilarity = -1;
+	for (const i in PANNED_WORDS) {
+		const calculatedSimilarity = similarityScore(string, PANNED_WORDS[i]);
+		if (calculatedSimilarity > maximumSimilarity) {
+			maximumSimilarity = calculatedSimilarity;
 		}
 	}
+	return maximumSimilarity * 100;
+}
 
-	return newWord.trim();
+/**
+ * Checks if a string is similar to any 'panned' words based on a predefined similarity ratio.
+ *
+ * @param {string} string - The string to be checked.
+ * @returns {boolean} True if the string is similar to any 'panned' word, false otherwise.
+ */
+function checkIfPannedWord(string: string): boolean {
+	const std_ratio = 70;
+	return pannedSimilarityRatio(removeArabicAffixes(string)) >= std_ratio;
+}
+
+/**
+ * Performs tashfeer encryption on a given sentence, but only for words that are considered "panned" words.
+ * Panned words are determined based on a predefined similarity ratio.
+ *
+ * @param {string} sentence - The input sentence to be encrypted.
+ * @param {number} [levelOfTashfeer=2] - The encryption level (default is 2).
+ * @returns {string} The encrypted sentence with tashfeer applied to panned words.
+ */
+export function tashfeerPannedWords(sentence: string, levelOfTashfeer: number = 2): string {
+	let new_sentence = '';
+	for (const word of sentence.split(' ')) {
+		if (checkIfPannedWord(word)) {
+			new_sentence += tashfeerHandler(word, levelOfTashfeer) + ' ';
+		} else {
+			new_sentence += word + ' ';
+		}
+	}
+	return new_sentence.trim();
 }
