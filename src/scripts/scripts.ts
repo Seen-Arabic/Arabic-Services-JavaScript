@@ -2,12 +2,15 @@ import { ARABIC_DOTLESS_DICT, TASHKEEL } from '../constants';
 import {
 	ALEF,
 	ALONE_LETTERS,
+	ARABIC_PREFIXES,
+	ARABIC_SUFFIXES,
 	LETTERS_TASHFEER_REPLACEMENT_DICT,
 	PRONOUNCED_LETTERS,
 	STANDARD_LETTERS,
 	WAW,
 	YAA,
 } from '../constants/arabic-letters';
+import { setCharAt } from '../utils';
 
 /**
  * Remove all tashkeel from text
@@ -69,20 +72,30 @@ export function removeTatweel(text: string): string {
 }
 
 /**
- * Performs tashfeer encryption on a given word.
- * @param {string} word - The input word to be encrypted.
- * @param {number} [level=0] - The encryption level (default is 0).
- * @returns {string} The encrypted word.
+ * Removes predefined affixes (prefixes and suffixes) from an Arabic word if it starts or ends with those affixes.
+ * This function is designed specifically for processing Arabic text, where certain affixes might need to be removed
+ * for linguistic, stylistic, or morphological reasons.
+ *
+ * @param {string} word - The Arabic word from which the affixes are to be removed.
+ * @returns {string} The word after removing any matching affixes. Returns the original word if no affix matches are found.
  */
-function tashfeerHandler(word: string, level: number = 0): string {
-	const wordLength = word.length;
-	// Calculate the encryption level based on the input level and word length
-	const n = calculateEncryptionLevel(level, wordLength);
-	// Generate a list of random indexes for encryption
-	const randomIndexes = getRandomIndexes(n, wordLength);
-	// Process the word for encryption using random indexes
-	const outputWord = tashfeerWord(word, randomIndexes);
-	return outputWord;
+export function removeArabicAffixes(word: string): string {
+	if (ARABIC_PREFIXES.includes(word.substring(0, 2))) {
+		// For: ALEF & LAM
+		word = setCharAt(word, 0, '');
+		word = setCharAt(word, 0, '');
+	} else if (ARABIC_PREFIXES.includes(word.substring(0, 1))) {
+		word = setCharAt(word, 0, '');
+	}
+
+	if (ARABIC_SUFFIXES.includes(word.substring(word.length - 2))) {
+		word = setCharAt(word, word.length - 1, '');
+		word = setCharAt(word, word.length - 1, '');
+	} else if (ARABIC_SUFFIXES.includes(word[word.length - 1])) {
+		word = setCharAt(word, word.length - 1, '');
+	}
+
+	return word;
 }
 
 /**
@@ -191,11 +204,18 @@ function tashfeerCharacter(character: string): string {
  * @param {string} sentence - The input sentence to be encrypted.
  * @returns {string} The encrypted sentence.
  */
-export function tashfeer(sentence: string): string {
+export function tashfeer(sentence: string, levelOfTashfeer: number = 1): string {
 	let new_sentence = '';
-	for (const i of sentence.split(' ')) {
-		const level = 1;
-		new_sentence += tashfeerHandler(i, level) + ' ';
+	for (const word of sentence.split(' ')) {
+		const wordLength = word.length;
+		// Calculate the encryption level based on the input level and word length
+		// encryptionLevel is used to determine the number of characters to be replaced (encrypted)
+		const encryptionLevel = calculateEncryptionLevel(levelOfTashfeer, wordLength);
+		// Generate a list of random indexes for encryption
+		const randomIndexes = getRandomIndexes(encryptionLevel, wordLength);
+		// Process the word for encryption using random indexes
+		const outputWord = tashfeerWord(word, randomIndexes);
+		new_sentence += outputWord + ' ';
 	}
 	return new_sentence.trim();
 }

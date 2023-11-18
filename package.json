@@ -1,6 +1,6 @@
 {
 	"name": "arabic-services",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"description": "Utility functions on Arabic text",
 	"main": "./dist/index.js",
 	"types": "./dist/index.d.ts",
