@@ -155,3 +155,15 @@ export const ALONE_LETTERS = ['د', 'ذ', 'ر', 'ز', 'و', 'ا', 'أ', 'إ', '�
 export const ALEF: string[] = ['أ', 'إ', 'آ'];
 export const YAA: string[] = ['ى', 'ئ'];
 export const WAW: string[] = ['ؤ'];
+
+/**
+ * Array of common Arabic prefixes. These prefixes are used in the removeArabicPrefix function
+ * to identify and remove them from the beginning of Arabic words.
+ */
+export const ARABIC_PREFIXES = ['أ', 'ا', 'إ', 'ال', 'ي', 'ت', 'ن', 'ب'];
+
+/**
+ * Array of common Arabic suffixes. These suffixes might be used in other functions
+ * to identify and manipulate them at the end of Arabic words.
+ */
+export const ARABIC_SUFFIXES = ['ة', 'ه', 'ي', 'ى', 'ية', 'ين', 'ون', 'هم'];

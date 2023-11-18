@@ -1,5 +1,5 @@
 {
-	"cSpell.words": ["DOTLESS", "Tashkeel", "Tatweel"],
+	"cSpell.words": ["ALEF", "DOTLESS", "Tashkeel", "Tatweel"],
 	"formattingToggle.affects": ["editor.formatOnSave"],
 	"editor.formatOnSave": true,
 	"editor.defaultFormatter": "esbenp.prettier-vscode",
