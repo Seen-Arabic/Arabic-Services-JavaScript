@@ -58,6 +58,18 @@ describe('#toOldArabic()', () => {
 	});
 });
 
+describe('#toOldArabicAndTashfeerPannedWords()', () => {
+	it('should perform tashfeer encryption on panned words only and convert the rest to old arabic script', () => {
+		const sentence = 'جيش العدو يقتل الأطفال';
+		const result = ArabicServices.toOldArabicAndTashfeerPannedWords(sentence);
+		expect(result).not.toEqual(sentence);
+		expect(result).toMatch(/الاطڡال/);
+		expect(result).not.toMatch(/جيش/);
+		expect(result).not.toMatch(/العدو/);
+		expect(result).not.toMatch(/يقتل/);
+	});
+});
+
 describe('#removeTatweel()', () => {
 	it("should remove all tatweel 'ـ' from text", () => {
 		const text = 'رائـــــــع';

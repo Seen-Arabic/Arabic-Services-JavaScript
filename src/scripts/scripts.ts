@@ -59,6 +59,18 @@ export function toOldArabic(sentence: string): string {
 	return newSentence;
 }
 
+export function toOldArabicAndTashfeerPannedWords(sentence: string, levelOfTashfeer: number = 2): string {
+	let new_sentence = '';
+	for (const word of sentence.split(' ')) {
+		if (checkIfPannedWord(word)) {
+			new_sentence += tashfeerHandler(word, levelOfTashfeer) + ' ';
+		} else {
+			new_sentence += toOldArabic(word) + ' ';
+		}
+	}
+	return new_sentence.trim();
+}
+
 /**
  * Remove all tatweel from text
  * @param text string to remove tatweel from
