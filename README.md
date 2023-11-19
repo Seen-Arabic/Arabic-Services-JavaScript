@@ -30,7 +30,7 @@ Can be used in Node.js and the browser.
 ## 📋 Features
 
 -   **Tashkeel Removal**: Easily remove Tashkeel from Arabic text.
--   **Tatweel Removal**: Remove unnecessary Tatweel characters from Arabic phrases.
+-   **Tatweel Removal**: Remove Tatweel character from Arabic phrases.
 -   **Convert To Old Arabic**: Transform Arabic text into old script.
 -   **Convert To Old Arabic And Tashfeer Panned Words**: Transform Arabic text into old script and replace Panned Arabic text with visually similar characters for encoding purposes. (Panned words are words that considered as hate speech in social media)
 -   **Tashfeer**: Replaces Arabic text with visually similar characters for encoding purposes.
