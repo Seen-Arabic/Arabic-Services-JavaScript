@@ -1,3 +1,9 @@
+<div align=center>
+	<a href="/README_AR.md">
+		<img  src="https://user-images.githubusercontent.com/48678280/174657158-9bc1a1d3-8d9c-4162-8d5b-71cc5d4c1fc6.png">
+	</a>
+</div>
+
 <h1 align=center>Arabic Services JavaScript</h1>
 
 <p align=center>
