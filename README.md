@@ -43,8 +43,11 @@ Can be used in Node.js and the browser.
 -   **Tashfeer Banned Words**: Replaces Banned Arabic text with visually similar characters for encoding purposes. (Banned words are words that considered as hate speech in social media)
 -   **Remove Arabic Affixes**: Removes predefined affixes (prefixes and suffixes) from an Arabic word if it starts or ends with those affixes.
 -   **Word To Letters**: Convert Arabic word to its pronounced letters.
+- ... and more!
 
-## ⬇️ Installation
+<h3 align=center><a href="https://github.com/Seen-Arabic/Arabic-Services-JavaScript/wiki/Features-Documentation">➡️ Check out the usage and detailed documentation on each feature ⬅️</a></h3>
+
+## 🚀 Getting Started
 
 Arabic-Services was designed to work in both the browser and NodeJS applications.
 
@@ -85,73 +88,6 @@ console.log(ArabicServices.removeTashkeel('الخَيْلُ وَاللّيْلُ
 // Output: 'الخيل والليل والبيداء تعرفني'
 ```
 
-## 💻 Usage
-
-### Tashkeel Removal
-
-```javascript
-const { ArabicServices } = require('arabic-services');
-console.log(ArabicServices.removeTashkeel('الخَيْلُ وَاللّيْلُ وَالبَيْداءُ تَعرِفُني'));
-// Output: 'الخيل والليل والبيداء تعرفني'
-```
-
-### Tatweel Removal
-
-```javascript
-const { ArabicServices } = require('arabic-services');
-console.log(ArabicServices.removeTatweel('كن جميـــلا ترى الوجــود جميـــــلا'));
-// Output: 'كن جميلا ترى الوجود جميلا'
-```
-
-### Convert To Old Arabic
-
-```javascript
-const { ArabicServices } = require('arabic-services');
-console.log(ArabicServices.toOldArabic('الخَيْلُ وَاللّيْلُ وَالبَيْداءُ تَعرِفُني'));
-// Output: 'الحىل واللىل والٮىدا ٮعرڡٮى'
-```
-
-### Convert To Old Arabic And Tashfeer Banned Words
-
-```javascript
-const { ArabicServices } = require('arabic-services');
-console.log(ArabicServices.toOldArabicAndTashfeerBannedWords('جيش العدو يقتل الأطفال'));
-// Output: 'چـێـݭ !ڵعـݚۉ ی۪ـڨـټل الاطڡال'
-```
-
-### Tashfeer
-
-```javascript
-const { ArabicServices } = require('arabic-services');
-console.log(ArabicServices.tashfeer('هذا النص مشفر'));
-// Output: 'هـۮו اڵـݔص مـݭفـݛ'
-```
-
-### Tashfeer Banned Words
-
-```javascript
-const { ArabicServices } = require('arabic-services');
-console.log(ArabicServices.tashfeerBannedWords('جيش العدو يقتل الأطفال'));
-// Output: 'چـێـݭ !ڵعـݚۉ ی۪ـڨـټل الأطفال'
-```
-
-### Word To Letters
-
-```javascript
-const { ArabicServices } = require('arabic-services');
-console.log(ArabicServices.wordToLetters('شجرة'));
-// Output: شين جيم راء تاء_مربوطة
-```
-
-### Remove Arabic Affixes
-
-```javascript
-const { ArabicServices } = require('arabic-services');
-console.log(ArabicServices.removeAffixes('المدرسة'));
-// Output: مدرس
-```
-
-<br>
 
 ## 💡 Contributing
 
