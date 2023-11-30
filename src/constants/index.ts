@@ -5,5 +5,5 @@ export {
 	PRONOUNCED_LETTERS,
 	STANDARD_LETTERS,
 } from './arabic-letters';
-export { PANNED_WORDS } from './panned-words';
+export { BANNED_WORDS } from './banned-words';
 export { TASHKEEL } from './tashkeel';

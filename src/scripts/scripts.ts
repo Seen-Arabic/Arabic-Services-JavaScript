@@ -1,4 +1,4 @@
-import { ARABIC_DOTLESS_DICT, PANNED_WORDS, TASHKEEL } from '../constants';
+import { ARABIC_DOTLESS_DICT, BANNED_WORDS, TASHKEEL } from '../constants';
 import {
 	ALEF,
 	ALONE_LETTERS,
@@ -59,10 +59,10 @@ export function toOldArabic(sentence: string): string {
 	return newSentence;
 }
 
-export function toOldArabicAndTashfeerPannedWords(sentence: string, levelOfTashfeer: number = 2): string {
+export function toOldArabicAndTashfeerBannedWords(sentence: string, levelOfTashfeer: number = 2): string {
 	let new_sentence = '';
 	for (const word of sentence.split(' ')) {
-		if (checkIfPannedWord(word)) {
+		if (checkIfBannedWord(word)) {
 			new_sentence += tashfeerHandler(word, levelOfTashfeer) + ' ';
 		} else {
 			new_sentence += toOldArabic(word) + ' ';
@@ -271,15 +271,15 @@ export function tashfeer(sentence: string, levelOfTashfeer: number = 1): string 
 }
 
 /**
- * Calculates a ratio that likely represents the degree of similarity of a given string to elements in a 'panned' array.
+ * Calculates a ratio that likely represents the degree of similarity of a given string to elements in a 'banned' array.
  *
- * @param {string} string - The string to be compared against the elements in the 'panned' array.
- * @returns {number} The highest similarity ratio found between the string and elements in 'panned'.
+ * @param {string} string - The string to be compared against the elements in the 'banned' array.
+ * @returns {number} The highest similarity ratio found between the string and elements in 'banned'.
  */
-function pannedSimilarityRatio(string: string): number {
+function bannedSimilarityRatio(string: string): number {
 	let maximumSimilarity = -1;
-	for (const i in PANNED_WORDS) {
-		const calculatedSimilarity = similarityScore(string, PANNED_WORDS[i]);
+	for (const i in BANNED_WORDS) {
+		const calculatedSimilarity = similarityScore(string, BANNED_WORDS[i]);
 		if (calculatedSimilarity > maximumSimilarity) {
 			maximumSimilarity = calculatedSimilarity;
 		}
@@ -288,28 +288,28 @@ function pannedSimilarityRatio(string: string): number {
 }
 
 /**
- * Checks if a string is similar to any 'panned' words based on a predefined similarity ratio.
+ * Checks if a string is similar to any 'banned' words based on a predefined similarity ratio.
  *
  * @param {string} string - The string to be checked.
- * @returns {boolean} True if the string is similar to any 'panned' word, false otherwise.
+ * @returns {boolean} True if the string is similar to any 'banned' word, false otherwise.
  */
-function checkIfPannedWord(string: string): boolean {
+function checkIfBannedWord(string: string): boolean {
 	const std_ratio = 70;
-	return pannedSimilarityRatio(removeArabicAffixes(string)) >= std_ratio;
+	return bannedSimilarityRatio(removeArabicAffixes(string)) >= std_ratio;
 }
 
 /**
- * Performs tashfeer encryption on a given sentence, but only for words that are considered "panned" words.
- * Panned words are determined based on a predefined similarity ratio.
+ * Performs tashfeer encryption on a given sentence, but only for words that are considered "banned" words.
+ * Banned words are determined based on a predefined similarity ratio.
  *
  * @param {string} sentence - The input sentence to be encrypted.
  * @param {number} [levelOfTashfeer=2] - The encryption level (default is 2).
- * @returns {string} The encrypted sentence with tashfeer applied to panned words.
+ * @returns {string} The encrypted sentence with tashfeer applied to banned words.
  */
-export function tashfeerPannedWords(sentence: string, levelOfTashfeer: number = 2): string {
+export function tashfeerBannedWords(sentence: string, levelOfTashfeer: number = 2): string {
 	let new_sentence = '';
 	for (const word of sentence.split(' ')) {
-		if (checkIfPannedWord(word)) {
+		if (checkIfBannedWord(word)) {
 			new_sentence += tashfeerHandler(word, levelOfTashfeer) + ' ';
 		} else {
 			new_sentence += word + ' ';
