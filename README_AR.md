@@ -42,7 +42,7 @@
 -   **الكلمة إلى حروفها:** تحويل الكلمة العربية إلى حروفها المنطوقة.
 -   ...والمزيد!
 
-<h3 align=center><a href="https://github.com/Seen-Arabic/Arabic-Services-JavaScript/wiki/Features-Documentation">➡️ شاهد استخدام كل ميزة من المكتبة وطريقة استخدامها في الكود ⬅️</a></h3>
+<h3 align=center><a href="https://github.com/Seen-Arabic/Arabic-Services-JavaScript/wiki/Features%E2%80%90Documentation%E2%80%90AR">➡️ شاهد استخدام كل ميزة من المكتبة وطريقة استخدامها في الكود ⬅️</a></h3>
 
 ## 🚀 التثبيت
 
