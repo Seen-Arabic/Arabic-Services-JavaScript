@@ -58,10 +58,10 @@ describe('#toOldArabic()', () => {
 	});
 });
 
-describe('#toOldArabicAndTashfeerPannedWords()', () => {
-	it('should perform tashfeer encryption on panned words only and convert the rest to old arabic script', () => {
+describe('#toOldArabicAndTashfeerBannedWords()', () => {
+	it('should perform tashfeer encryption on banned words only and convert the rest to old arabic script', () => {
 		const sentence = 'جيش العدو يقتل الأطفال';
-		const result = ArabicServices.toOldArabicAndTashfeerPannedWords(sentence);
+		const result = ArabicServices.toOldArabicAndTashfeerBannedWords(sentence);
 		expect(result).not.toEqual(sentence);
 		expect(result).toMatch(/الاطڡال/);
 		expect(result).not.toMatch(/جيش/);
@@ -251,10 +251,10 @@ describe('#similarityScore', () => {
 	});
 });
 
-describe('#tashfeerPannedWords', () => {
-	it('should perform tashfeer encryption on panned words only', () => {
+describe('#tashfeerBannedWords', () => {
+	it('should perform tashfeer encryption on banned words only', () => {
 		const sentence = 'جيش العدو يقتل الأطفال';
-		const result = ArabicServices.tashfeerPannedWords(sentence);
+		const result = ArabicServices.tashfeerBannedWords(sentence);
 		expect(result).not.toEqual(sentence);
 		expect(result).toMatch(/الأطفال/);
 		expect(result).not.toMatch(/جيش/);
@@ -262,15 +262,15 @@ describe('#tashfeerPannedWords', () => {
 		expect(result).not.toMatch(/يقتل/);
 	});
 
-	it('should not perform tashfeer encryption on non-panned words', () => {
+	it('should not perform tashfeer encryption on non-banned words', () => {
 		const sentence = 'هذه جملة غير مشفرة';
-		const result = ArabicServices.tashfeerPannedWords(sentence);
+		const result = ArabicServices.tashfeerBannedWords(sentence);
 		expect(result).toEqual(sentence);
 	});
 
 	it('should handle empty input', () => {
 		const sentence = '';
-		const result = ArabicServices.tashfeerPannedWords(sentence);
+		const result = ArabicServices.tashfeerBannedWords(sentence);
 		expect(result).toEqual('');
 	});
 });

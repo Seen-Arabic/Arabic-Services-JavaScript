@@ -1,4 +1,4 @@
-export const PANNED_WORDS = [
+export const BANNED_WORDS = [
 	'فلسطين',
 	'عرب',
 	'هود',

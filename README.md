@@ -38,9 +38,9 @@ Can be used in Node.js and the browser.
 -   **Tashkeel Removal**: Easily remove Tashkeel from Arabic text.
 -   **Tatweel Removal**: Remove Tatweel character from Arabic phrases.
 -   **Convert To Old Arabic**: Transform Arabic text into old script.
--   **Convert To Old Arabic And Tashfeer Panned Words**: Transform Arabic text into old script and replace Panned Arabic text with visually similar characters for encoding purposes. (Panned words are words that considered as hate speech in social media)
+-   **Convert To Old Arabic And Tashfeer Banned Words**: Transform Arabic text into old script and replace Banned Arabic text with visually similar characters for encoding purposes. (Banned words are words that considered as hate speech in social media)
 -   **Tashfeer**: Replaces Arabic text with visually similar characters for encoding purposes.
--   **Tashfeer Panned Words**: Replaces Panned Arabic text with visually similar characters for encoding purposes. (Panned words are words that considered as hate speech in social media)
+-   **Tashfeer Banned Words**: Replaces Banned Arabic text with visually similar characters for encoding purposes. (Banned words are words that considered as hate speech in social media)
 -   **Remove Arabic Affixes**: Removes predefined affixes (prefixes and suffixes) from an Arabic word if it starts or ends with those affixes.
 -   **Word To Letters**: Convert Arabic word to its pronounced letters.
 
@@ -111,11 +111,11 @@ console.log(ArabicServices.toOldArabic('الخَيْلُ وَاللّيْلُ و
 // Output: 'الحىل واللىل والٮىدا ٮعرڡٮى'
 ```
 
-### Convert To Old Arabic And Tashfeer Panned Words
+### Convert To Old Arabic And Tashfeer Banned Words
 
 ```javascript
 const { ArabicServices } = require('arabic-services');
-console.log(ArabicServices.toOldArabicAndTashfeerPannedWords('جيش العدو يقتل الأطفال'));
+console.log(ArabicServices.toOldArabicAndTashfeerBannedWords('جيش العدو يقتل الأطفال'));
 // Output: 'چـێـݭ !ڵعـݚۉ ی۪ـڨـټل الاطڡال'
 ```
 
@@ -127,11 +127,11 @@ console.log(ArabicServices.tashfeer('هذا النص مشفر'));
 // Output: 'هـۮו اڵـݔص مـݭفـݛ'
 ```
 
-### Tashfeer Panned Words
+### Tashfeer Banned Words
 
 ```javascript
 const { ArabicServices } = require('arabic-services');
-console.log(ArabicServices.tashfeerPannedWords('جيش العدو يقتل الأطفال'));
+console.log(ArabicServices.tashfeerBannedWords('جيش العدو يقتل الأطفال'));
 // Output: 'چـێـݭ !ڵعـݚۉ ی۪ـڨـټل الأطفال'
 ```
 

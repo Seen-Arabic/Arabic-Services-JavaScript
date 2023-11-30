@@ -25,11 +25,11 @@
 				),
 			);
 			console.log(
-				'toOldArabicAndTashfeerPannedWords:',
-				ArabicServices.toOldArabicAndTashfeerPannedWords('جيش العدو يقتل الأطفال'),
+				'toOldArabicAndTashfeerBannedWords:',
+				ArabicServices.toOldArabicAndTashfeerBannedWords('جيش العدو يقتل الأطفال'),
 			);
 			console.log('Tashfeer:', ArabicServices.tashfeer('هذا النص مشفر'));
-			console.log('tashfeerPannedWords:', ArabicServices.tashfeerPannedWords('جيش العدو يقتل الأطفال'));
+			console.log('tashfeerBannedWords:', ArabicServices.tashfeerBannedWords('جيش العدو يقتل الأطفال'));
 			console.log('wordToLetters:', ArabicServices.wordToLetters('شجرة'));
 			console.log('removeArabicAffixes:', ArabicServices.removeArabicAffixes('موظفين'));
 
@@ -40,7 +40,7 @@
 			console.log('PRONOUNCED_LETTERS:', ArabicServices.constants.PRONOUNCED_LETTERS);
 			console.log('ARABIC_PREFIXES:', ArabicServices.constants.ARABIC_PREFIXES);
 			console.log('ARABIC_SUFFIXES:', ArabicServices.constants.ARABIC_SUFFIXES);
-			console.log('PANNED_WORDS:', ArabicServices.constants.PANNED_WORDS);
+			console.log('BANNED_WORDS:', ArabicServices.constants.BANNED_WORDS);
 		</script>
 	</body>
 </html>
