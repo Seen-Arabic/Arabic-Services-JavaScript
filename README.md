@@ -90,9 +90,9 @@ console.log(ArabicServices.removeTashkeel('الخَيْلُ وَاللّيْلُ
 
 
 ## 💡 Contributing
-
-If you want to contribute to this project and make it better with new ideas, your pull request is very welcomed.
-If you find any issue just put it in the repository issue section, thank you.
+Arabic Services is made publicly available to provide a well tested and well documented library for processing and transforming Arabic text to all developers. We accept feature contributions provided that they are properly documented and include the appropriate unit tests.
+- 🚀 If you want to contribute to this project and make it better with new ideas, your pull request is very welcomed.
+- 📝 If you find any issue just put it in the repository issue section, thank you.
 
 ## 🌟 Star this repository
 
