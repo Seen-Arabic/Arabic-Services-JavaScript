@@ -13,6 +13,7 @@
 
 <div align="center">
 <a href="https://www.npmjs.com/package/arabic-services"><img src="https://img.shields.io/npm/v/arabic-services.svg" alt="npm version badge"></a>
+<a href="https://www.npmjs.com/package/arabic-services"><img src="https://img.shields.io/npm/dt/arabic-services.svg" alt="npm downloads badge"></a>
 <a href="https://github.com/Seen-Arabic/Arabic-Services-JavaScript/issues">
 <img src="https://img.shields.io/github/issues/Seen-Arabic/Arabic-Services-JavaScript"/>
 </a>
