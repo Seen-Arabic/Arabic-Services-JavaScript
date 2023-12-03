@@ -21,7 +21,10 @@ import { setCharAt, similarityScore } from '../utils';
  *   Output: "الخيل والليل والبيداء تعرفني"
  */
 export function removeTashkeel(text: string): string {
-	return text.replace(new RegExp('[' + TASHKEEL.join('') + ']', 'g'), '').replace(/ٱ/g, 'ا');
+	return text
+		.trim()
+		.replace(new RegExp('[' + TASHKEEL.join('') + ']', 'g'), '')
+		.replace(/ٱ/g, 'ا');
 }
 
 /**
@@ -33,7 +36,7 @@ export function removeTashkeel(text: string): string {
  *   Output: "الحىل واللىل والٮىدا ٮعرڡٮى"
  */
 export function toOldArabic(sentence: string): string {
-	sentence = removeTashkeel(sentence);
+	sentence = removeTashkeel(sentence.trim());
 	let newSentence = '';
 	for (let letter = 0; letter < sentence.length; letter++) {
 		// if letter is not Arabic letter => append to newSentence
@@ -61,7 +64,8 @@ export function toOldArabic(sentence: string): string {
 
 export function toOldArabicAndTashfeerBannedWords(sentence: string, levelOfTashfeer: number = 2): string {
 	let new_sentence = '';
-	for (const word of sentence.split(' ')) {
+	const words = sentence.trim().split(' ');
+	for (const word of words) {
 		if (checkIfBannedWord(word)) {
 			new_sentence += tashfeerHandler(word, levelOfTashfeer) + ' ';
 		} else {
@@ -80,7 +84,7 @@ export function toOldArabicAndTashfeerBannedWords(sentence: string, levelOfTashf
  *   Output: "رائع"
  */
 export function removeTatweel(text: string): string {
-	return text.replace(/ـ/g, '');
+	return text.trim().replace(/ـ/g, '');
 }
 
 /**
@@ -89,18 +93,19 @@ export function removeTatweel(text: string): string {
  * @returns {string} The word with pronounced letters separated by spaces.
  */
 export function wordToLetters(word: string): string {
+	const trimmedWord = word.trim();
 	let newWord = '';
 
 	// Loop through each character in the input word
-	for (let i = 0; i < word.length; i++) {
-		const letter = word[i];
+	for (let i = 0; i < trimmedWord.length; i++) {
+		const letter = trimmedWord[i];
 
 		// Check if the current letter has a pronunciation in PRONOUNCED_LETTERS
 		if (PRONOUNCED_LETTERS.hasOwnProperty(letter)) {
 			newWord += PRONOUNCED_LETTERS[letter];
 
 			// Add a space after the pronounced letter unless it's the last letter in the word
-			if (i !== word.length - 1) {
+			if (i !== trimmedWord.length - 1) {
 				newWord += ' ';
 			}
 		} else {
@@ -121,6 +126,7 @@ export function wordToLetters(word: string): string {
  * @returns {string} The word after removing any matching affixes. Returns the original word if no affix matches are found.
  */
 export function removeArabicAffixes(word: string): string {
+	word = word.trim();
 	if (ARABIC_PREFIXES.includes(word.substring(0, 2))) {
 		// For: ALEF & LAM
 		word = setCharAt(word, 0, '');
@@ -263,6 +269,7 @@ function tashfeerHandler(word: string, level: number = 0): string {
  * @returns {string} The encrypted sentence.
  */
 export function tashfeer(sentence: string, levelOfTashfeer: number = 1): string {
+	sentence = sentence.trim();
 	let new_sentence = '';
 	for (const word of sentence.split(' ')) {
 		new_sentence += tashfeerHandler(word, levelOfTashfeer) + ' ';
@@ -308,6 +315,7 @@ function checkIfBannedWord(string: string): boolean {
  */
 export function tashfeerBannedWords(sentence: string, levelOfTashfeer: number = 2): string {
 	let new_sentence = '';
+	sentence = sentence.trim();
 	for (const word of sentence.split(' ')) {
 		if (checkIfBannedWord(word)) {
 			new_sentence += tashfeerHandler(word, levelOfTashfeer) + ' ';
