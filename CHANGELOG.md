@@ -1,7 +1,15 @@
 <h1 align=center>📜 Changelog - سجل التغيير</h1>
 <p align=center>All notable changes to this project will be documented in this file.</p>
 
-## [Unreleased](https://github.com/Seen-Arabic/Arabic-Services-JavaScript/compare/v1.0.5...HEAD)
+## [Unreleased](https://github.com/Seen-Arabic/Arabic-Services-JavaScript/compare/v1.0.6...HEAD)
+
+## [1.0.6](https://github.com/Seen-Arabic/Arabic-Services-JavaScript/releases/tag/v1.0.6) - 2023-12-03 (19 Jumada al-awwal 1445)
+
+### Fixed
+
+-   Remove Arabic Affixes does not work with sentences ([#21](https://github.com/Seen-Arabic/Arabic-Services-JavaScript/issues/21))
+
+[Full Changelog](https://github.com/Seen-Arabic/Arabic-Services-JavaScript/compare/v1.0.6...v1.0.6)
 
 ## [1.0.5](https://github.com/Seen-Arabic/Arabic-Services-JavaScript/releases/tag/v1.0.5) - 2023-12-03 (19 Jumada al-awwal 1445)
 
@@ -9,7 +17,7 @@
 
 -   Trim text before converting ([#22](https://github.com/Seen-Arabic/Arabic-Services-JavaScript/issues/22))
 
-[Full Changelog](https://github.com/Seen-Arabic/Arabic-Services-JavaScript/compare/v1.0.3...v1.0.4)
+[Full Changelog](https://github.com/Seen-Arabic/Arabic-Services-JavaScript/compare/v1.0.4...v1.0.5)
 
 ## [1.0.4](https://github.com/Seen-Arabic/Arabic-Services-JavaScript/releases/tag/v1.0.4) - 2023-11-30 (16 Jumada al-awwal 1445)
 

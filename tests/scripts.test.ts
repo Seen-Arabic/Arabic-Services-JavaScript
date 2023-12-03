@@ -211,6 +211,12 @@ describe('#removeArabicAffixes', () => {
 		const result = ArabicServices.removeArabicAffixes(word);
 		expect(result).toEqual('طلاب');
 	});
+
+	it('should remove prefix & suffix from a sentence', () => {
+		const word = 'المدرسون يحبون طلابهم';
+		const result = ArabicServices.removeArabicAffixes(word);
+		expect(result).toEqual('مدرس حب طلاب');
+	});
 });
 
 describe('#similarityScore', () => {
