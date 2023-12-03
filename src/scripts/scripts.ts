@@ -123,9 +123,9 @@ export function wordToLetters(word: string): string {
  * for linguistic, stylistic, or morphological reasons.
  *
  * @param {string} word - The Arabic word from which the affixes are to be removed.
- * @returns {string} The word after removing any matching affixes. Returns the original word if no affix matches are found.
+ * @returns {string} The word after removing any matching affixes. Returns the original word trimmed if no affix matches are found.
  */
-export function removeArabicAffixes(word: string): string {
+function removeArabicAffixesFromWord(word: string): string {
 	word = word.trim();
 	if (ARABIC_PREFIXES.includes(word.substring(0, 2))) {
 		// For: ALEF & LAM
@@ -143,6 +143,23 @@ export function removeArabicAffixes(word: string): string {
 	}
 
 	return word;
+}
+
+/**
+ * Removes predefined affixes (prefixes and suffixes) from an Arabic text if words start or end with those affixes.
+ * This function is designed specifically for processing Arabic text, where certain affixes might need to be removed
+ * for linguistic, stylistic, or morphological reasons.
+ *
+ * @param {string} text - The Arabic text from which the affixes are to be removed.
+ * @returns {string} The text after removing any matching affixes from each word. Returns the original text trimmed if no affix matches are found.
+ */
+export function removeArabicAffixes(text: string): string {
+	let new_sentence = '';
+	text = text.trim();
+	for (const word of text.split(' ')) {
+		new_sentence += removeArabicAffixesFromWord(word) + ' ';
+	}
+	return new_sentence.trim();
 }
 
 /**
