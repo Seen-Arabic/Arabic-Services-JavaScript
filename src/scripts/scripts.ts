@@ -11,7 +11,7 @@ import {
 	YAA,
 } from '../constants/arabic-letters';
 import { setCharAt, similarityScore } from '../utils';
-import { fillDefaultOptions, type OldArabicOptions } from '../option';
+import { fillDefaultOptions, type OldArabicOptions } from '../options';
 
 /**
  * Remove all tashkeel from text
