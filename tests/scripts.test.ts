@@ -49,10 +49,10 @@ describe('#toOldArabic()', () => {
 	});
 
 	describe('Test with Quran Text', () => {
-		it('should remove tashkeel from Quran text', () => {
+		it('should remove all dots & tashkeel from Quran text', () => {
 			const text = `وَقَالُواْ ٱلۡحَمۡدُ لِلَّهِ ٱلَّذِيٓ أَذۡهَبَ عَنَّا ٱلۡحَزَنَۖ إِنَّ رَبَّنَا لَغَفُورٞ شَكُورٌ`;
-			const actual = ArabicServices.removeTashkeel(text);
-			const expected = `وقالوا الحمد لله الذي أذهب عنا الحزن إن ربنا لغفور شكور`;
+			const actual = ArabicServices.toOldArabic(text);
+			const expected = `وٯالوا الحمد لله الدى ادهٮ عٮا الحرں اں رٮٮا لعڡور سکور`;
 			expect(actual).toBe(expected);
 		});
 	});
