@@ -33,14 +33,14 @@ export const ARABIC_DOTLESS_DICT: { [key: string]: string } = {
 	گ: 'ک',
 	ل: 'ل',
 	م: 'م',
-	ن: 'ں',
+	ن: '\u06BA', // Dotless Noon in all four contextual forms, however most fonts shows dots in initial and medial forms
 	ه: 'ه',
 	و: 'و',
 	ؤ: 'و',
 	ة: 'ه',
-	ى: 'ى',
-	ي: 'ى',
-	ئ: 'ى',
+	ى: '\u0649', // Dotless Yeh in all four contextual forms, however some fonts shows final form in all cases
+	ي: '\u0649',
+	ئ: '\u0649',
 };
 
 export const STANDARD_LETTERS: string[] = [
