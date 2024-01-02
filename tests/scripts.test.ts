@@ -28,6 +28,14 @@ describe('#toOldArabic()', () => {
 			const expected = `ٮٮں`;
 			expect(actual).toBe(expected);
 		});
+		it('should convert ن to ں in all case', () => {
+			const text = `ننن`;
+			const actual = ArabicServices.toOldArabic(text, { replaceMidNoonWithBah: false });
+			const expected = `ںںں`;
+			const expectedUnicode = '\u06BA\u06BA\u06BA';
+			expect(actual).toBe(expected);
+			expect(actual).toBe(expectedUnicode);
+		});
 	});
 
 	describe('Test Tatweel with ن letter', () => {
@@ -36,6 +44,14 @@ describe('#toOldArabic()', () => {
 			const actual = ArabicServices.toOldArabic(text);
 			const expected = `ٮــٮــں`;
 			expect(actual).toBe(expected);
+		});
+		it('should convert ن to ں last letter in all cases', () => {
+			const text = `نــنــن`;
+			const actual = ArabicServices.toOldArabic(text, { replaceMidNoonWithBah: false });
+			const expected = `ںــںــں`;
+			const expectedUnicode = '\u06BA\u0640\u0640\u06BA\u0640\u0640\u06BA';
+			expect(actual).toBe(expected);
+			expect(actual).toBe(expectedUnicode);
 		});
 	});
 
@@ -53,6 +69,12 @@ describe('#toOldArabic()', () => {
 			const text = `وَقَالُواْ ٱلۡحَمۡدُ لِلَّهِ ٱلَّذِيٓ أَذۡهَبَ عَنَّا ٱلۡحَزَنَۖ إِنَّ رَبَّنَا لَغَفُورٞ شَكُورٌ`;
 			const actual = ArabicServices.toOldArabic(text);
 			const expected = `وٯالوا الحمد لله الدى ادهٮ عٮا الحرں اں رٮٮا لعڡور سکور`;
+			expect(actual).toBe(expected);
+		});
+		it('should remove all dots & tashkeel from Quran text', () => {
+			const text = `وَقَالُواْ ٱلۡحَمۡدُ لِلَّهِ ٱلَّذِيٓ أَذۡهَبَ عَنَّا ٱلۡحَزَنَۖ إِنَّ رَبَّنَا لَغَفُورٞ شَكُورٌ`;
+			const actual = ArabicServices.toOldArabic(text, { replaceMidNoonWithBah: false });
+			const expected = `وٯالوا الحمد لله الدى ادهٮ عںا الحرں اں رٮںا لعڡور سکور`;
 			expect(actual).toBe(expected);
 		});
 	});
