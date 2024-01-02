@@ -55,11 +55,55 @@ describe('#toOldArabic()', () => {
 		});
 	});
 
+	describe('Test ي letter', () => {
+		it('should convert ي to ى last letter, else convert it to ٮ', () => {
+			const text = `ييي`;
+			const actual = ArabicServices.toOldArabic(text, { replaceMidYahWithBah : true });
+			const expected = `ٮٮى`;
+			const expectedUnicode = '\u066E\u066E\u0649';
+			expect(actual).toBe(expected);
+			expect(actual).toBe(expectedUnicode);
+		});
+		it('should convert ي to ى in all case (default)', () => {
+			const text = `ييي`;
+			const actual = ArabicServices.toOldArabic(text, { replaceMidNoonWithBah: false });
+			const expected = `ىىى`;
+			const expectedUnicode = '\u0649\u0649\u0649';
+			expect(actual).toBe(expected);
+			expect(actual).toBe(expectedUnicode);
+		});
+	});
+
+	describe('Test Tatweel with ي letter', () => {
+		it('should convert ي to ى last letter, else convert it to ٮ', () => {
+			const text = `يــيــي`;
+			const actual = ArabicServices.toOldArabic(text, { replaceMidYahWithBah : true });
+			const expected = `ٮــٮــى`;
+			const expectedUnicode = '\u066E\u0640\u0640\u066E\u0640\u0640\u0649';
+			expect(actual).toBe(expected);
+			expect(actual).toBe(expectedUnicode);
+		});
+		it('should convert ي to ں last letter in all cases (default)', () => {
+			const text = `يــيــي`;
+			const actual = ArabicServices.toOldArabic(text);
+			const expected = `ىــىــى`;
+			const expectedUnicode = '\u0649\u0640\u0640\u0649\u0640\u0640\u0649';
+			expect(actual).toBe(expected);
+			expect(actual).toBe(expectedUnicode);
+		});
+	});
+
 	describe('Test with Poetry Text', () => {
 		it('should remove all dots & tashkeel from Poetry text', () => {
 			const text = `الخَيْـلُ وَاللّيْـلُ وَالبَيْـداءُ تَعرِفُني وَالسّيفُ وَالرّمحُ والقرْطاسُ وَالقَلَـمُ`;
 			const actual = ArabicServices.toOldArabic(text);
 			const expected = `الحىـل واللىـل والٮىـدا ٮعرڡٮى والسىڡ والرمح والٯرطاس والٯلـم`;
+			expect(actual).toBe(expected);
+		});
+		it('should remove all dots & tashkeel from Poetry text, with option replace Yeh with dotless Bah', () => {
+			const text = `الخَيْـلُ وَاللّيْـلُ وَالبَيْـداءُ تَعرِفُني وَالسّيفُ وَالرّمحُ والقرْطاسُ وَالقَلَـمُ`;
+			const actual = ArabicServices.toOldArabic(text, { replaceMidYahWithBah: true });
+			const expected = `الحٮـل واللٮـل والٮٮـدا ٮعرڡٮى والسٮڡ والرمح والٯرطاس والٯلـم`;
 			expect(actual).toBe(expected);
 		});
 	});

@@ -38,7 +38,7 @@ export function removeTashkeel(text: string): string {
  *   Output: "الحىل واللىل والٮىدا ٮعرڡٮى"
  */
 export function toOldArabic(sentence: string, option: OldArabicOptions = {}): string {
-	const { replaceMidNoonWithBah } = fillDefaultOptions(option);
+	const { replaceMidNoonWithBah, replaceMidYahWithBah } = fillDefaultOptions(option);
 	sentence = removeTashkeel(sentence.trim());
 	let newSentence = '';
 	for (let letter = 0; letter < sentence.length; letter++) {
@@ -52,6 +52,16 @@ export function toOldArabic(sentence: string, option: OldArabicOptions = {}): st
 			if (replaceMidNoonWithBah && sentence[letter] == 'ن') {
 				const nextLetter = letter + 1;
 				// if 'ن' is not last character replace it with 'ب' corresponding dotless letter => 'ٮ'
+				if (nextLetter < sentence.length) {
+					let temp = newSentence.substring(0, newSentence.length - 1);
+					if (ARABIC_DOTLESS_DICT.hasOwnProperty(sentence[nextLetter]) || sentence[nextLetter] == 'ـ') {
+						temp += ARABIC_DOTLESS_DICT['ب'];
+						newSentence = temp;
+					}
+				}
+			} else if (replaceMidYahWithBah && sentence[letter] == 'ي') {
+				const nextLetter = letter + 1;
+				// if 'ي' is not last character replace it with 'ب' corresponding dotless letter => 'ٮ'
 				if (nextLetter < sentence.length) {
 					let temp = newSentence.substring(0, newSentence.length - 1);
 					if (ARABIC_DOTLESS_DICT.hasOwnProperty(sentence[nextLetter]) || sentence[nextLetter] == 'ـ') {
