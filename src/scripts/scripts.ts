@@ -11,6 +11,7 @@ import {
 	YAA,
 } from '../constants/arabic-letters';
 import { setCharAt, similarityScore } from '../utils';
+import { fillDefaultOptions, type OldArabicOptions } from '../option';
 
 /**
  * Remove all tashkeel from text
@@ -30,12 +31,14 @@ export function removeTashkeel(text: string): string {
 /**
  * Remove all dots & tashkeel from text
  * @param sentence string to convert to old arabic
+ * @param option
  * @returns string in old arabic
  * @example
  *   Input: "الخَيْلُ وَاللّيْلُ وَالبَيْداءُ تَعرِفُني"
  *   Output: "الحىل واللىل والٮىدا ٮعرڡٮى"
  */
-export function toOldArabic(sentence: string): string {
+export function toOldArabic(sentence: string, option: OldArabicOptions = {}): string {
+	const { replaceMidNoonWithBah } = fillDefaultOptions(option);
 	sentence = removeTashkeel(sentence.trim());
 	let newSentence = '';
 	for (let letter = 0; letter < sentence.length; letter++) {
@@ -46,7 +49,7 @@ export function toOldArabic(sentence: string): string {
 			// letter is Arabic letter => replace it with its corresponding dotless letter
 			newSentence += ARABIC_DOTLESS_DICT[sentence[letter]];
 			// Handle 'ن' Issue
-			if (sentence[letter] == 'ن') {
+			if (replaceMidNoonWithBah && sentence[letter] == 'ن') {
 				const nextLetter = letter + 1;
 				// if 'ن' is not last character replace it with 'ب' corresponding dotless letter => 'ٮ'
 				if (nextLetter < sentence.length) {
