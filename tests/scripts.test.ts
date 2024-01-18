@@ -58,7 +58,7 @@ describe('#toOldArabic()', () => {
 	describe('Test ي letter', () => {
 		it('should convert ي to ى last letter, else convert it to ٮ', () => {
 			const text = `ييي`;
-			const actual = ArabicServices.toOldArabic(text, { replaceMidYahWithBah : true });
+			const actual = ArabicServices.toOldArabic(text, { replaceMidYahWithBah: true });
 			const expected = `ٮٮى`;
 			const expectedUnicode = '\u066E\u066E\u0649';
 			expect(actual).toBe(expected);
@@ -77,7 +77,7 @@ describe('#toOldArabic()', () => {
 	describe('Test Tatweel with ي letter', () => {
 		it('should convert ي to ى last letter, else convert it to ٮ', () => {
 			const text = `يــيــي`;
-			const actual = ArabicServices.toOldArabic(text, { replaceMidYahWithBah : true });
+			const actual = ArabicServices.toOldArabic(text, { replaceMidYahWithBah: true });
 			const expected = `ٮــٮــى`;
 			const expectedUnicode = '\u066E\u0640\u0640\u066E\u0640\u0640\u0649';
 			expect(actual).toBe(expected);

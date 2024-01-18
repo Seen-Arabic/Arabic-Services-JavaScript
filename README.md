@@ -44,7 +44,7 @@ Can be used in Node.js and the browser.
 -   **Tashfeer Banned Words**: Replaces Banned Arabic text with visually similar characters for encoding purposes. (Banned words are words that considered as hate speech in social media)
 -   **Remove Arabic Affixes**: Removes predefined affixes (prefixes and suffixes) from an Arabic word if it starts or ends with those affixes.
 -   **Word To Letters**: Convert Arabic word to its pronounced letters.
-- ... and more!
+-   ... and more!
 
 <h3 align=center><a href="https://github.com/Seen-Arabic/Arabic-Services-JavaScript/wiki/Features-Documentation">➡️ Check out the usage and detailed documentation on each feature ⬅️</a></h3>
 
@@ -89,11 +89,12 @@ console.log(ArabicServices.removeTashkeel('الخَيْلُ وَاللّيْلُ
 // Output: 'الخيل والليل والبيداء تعرفني'
 ```
 
-
 ## 💡 Contributing
+
 Arabic Services is made publicly available to provide a well tested and well documented library for processing and transforming Arabic text to all developers. We accept feature contributions provided that they are properly documented and include the appropriate unit tests.
-- 🚀 If you want to contribute to this project and make it better with new ideas, your pull request is very welcomed.
-- 📝 If you find any issue just put it in the repository issue section, thank you.
+
+-   🚀 If you want to contribute to this project and make it better with new ideas, your pull request is very welcomed.
+-   📝 If you find any issue just put it in the repository issue section, thank you.
 
 ## 🌟 Star this repository
 
