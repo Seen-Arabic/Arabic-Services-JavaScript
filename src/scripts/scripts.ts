@@ -10,8 +10,8 @@ import {
 	WAW,
 	YAA,
 } from '../constants/arabic-letters';
-import { setCharAt, similarityScore } from '../utils';
 import { fillDefaultOptions, type OldArabicOptions } from '../options';
+import { setCharAt, similarityScore } from '../utils';
 
 /**
  * Remove all tashkeel from text
@@ -45,27 +45,31 @@ export function toOldArabic(sentence: string, option: OldArabicOptions = {}): st
 		// if letter is not Arabic letter => append to newSentence
 		if (!ARABIC_DOTLESS_DICT.hasOwnProperty(sentence[letter])) {
 			newSentence += sentence[letter];
+		}
+		// Handle 'ن' Issue:
+		// if 'ن' is not last character && next character is Arabic letter or 'ـ'
+		// then replace it with 'ب' corresponding dotless letter => 'ٮ'
+		else if (
+			replaceMidNoonWithBah &&
+			sentence[letter] == 'ن' &&
+			letter + 1 < sentence.length &&
+			(ARABIC_DOTLESS_DICT.hasOwnProperty(sentence[letter + 1]) || sentence[letter + 1] == 'ـ')
+		) {
+			newSentence += ARABIC_DOTLESS_DICT['ب'];
+		}
+		// Handle 'ي' Issue
+		// if 'ي' is not last character && next character is Arabic letter or 'ـ'
+		// then replace it with 'ب' corresponding dotless letter => 'ٮ'
+		else if (
+			replaceMidYahWithBah &&
+			sentence[letter] == 'ي' &&
+			letter + 1 < sentence.length &&
+			(ARABIC_DOTLESS_DICT.hasOwnProperty(sentence[letter + 1]) || sentence[letter + 1] == 'ـ')
+		) {
+			newSentence += ARABIC_DOTLESS_DICT['ب'];
 		} else {
-			if (
-				// Handle 'ن' Issue
-				replaceMidNoonWithBah &&
-				sentence[letter] == 'ن' &&
-				letter + 1 < sentence.length &&
-				(ARABIC_DOTLESS_DICT.hasOwnProperty(sentence[letter + 1]) || sentence[letter + 1] == 'ـ')
-			) {
-				newSentence += ARABIC_DOTLESS_DICT['ب'];
-			} else if (
-				// Handle 'ي' Issue
-				replaceMidYahWithBah &&
-				sentence[letter] == 'ي' &&
-				letter + 1 < sentence.length &&
-				(ARABIC_DOTLESS_DICT.hasOwnProperty(sentence[letter + 1]) || sentence[letter + 1] == 'ـ')
-			) {
-				newSentence += ARABIC_DOTLESS_DICT['ب'];
-			} else {
-				// if letter is Arabic letter => append corresponding dotless letter to newSentence
-				newSentence += ARABIC_DOTLESS_DICT[sentence[letter]];
-			}
+			// if letter is Arabic letter => append corresponding dotless letter to newSentence
+			newSentence += ARABIC_DOTLESS_DICT[sentence[letter]];
 		}
 	}
 	return newSentence;
