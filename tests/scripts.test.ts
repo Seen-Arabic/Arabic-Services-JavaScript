@@ -28,6 +28,14 @@ describe('#toOldArabic()', () => {
 			const expected = `ٮٮں`;
 			expect(actual).toBe(expected);
 		});
+		it('should convert ن to ں in all case', () => {
+			const text = `ننن`;
+			const actual = ArabicServices.toOldArabic(text, { replaceMidNoonWithBah: false });
+			const expected = `ںںں`;
+			const expectedUnicode = '\u06BA\u06BA\u06BA';
+			expect(actual).toBe(expected);
+			expect(actual).toBe(expectedUnicode);
+		});
 	});
 
 	describe('Test Tatweel with ن letter', () => {
@@ -36,6 +44,52 @@ describe('#toOldArabic()', () => {
 			const actual = ArabicServices.toOldArabic(text);
 			const expected = `ٮــٮــں`;
 			expect(actual).toBe(expected);
+		});
+		it('should convert ن to ں last letter in all cases', () => {
+			const text = `نــنــن`;
+			const actual = ArabicServices.toOldArabic(text, { replaceMidNoonWithBah: false });
+			const expected = `ںــںــں`;
+			const expectedUnicode = '\u06BA\u0640\u0640\u06BA\u0640\u0640\u06BA';
+			expect(actual).toBe(expected);
+			expect(actual).toBe(expectedUnicode);
+		});
+	});
+
+	describe('Test ي letter', () => {
+		it('should convert ي to ى last letter, else convert it to ٮ', () => {
+			const text = `ييي`;
+			const actual = ArabicServices.toOldArabic(text, { replaceMidYahWithBah : true });
+			const expected = `ٮٮى`;
+			const expectedUnicode = '\u066E\u066E\u0649';
+			expect(actual).toBe(expected);
+			expect(actual).toBe(expectedUnicode);
+		});
+		it('should convert ي to ى in all case (default)', () => {
+			const text = `ييي`;
+			const actual = ArabicServices.toOldArabic(text, { replaceMidNoonWithBah: false });
+			const expected = `ىىى`;
+			const expectedUnicode = '\u0649\u0649\u0649';
+			expect(actual).toBe(expected);
+			expect(actual).toBe(expectedUnicode);
+		});
+	});
+
+	describe('Test Tatweel with ي letter', () => {
+		it('should convert ي to ى last letter, else convert it to ٮ', () => {
+			const text = `يــيــي`;
+			const actual = ArabicServices.toOldArabic(text, { replaceMidYahWithBah : true });
+			const expected = `ٮــٮــى`;
+			const expectedUnicode = '\u066E\u0640\u0640\u066E\u0640\u0640\u0649';
+			expect(actual).toBe(expected);
+			expect(actual).toBe(expectedUnicode);
+		});
+		it('should convert ي to ں last letter in all cases (default)', () => {
+			const text = `يــيــي`;
+			const actual = ArabicServices.toOldArabic(text);
+			const expected = `ىــىــى`;
+			const expectedUnicode = '\u0649\u0640\u0640\u0649\u0640\u0640\u0649';
+			expect(actual).toBe(expected);
+			expect(actual).toBe(expectedUnicode);
 		});
 	});
 
@@ -46,13 +100,25 @@ describe('#toOldArabic()', () => {
 			const expected = `الحىـل واللىـل والٮىـدا ٮعرڡٮى والسىڡ والرمح والٯرطاس والٯلـم`;
 			expect(actual).toBe(expected);
 		});
+		it('should remove all dots & tashkeel from Poetry text, with option replace Yeh with dotless Bah', () => {
+			const text = `الخَيْـلُ وَاللّيْـلُ وَالبَيْـداءُ تَعرِفُني وَالسّيفُ وَالرّمحُ والقرْطاسُ وَالقَلَـمُ`;
+			const actual = ArabicServices.toOldArabic(text, { replaceMidYahWithBah: true });
+			const expected = `الحٮـل واللٮـل والٮٮـدا ٮعرڡٮى والسٮڡ والرمح والٯرطاس والٯلـم`;
+			expect(actual).toBe(expected);
+		});
 	});
 
 	describe('Test with Quran Text', () => {
-		it('should remove tashkeel from Quran text', () => {
+		it('should remove all dots & tashkeel from Quran text', () => {
 			const text = `وَقَالُواْ ٱلۡحَمۡدُ لِلَّهِ ٱلَّذِيٓ أَذۡهَبَ عَنَّا ٱلۡحَزَنَۖ إِنَّ رَبَّنَا لَغَفُورٞ شَكُورٌ`;
-			const actual = ArabicServices.removeTashkeel(text);
-			const expected = `وقالوا الحمد لله الذي أذهب عنا الحزن إن ربنا لغفور شكور`;
+			const actual = ArabicServices.toOldArabic(text);
+			const expected = `وٯالوا الحمد لله الدى ادهٮ عٮا الحرں اں رٮٮا لعڡور سکور`;
+			expect(actual).toBe(expected);
+		});
+		it('should remove all dots & tashkeel from Quran text', () => {
+			const text = `وَقَالُواْ ٱلۡحَمۡدُ لِلَّهِ ٱلَّذِيٓ أَذۡهَبَ عَنَّا ٱلۡحَزَنَۖ إِنَّ رَبَّنَا لَغَفُورٞ شَكُورٌ`;
+			const actual = ArabicServices.toOldArabic(text, { replaceMidNoonWithBah: false });
+			const expected = `وٯالوا الحمد لله الدى ادهٮ عںا الحرں اں رٮںا لعڡور سکور`;
 			expect(actual).toBe(expected);
 		});
 	});

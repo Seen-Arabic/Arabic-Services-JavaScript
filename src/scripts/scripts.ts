@@ -11,6 +11,7 @@ import {
 	YAA,
 } from '../constants/arabic-letters';
 import { setCharAt, similarityScore } from '../utils';
+import { fillDefaultOptions, type OldArabicOptions } from '../options';
 
 /**
  * Remove all tashkeel from text
@@ -30,12 +31,14 @@ export function removeTashkeel(text: string): string {
 /**
  * Remove all dots & tashkeel from text
  * @param sentence string to convert to old arabic
+ * @param option
  * @returns string in old arabic
  * @example
  *   Input: "الخَيْلُ وَاللّيْلُ وَالبَيْداءُ تَعرِفُني"
  *   Output: "الحىل واللىل والٮىدا ٮعرڡٮى"
  */
-export function toOldArabic(sentence: string): string {
+export function toOldArabic(sentence: string, option: OldArabicOptions = {}): string {
+	const { replaceMidNoonWithBah, replaceMidYahWithBah } = fillDefaultOptions(option);
 	sentence = removeTashkeel(sentence.trim());
 	let newSentence = '';
 	for (let letter = 0; letter < sentence.length; letter++) {
@@ -43,19 +46,25 @@ export function toOldArabic(sentence: string): string {
 		if (!ARABIC_DOTLESS_DICT.hasOwnProperty(sentence[letter])) {
 			newSentence += sentence[letter];
 		} else {
-			// letter is Arabic letter => replace it with its corresponding dotless letter
-			newSentence += ARABIC_DOTLESS_DICT[sentence[letter]];
-			// Handle 'ن' Issue
-			if (sentence[letter] == 'ن') {
-				const nextLetter = letter + 1;
-				// if 'ن' is not last character replace it with 'ب' corresponding dotless letter => 'ٮ'
-				if (nextLetter < sentence.length) {
-					let temp = newSentence.substring(0, newSentence.length - 1);
-					if (ARABIC_DOTLESS_DICT.hasOwnProperty(sentence[nextLetter]) || sentence[nextLetter] == 'ـ') {
-						temp += ARABIC_DOTLESS_DICT['ب'];
-						newSentence = temp;
-					}
-				}
+			if (
+				// Handle 'ن' Issue
+				replaceMidNoonWithBah &&
+				sentence[letter] == 'ن' &&
+				letter + 1 < sentence.length &&
+				(ARABIC_DOTLESS_DICT.hasOwnProperty(sentence[letter + 1]) || sentence[letter + 1] == 'ـ')
+			) {
+				newSentence += ARABIC_DOTLESS_DICT['ب'];
+			} else if (
+				// Handle 'ي' Issue
+				replaceMidYahWithBah &&
+				sentence[letter] == 'ي' &&
+				letter + 1 < sentence.length &&
+				(ARABIC_DOTLESS_DICT.hasOwnProperty(sentence[letter + 1]) || sentence[letter + 1] == 'ـ')
+			) {
+				newSentence += ARABIC_DOTLESS_DICT['ب'];
+			} else {
+				// if letter is Arabic letter => append corresponding dotless letter to newSentence
+				newSentence += ARABIC_DOTLESS_DICT[sentence[letter]];
 			}
 		}
 	}

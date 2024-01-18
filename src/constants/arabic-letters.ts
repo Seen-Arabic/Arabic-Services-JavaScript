@@ -5,10 +5,10 @@ export const ARABIC_DOTLESS_DICT: { [key: string]: string } = {
 	آ: 'ا',
 	ٱ: 'ا',
 	ء: '',
-	ب: 'ٮ',
-	پ: 'ٮ',
-	ت: 'ٮ',
-	ث: 'ٮ',
+	ب: '\u066E', // Dotless Beh in all four contextual forms.
+	پ: '\u066E',
+	ت: '\u066E',
+	ث: '\u066E',
 	ج: 'ح',
 	چ: 'ح',
 	خ: 'ح',
@@ -33,14 +33,14 @@ export const ARABIC_DOTLESS_DICT: { [key: string]: string } = {
 	گ: 'ک',
 	ل: 'ل',
 	م: 'م',
-	ن: 'ں',
+	ن: '\u06BA', // Dotless Noon in all four contextual forms, however most fonts shows dots in initial and medial forms
 	ه: 'ه',
 	و: 'و',
 	ؤ: 'و',
 	ة: 'ه',
-	ى: 'ى',
-	ي: 'ى',
-	ئ: 'ى',
+	ى: '\u0649', // Dotless Yeh in all four contextual forms, however some fonts shows final form in all cases
+	ي: '\u0649',
+	ئ: '\u0649',
 };
 
 export const STANDARD_LETTERS: string[] = [
