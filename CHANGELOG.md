@@ -1,7 +1,17 @@
 <h1 align=center>📜 Changelog - سجل التغيير</h1>
 <p align=center>All notable changes to this project will be documented in this file.</p>
 
-## [Unreleased](https://github.com/Seen-Arabic/Arabic-Services-JavaScript/compare/v1.0.6...HEAD)
+## [Unreleased](https://github.com/Seen-Arabic/Arabic-Services-JavaScript/compare/v1.0.7...HEAD)
+
+## [1.0.7](https://github.com/Seen-Arabic/Arabic-Services-JavaScript/releases/tag/v1.0.7) - 2024-01-19 (07 Rajab 1445)
+
+### Updated
+
+-   **Improved Old Arabic Letters** in [PR #25](https://github.com/Seen-Arabic/Arabic-Services-JavaScript/pull/25): Introduced options for handling specific Arabic characters to avoid distortion issues in certain fonts or text editors. These enhancements include:
+    -   `replaceMidNoonWithBah`: An option to transform the mid-word Noon character to a dotless Bah (enabled by default).
+    -   `replaceMidYahWithBah`: An option to transform the mid-word Yah character to a dotless Bah (disabled by default).
+
+[Full Changelog](https://github.com/Seen-Arabic/Arabic-Services-JavaScript/compare/v1.0.6...v1.0.7)
 
 ## [1.0.6](https://github.com/Seen-Arabic/Arabic-Services-JavaScript/releases/tag/v1.0.6) - 2023-12-03 (19 Jumada al-awwal 1445)
 
@@ -9,7 +19,7 @@
 
 -   Remove Arabic Affixes does not work with sentences ([#21](https://github.com/Seen-Arabic/Arabic-Services-JavaScript/issues/21))
 
-[Full Changelog](https://github.com/Seen-Arabic/Arabic-Services-JavaScript/compare/v1.0.6...v1.0.6)
+[Full Changelog](https://github.com/Seen-Arabic/Arabic-Services-JavaScript/compare/v1.0.5...v1.0.6)
 
 ## [1.0.5](https://github.com/Seen-Arabic/Arabic-Services-JavaScript/releases/tag/v1.0.5) - 2023-12-03 (19 Jumada al-awwal 1445)
 
