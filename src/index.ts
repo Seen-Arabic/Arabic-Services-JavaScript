@@ -1,7 +1,7 @@
 import * as constants from './constants';
+import { OldArabicOptions } from './options';
 import * as script from './scripts';
 import * as utils from './utils';
-import { OldArabicOptions } from './options';
 
 export const ArabicServices = {
 	constants,
