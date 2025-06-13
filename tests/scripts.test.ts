@@ -1,4 +1,5 @@
-import { ArabicServices } from '../dist';
+import { describe, expect, it } from 'vitest';
+import * as ArabicServices from '../dist';
 
 describe('#removeTashkeel()', () => {
 	describe('Test with Poetry Text', () => {

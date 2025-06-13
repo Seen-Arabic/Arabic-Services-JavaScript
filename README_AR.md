@@ -45,19 +45,19 @@
 
 <h3 align=center><a href="https://github.com/Seen-Arabic/Arabic-Services-JavaScript/wiki/Features%E2%80%90Documentation%E2%80%90AR">➡️ شاهد استخدام كل ميزة من المكتبة وطريقة استخدامها في الكود ⬅️</a></h3>
 
-## 🚀 التثبيت
+## 🚀 البدء السريع
 
-تم تصميم خدمات العربية لتعمل في كل من المتصفح وتطبيقات NodeJS.
+تعمل Arabic-Services في كل من المتصفح وبيئة NodeJS.
 
 ### المتصفح
 
-نوفر حزم ESM و UMD للاستخدام في المتصفح. يمكن العثور عليها مع ملفات الإصدار الأخير.
+نوفر حزم ESM و IIFE للاستخدام في المتصفح. يمكن العثور عليها في مجلد dist.
 
 ```html
-<script src="arabic-services.umd.js"></script>
+<script src="dist/index.global.js"></script>
 <script>
 	console.log(ArabicServices.removeTashkeel('الخَيْلُ وَاللّيْلُ وَالبَيْداءُ تَعرِفُني'));
-	// Output: 'الخيل والليل والبيداء تعرفني'
+	// الناتج: 'الخيل والليل والبيداء تعرفني'
 </script>
 ```
 
@@ -71,18 +71,18 @@ npm install arabic-services
 
 **CommonJS:**
 
-```javascript
+```js
 const { ArabicServices } = require('arabic-services');
 console.log(ArabicServices.removeTashkeel('الخَيْلُ وَاللّيْلُ وَالبَيْداءُ تَعرِفُني'));
-// Output: 'الخيل والليل والبيداء تعرفني'
+// الناتج: 'الخيل والليل والبيداء تعرفني'
 ```
 
 **ES Module:**
 
-```javascript
+```js
 import { ArabicServices } from 'arabic-services';
 console.log(ArabicServices.removeTashkeel('الخَيْلُ وَاللّيْلُ وَالبَيْداءُ تَعرِفُني'));
-// Output: 'الخيل والليل والبيداء تعرفني'
+// الناتج: 'الخيل والليل والبيداء تعرفني'
 ```
 
 ## 💡 المساهمة

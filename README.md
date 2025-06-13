@@ -50,15 +50,14 @@ Can be used in Node.js and the browser.
 
 ## 🚀 Getting Started
 
-Arabic-Services was designed to work in both the browser and NodeJS applications.
+Arabic-Services works in both browser and NodeJS environments.
 
 ### Browser
 
-We provide both ESM and UMD bundles for use in the browser.
-You can find it with the latest release files.
+We provide both ESM and IIFE bundles for use in the browser. You can find them in the dist folder.
 
 ```html
-<script src="arabic-services.umd.js"></script>
+<script src="dist/index.global.js"></script>
 <script>
 	console.log(ArabicServices.removeTashkeel('الخَيْلُ وَاللّيْلُ وَالبَيْداءُ تَعرِفُني'));
 	// Output: 'الخيل والليل والبيداء تعرفني'
@@ -75,7 +74,7 @@ npm install arabic-services
 
 **CommonJS:**
 
-```javascript
+```js
 const { ArabicServices } = require('arabic-services');
 console.log(ArabicServices.removeTashkeel('الخَيْلُ وَاللّيْلُ وَالبَيْداءُ تَعرِفُني'));
 // Output: 'الخيل والليل والبيداء تعرفني'
@@ -83,7 +82,7 @@ console.log(ArabicServices.removeTashkeel('الخَيْلُ وَاللّيْلُ
 
 **ES Module:**
 
-```javascript
+```js
 import { ArabicServices } from 'arabic-services';
 console.log(ArabicServices.removeTashkeel('الخَيْلُ وَاللّيْلُ وَالبَيْداءُ تَعرِفُني'));
 // Output: 'الخيل والليل والبيداء تعرفني'
