@@ -60,4 +60,7 @@ export const TASHKEEL: string[] = [
 	'\u06EB',
 	'\u06EC',
 	'\u06ED',
+	'\u08F0',
+	'\u08F1',
+	'\u08F2',
 ];
