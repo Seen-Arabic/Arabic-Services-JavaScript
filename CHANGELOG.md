@@ -1,7 +1,21 @@
 <h1 align=center>📜 Changelog - سجل التغيير</h1>
 <p align=center>All notable changes to this project will be documented in this file.</p>
 
-## [Unreleased](https://github.com/Seen-Arabic/Arabic-Services-JavaScript/compare/v1.0.7...HEAD)
+## [Unreleased](https://github.com/Seen-Arabic/Arabic-Services-JavaScript/compare/v1.0.8...HEAD)
+
+## [1.0.8](https://github.com/Seen-Arabic/Arabic-Services-JavaScript/releases/tag/v1.0.8) - 2025-09-04 (12 Rabi' al-Awwal 1446)
+
+### Added
+
+-   **"Sequential Tanween" (`التنوين المتتابع`)** in the Tashkeel list ([#27](https://github.com/Seen-Arabic/Arabic-Services-JavaScript/issues/27))
+-   **Expand Arabic letter replacement dictionary**: Added new replacement characters for ت, ث, ح, ص, ن, and و in LETTERS_TASHFEER_REPLACEMENT_DICT to improve coverage and flexibility for letter substitutions.
+
+### Updated
+
+-   **Security Updates**: Updated package dependencies to address and fix security vulnerabilities.
+-   **CI/CD**: Updated GitHub Actions with Node.js 22.x and upgraded action versions.
+
+[Full Changelog](https://github.com/Seen-Arabic/Arabic-Services-JavaScript/compare/v1.0.7...v1.0.8)
 
 ## [1.0.7](https://github.com/Seen-Arabic/Arabic-Services-JavaScript/releases/tag/v1.0.7) - 2024-01-19 (07 Rajab 1445)
 
