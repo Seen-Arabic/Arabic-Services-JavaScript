@@ -16,6 +16,9 @@ module.exports = [
 			],
 		},
 		resolve: {
+			extensionAlias: {
+				'.js': ['.ts', '.js'],
+			},
 			extensions: ['.tsx', '.ts', '.js'],
 		},
 		output: {
@@ -41,6 +44,9 @@ module.exports = [
 			],
 		},
 		resolve: {
+			extensionAlias: {
+				'.js': ['.ts', '.js'],
+			},
 			extensions: ['.tsx', '.ts', '.js'],
 		},
 		output: {
