@@ -17,7 +17,7 @@
 	"scripts": {
 		"dev": "ts-node src/index.ts",
 		"build:cjs": "tsc -p tsconfig.json",
-		"build:esm": "tsc -p tsconfig.esm.json",
+		"build:esm": "tsc -p tsconfig.esm.json && node -e \"fs.writeFileSync('dist/esm/package.json', JSON.stringify({ type: 'module' }))\"",
 		"build": "npm run clean && npm run build:cjs && npm run build:esm",
 		"clean": "node -e \"fs.rmSync('dist', { recursive: true, force: true })\"",
 		"test": "jest --config jest.config.cjs --coverage",

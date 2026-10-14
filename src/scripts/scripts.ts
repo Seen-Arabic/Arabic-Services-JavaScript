@@ -1,4 +1,4 @@
-import { ARABIC_DOTLESS_DICT, BANNED_WORDS, TASHKEEL } from '../constants';
+import { ARABIC_DOTLESS_DICT, BANNED_WORDS, TASHKEEL } from '../constants/index.js';
 import {
 	ALEF,
 	ALONE_LETTERS,
@@ -9,9 +9,9 @@ import {
 	STANDARD_LETTERS,
 	WAW,
 	YAA,
-} from '../constants/arabic-letters';
-import { fillDefaultOptions, type OldArabicOptions } from '../options';
-import { setCharAt, similarityScore } from '../utils';
+} from '../constants/arabic-letters.js';
+import { fillDefaultOptions, type OldArabicOptions } from '../options.js';
+import { setCharAt, similarityScore } from '../utils/index.js';
 
 /**
  * Remove all tashkeel from text
