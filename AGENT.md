@@ -82,3 +82,4 @@ This repository contains `arabic-services`: a zero-runtime-dependency TypeScript
 ## Commit & PR Conventions
 
 - Commit messages and PR titles must follow `CONTRIBUTING.md` using the Conventional Commits specification (`feat:`, `fix:`, `docs:`, `test:`, `refactor:`, `chore:`).
+- Document new features, bug fixes, or tooling updates under `## [Unreleased]` in `CHANGELOG.md` following Keep a Changelog conventions.

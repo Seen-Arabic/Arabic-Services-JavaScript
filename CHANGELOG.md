@@ -1,5 +1,15 @@
 <h1 align=center>📜 Changelog - سجل التغيير</h1>
 <p align=center>All notable changes to this project will be documented in this file.</p>
+## [Unreleased]
+
+### Added
+- Integration tests for CJS, ESM, and browser UMD artifacts.
+- Arabic NLP boundary and ReDoS resilience test suites.
+- Direct CDN links (jsdelivr & unpkg) and GitHub release bundle guide in documentation.
+
+### Changed
+- Relocated standalone browser demo to `examples/browser/index.html`.
+- Unified CI workflow across Node.js 22.x and 24.x with ESLint.
 
 ## [1.1.0](https://github.com/Seen-Arabic/Arabic-Services-JavaScript/releases/tag/v1.1.0) - 2026-10-14 (03 Jumada al-Awwal 1448)
 
