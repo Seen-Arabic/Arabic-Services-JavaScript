@@ -23,7 +23,7 @@ jobs:
             - name: Set up Node.js
               uses: actions/setup-node@v4
               with:
-                  node-version: '22.x' # Specify the Node.js version
+                  node-version: '24' # Node 24 includes npm 11+ required for OIDC Trusted Publishing
 
             # Step 3: Install dependencies using npm ci
             - name: Install dependencies
