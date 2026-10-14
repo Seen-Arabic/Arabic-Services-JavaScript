@@ -26,8 +26,8 @@
 <a href="https://github.com/Seen-Arabic/Arabic-Services-JavaScript/blob/master/LICENSE">
 <img src="https://img.shields.io/github/license/Seen-Arabic/Arabic-Services-JavaScript"/>
 </a>
-<a href="https://github.com/Seen-Arabic/Arabic-Services-JavaScript/actions/workflows/test.yml">
-<img src="https://github.com/Seen-Arabic/Arabic-Services-JavaScript/actions/workflows/test.yml/badge.svg" alt="workflows">
+<a href="https://github.com/Seen-Arabic/Arabic-Services-JavaScript/actions/workflows/ci.yml">
+<img src="https://github.com/Seen-Arabic/Arabic-Services-JavaScript/actions/workflows/ci.yml/badge.svg" alt="workflows">
 </a>
 </div>
 
