@@ -1,81 +1,81 @@
 # Arabic Services Agent Instructions
 
-This repository contains `arabic-services`: a TypeScript utility library for processing, transforming, and manipulating Arabic text in Node.js and modern web browsers.
+This repository contains `arabic-services`: a zero-runtime-dependency TypeScript utility library for processing, transforming, and manipulating Arabic text in Node.js and modern web browsers.
 
 ---
 
 ## General Rules
 
-- Inspect the relevant code, docs, tests, and configuration before changing files.
-- Search the existing codebase first, and reuse nearby utilities, constants, regex helpers, patterns, and scripts where possible.
-- Prefer small, focused, reusable changes that solve the request with the lowest safe scope.
-- Do not modify files for analysis, explanation, or review-only requests. When implementation is requested, briefly explain the likely root cause, assumptions, and short plan before editing.
-- For reports and proposals, follow the critique / devil's advocate rules below.
-- Do not introduce new dependencies, abstractions, or patterns unless clearly justified.
-- Never run destructive commands, mass file operations, resets, force pushes, cleanups, or database-changing commands without explicit user approval.
-- For every change, explain what changed, why, risks or side effects, and how to test it.
-- If something is unclear, state the uncertainty and choose the lowest-risk path.
-- Keep secrets untouched. Do not print, read, or inspect `.env`, `appsettings.json`, or credential files under any circumstances.
+- **Inspect First**: Inspect existing code, docs, tests, and configuration before changing files.
+- **Search Before Adding**: Search the existing codebase first; reuse nearby utilities, constants, regex helpers, and patterns in `src/constants/` and `src/utils/`.
+- **Zero Runtime Dependencies**: The library must maintain **zero runtime dependencies** (`"dependencies"` in `package.json` must remain empty). All operations must rely strictly on standard TypeScript/JavaScript algorithms and regular expressions.
+- **Minimum Safe Scope**: Prefer small, focused, reusable changes that solve the request with the lowest safe scope.
+- **Never Modify Without Instructions**: Do not modify files for analysis, explanation, or review-only requests. When implementation is requested, briefly explain the root cause, assumptions, and short plan before editing.
+- **Backwards Compatibility**: Existing public function signatures and return types must not break existing npm consumers without explicit major-version discussion.
+- **Explain Every Change**: For every change, explain what changed, why, risks or side effects, and how to verify it.
+- **Safe Commands Only**: Never run destructive Git commands (force push, hard reset, cleanups) or mass file deletions without explicit user approval.
+- **Package Security**: Never hardcode, commit, or print npm publishing tokens (`NODE_AUTH_TOKEN`), CI credentials, or local environment files.
 
 ---
 
 ## Project Map
 
-- `README.md` & `README_AR.md`: Project entry points in English and Arabic.
-- `CHANGELOG.md`: Release history maintaining both Gregorian and Hijri calendar dates.
-- `CONTRIBUTING.md`: Contribution guide and commit message conventions.
+- `README.md` & `README_AR.md`: Library entry points, examples, and feature showcases in English and Arabic.
+- `CHANGELOG.md`: Release notes following standard semver, documenting both Gregorian and Hijri calendar dates.
+- `CONTRIBUTING.md`: Contribution guide and Conventional Commits guidelines.
 - `src/index.ts`: Main entry point and public export surface (`ArabicServices`).
-- `src/options.ts`: Shared configuration interfaces (e.g., `OldArabicOptions`).
+- `src/options.ts`: Public configuration types and interfaces (e.g., `OldArabicOptions`).
 - `src/constants/`:
-  - `arabic-letters.ts`: Arabic alphabet, letter variations, and character mappings.
-  - `tashkeel.ts`: Diacritics, Harakat, and Tanween constants.
-  - `banned-words.ts`: Sensitive or banned word dictionaries used in obfuscation/tashfeer.
+  - `arabic-letters.ts`: Arabic alphabet mappings, variations, and substitution dictionaries.
+  - `tashkeel.ts`: Diacritics (Harakat, Tanween, Quranic sequential tanween).
+  - `banned-words.ts`: Word lists used in obfuscation/tashfeer algorithms.
 - `src/scripts/`:
-  - `scripts.ts`: Core implementations of text manipulation functions (Tashkeel removal, Tatweel removal, Tashfeer, Old Arabic conversion, Affixes removal, etc.).
+  - `scripts.ts`: Implementation of text manipulation functions (Tashkeel removal, Tatweel removal, Tashfeer, Old Arabic conversion, Affixes removal, etc.).
 - `src/utils/`:
-  - `string.util.ts`: General-purpose string and regex helper utilities.
+  - `string.util.ts`: Internal string manipulation and regex utility functions.
 - `tests/`:
-  - `scripts.test.ts`: Unit test suite covering all text operations.
-  - `constants.test.ts`: Sanity checks for constants and mappings.
-- `webpack.config.cjs`: Bundler configuration for UMD (`dist/umd/`) and ESM (`dist/esm/`) browser artifacts.
+  - `scripts.test.ts`: Jest unit tests covering all text operations.
+  - `constants.test.ts`: Sanity checks for character mappings and constants.
+- `webpack.config.cjs`: Bundler configuration generating UMD (`dist/umd/`) and ESM (`dist/esm/`) bundles for browser distribution.
+- `tsconfig.json`: TypeScript compiler configuration targeting ES5 / CommonJS for the main npm distribution.
 
 ---
 
 ## Arabic NLP & Domain Rules
 
-- **Pure Functions**: Text transformation functions must remain pure (deterministic, no global mutation, no side effects).
-- **Unicode & Diacritics**: Arabic characters have unique Unicode points for letters, ligatures, Tatweel (`\u0640`), and Tashkeel (`\u064B`-`\u0652`, `\u0670`, sequential tanween, etc.). Avoid naive string slicing; respect Unicode code point boundaries.
-- **RTL & Display**: Ensure transformed output does not inadvertently introduce hidden directional marks or corrupt character joining (Kashida/Tatweel).
-- **Cross-Platform Compatibility**: The library must execute identically in Node.js and browser environments. Never import Node.js built-ins (`fs`, `path`, `os`, `crypto`) inside `src/`.
-- **Test-Driven Changes**: Every bug fix or new feature in `src/scripts/scripts.ts` must have corresponding test cases in `tests/scripts.test.ts`.
+- **Pure Functions**: Every utility function must be pure, deterministic, and free of side effects. Input strings must never be mutated.
+- **Unicode Code Point Integrity**: Arabic characters have unique Unicode points for letters, ligatures, Tatweel (`\u0640`), Tashkeel (`\u064B`-`\u0652`, `\u0670`, sequential tanween, etc.). Avoid naive character splitting that breaks multi-byte or combining marks; always respect Unicode boundaries.
+- **Regular Expressions & ReDoS**: Regular expressions must be tested against catastrophic backtracking (ReDoS). Prefer pre-compiled regexes or Set/Dictionary lookups for character replacement rather than dynamic nested patterns.
+- **Dual Runtime Support**: The core library runs in both Node.js and web browsers. Never import Node-specific built-ins (`fs`, `path`, `crypto`, `os`) inside `src/`.
+- **Test-Driven Changes**: Every bug fix, edge case, or new feature in `src/scripts/scripts.ts` must be accompanied by unit tests in `tests/scripts.test.ts`.
 
 ---
 
 ## Build, Test, and Development Commands
 
-- `npm test`: Run Jest unit tests and generate coverage report.
-- `npm test -- -t "test name"`: Run a targeted test case.
-- `npm run dev`: Run local scratch runner using `ts-node src/index.ts`.
 - `npm run build`: Compile TypeScript into `dist/` (generates `.js` and `.d.ts`).
-- `npm run bundle`: Run Webpack to bundle production UMD and ESM scripts for browsers.
-- `npm run lint`: Check linting via ESLint without failing on warnings.
-- `npm run lint:fix`: Auto-fix linting issues.
-- `npm run format`: Format files using Prettier according to `.prettierrc`.
+- `npm test`: Run Jest unit tests and generate coverage report. **Note**: Run `npm run build` before `npm test`, as tests import from the compiled `./dist` directory.
+- `npm test -- -t "test name"`: Run a specific test case by name.
+- `npm run dev`: Quick execution runner using `ts-node src/index.ts`.
+- `npm run bundle`: Run Webpack to bundle production UMD (`arabic-services.umd.js`) and ESM (`arabic-services.esm.js`) files for browser/CDN distribution.
+- `npm run lint`: Run ESLint to check code quality.
+- `npm run lint:fix`: Auto-fix ESLint errors.
+- `npm run format`: Format files using Prettier.
+- `npm run clean`: Clean the `dist/` build directory.
 
 ---
 
-## Reports, Proposals, And Devil's Advocate
+## Proposals, Reviews, And Devil's Advocate
 
-- Do not only present the happy path.
-- Challenge assumptions and separate verified evidence from inference.
-- Include the strongest counterargument against the recommended solution.
-- Compare at least one simpler or lower-risk alternative when one exists.
-- Call out likely side effects, regression risks, and operational risks.
-- Prefer concise reviewer-style wording when the user needs a comment, issue reply, PR note, or handoff message.
-- If asked for a recommendation, end with a clear recommendation.
+- Do not present only the happy path.
+- Challenge assumptions and separate verified codebase evidence from guesses.
+- Include counterarguments against proposed architectures or third-party tooling.
+- Compare simpler, zero-dependency alternatives when available.
+- Highlight performance implications on string parsing, memory allocation, and bundle size.
+- Prefer concise, actionable wording suitable for PR reviews or GitHub issues.
 
 ---
 
-## Commit Messages
+## Commit & PR Conventions
 
-- Follow `CONTRIBUTING.md` when generating or formatting commit messages (Conventional Commits: `feat:`, `fix:`, `docs:`, `test:`, `refactor:`, `chore:`).
+- Commit messages and PR titles must follow `CONTRIBUTING.md` using the Conventional Commits specification (`feat:`, `fix:`, `docs:`, `test:`, `refactor:`, `chore:`).
