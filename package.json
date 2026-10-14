@@ -7,6 +7,7 @@
 	"scripts": {
 		"dev": "ts-node src/index.ts",
 		"build": "tsc",
+		"clean": "node -e \"fs.rmSync('dist', { recursive: true, force: true })\"",
 		"test": "vitest run --coverage",
 		"test:watch": "vitest",
 		"prepublishOnly": "npm run build",
