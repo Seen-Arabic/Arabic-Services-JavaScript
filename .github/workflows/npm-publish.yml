@@ -31,6 +31,7 @@ jobs:
 
             # Step 4: Build package and bundles
             - name: Build package and bundles
+              id: build
               run: npm run build
 
             # Step 5: Publish the package to npm using Trusted Publishing (OIDC)
@@ -39,6 +40,7 @@ jobs:
 
             # Step 6: Upload bundle assets to release
             - name: Upload bundle assets to release
+              if: always() && steps.build.outcome == 'success'
               uses: softprops/action-gh-release@v2
               with:
                   files: |

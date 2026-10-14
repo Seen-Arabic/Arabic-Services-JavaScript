@@ -34,8 +34,11 @@ This repository contains `arabic-services`: a zero-runtime-dependency TypeScript
 - `src/utils/`:
   - `string.util.ts`: Internal string manipulation and regex utility functions.
 - `tests/`:
-  - `scripts.test.ts`: Jest unit tests covering all text operations.
+  - `scripts.test.ts`: Vitest unit tests covering all text operations.
   - `constants.test.ts`: Sanity checks for character mappings and constants.
+  - `artifacts.test.ts`: Module integrity tests for CJS, ESM, and browser UMD bundles.
+  - `edge-cases.test.ts`: Boundary values, orthography variations, and ReDoS resilience tests.
+  - `tree-shaking.test.ts`: Verification of named exports and dead code elimination.
 - `webpack.config.cjs`: Bundler configuration generating UMD (`dist/umd/`) and ESM (`dist/esm/`) bundles for browser distribution.
 - `tsconfig.json`: TypeScript compiler configuration targeting ES5 / CommonJS for the main npm distribution.
 
@@ -54,7 +57,7 @@ This repository contains `arabic-services`: a zero-runtime-dependency TypeScript
 ## Build, Test, and Development Commands
 
 - `npm run build`: Compile TypeScript into `dist/` (generates `.js` and `.d.ts`).
-- `npm test`: Run Jest unit tests and generate coverage report. **Note**: Run `npm run build` before `npm test`, as tests import from the compiled `./dist` directory.
+- `npm test`: Run Vitest test suite and generate coverage report. **Note**: Run `npm run build` before `npm test`, as tests import from the compiled `./dist` directory.
 - `npm test -- -t "test name"`: Run a specific test case by name.
 - `npm run dev`: Quick execution runner using `ts-node src/index.ts`.
 - `npm run bundle`: Run Webpack to bundle production UMD (`arabic-services.umd.js`) and ESM (`arabic-services.esm.js`) files for browser/CDN distribution.

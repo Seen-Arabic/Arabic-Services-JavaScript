@@ -29,22 +29,22 @@ Can be used in Node.js and the browser.
 <a href="https://github.com/Seen-Arabic/Arabic-Services-JavaScript/blob/master/LICENSE">
 <img src="https://img.shields.io/github/license/Seen-Arabic/Arabic-Services-JavaScript"/>
 </a>
-<a href="https://github.com/Seen-Arabic/Arabic-Services-JavaScript/actions/workflows/test.yml">
-<img src="https://github.com/Seen-Arabic/Arabic-Services-JavaScript/actions/workflows/test.yml/badge.svg" alt="workflows">
+<a href="https://github.com/Seen-Arabic/Arabic-Services-JavaScript/actions/workflows/ci.yml">
+<img src="https://github.com/Seen-Arabic/Arabic-Services-JavaScript/actions/workflows/ci.yml/badge.svg" alt="workflows">
 </a>
 </div>
 
 ## 📋 Features
 
--   **Tashkeel Removal**: Easily remove Tashkeel from Arabic text.
--   **Tatweel Removal**: Remove Tatweel character from Arabic phrases.
--   **Convert To Old Arabic**: Transform Arabic text into old script.
--   **Convert To Old Arabic And Tashfeer Banned Words**: Transform Arabic text into old script and replace Banned Arabic text with visually similar characters for encoding purposes. (Banned words are words that considered as hate speech in social media)
--   **Tashfeer**: Replaces Arabic text with visually similar characters for encoding purposes.
--   **Tashfeer Banned Words**: Replaces Banned Arabic text with visually similar characters for encoding purposes. (Banned words are words that considered as hate speech in social media)
--   **Remove Arabic Affixes**: Removes predefined affixes (prefixes and suffixes) from an Arabic word if it starts or ends with those affixes.
--   **Word To Letters**: Convert Arabic word to its pronounced letters.
--   ... and more!
+- **Tashkeel Removal**: Easily remove Tashkeel from Arabic text.
+- **Tatweel Removal**: Remove Tatweel character from Arabic phrases.
+- **Convert To Old Arabic**: Transform Arabic text into old script.
+- **Convert To Old Arabic And Tashfeer Banned Words**: Transform Arabic text into old script and replace Banned Arabic text with visually similar characters for encoding purposes. (Banned words are words that considered as hate speech in social media)
+- **Tashfeer**: Replaces Arabic text with visually similar characters for encoding purposes.
+- **Tashfeer Banned Words**: Replaces Banned Arabic text with visually similar characters for encoding purposes. (Banned words are words that considered as hate speech in social media)
+- **Remove Arabic Affixes**: Removes predefined affixes (prefixes and suffixes) from an Arabic word if it starts or ends with those affixes.
+- **Word To Letters**: Convert Arabic word to its pronounced letters.
+- ... and more!
 
 <h3 align=center><a href="https://github.com/Seen-Arabic/Arabic-Services-JavaScript/wiki/Features-Documentation">➡️ Check out the usage and detailed documentation on each feature ⬅️</a></h3>
 
@@ -54,38 +54,51 @@ Arabic-Services was designed to work in both the browser and NodeJS applications
 
 ### Browser
 
-We provide both ESM and UMD bundles for use in the browser.
-You can find it with the latest release files.
+You can use the library directly in the browser via CDN using **jsdelivr** or **unpkg**, or download standalone bundle files from the latest [GitHub Releases](https://github.com/Seen-Arabic/Arabic-Services-JavaScript/releases):
 
 ```html
-<script src="arabic-services.umd.js"></script>
+<!-- Via jsdelivr (Recommended) -->
+<script src="https://cdn.jsdelivr.net/npm/arabic-services@1/dist/umd/arabic-services.umd.js"></script>
+
+<!-- Or via unpkg -->
+<script src="https://unpkg.com/arabic-services@1/dist/umd/arabic-services.umd.js"></script>
+
 <script>
 	console.log(ArabicServices.removeTashkeel('الخَيْلُ وَاللّيْلُ وَالبَيْداءُ تَعرِفُني'));
 	// Output: 'الخيل والليل والبيداء تعرفني'
 </script>
 ```
 
-### NodeJS
+### NodeJS & Modern Bundlers
 
-Both CommonJS and ES Module libraries are provided.
+Install the package via npm:
 
 ```bash
 npm install arabic-services
 ```
 
-**CommonJS:**
+#### ES Module & Tree Shaking (Recommended):
+
+Import only the functions you need for maximum bundle size reduction:
 
 ```javascript
-const { ArabicServices } = require('arabic-services');
-console.log(ArabicServices.removeTashkeel('الخَيْلُ وَاللّيْلُ وَالبَيْداءُ تَعرِفُني'));
+import { removeTashkeel, removeTatweel, toOldArabic } from 'arabic-services';
+
+console.log(removeTashkeel('الخَيْلُ وَاللّيْلُ وَالبَيْداءُ تَعرِفُني'));
 // Output: 'الخيل والليل والبيداء تعرفني'
 ```
 
-**ES Module:**
+Or import the full object:
 
 ```javascript
 import { ArabicServices } from 'arabic-services';
-console.log(ArabicServices.removeTashkeel('الخَيْلُ وَاللّيْلُ وَالبَيْداءُ تَعرِفُني'));
+```
+
+#### CommonJS:
+
+```javascript
+const { removeTashkeel, ArabicServices } = require('arabic-services');
+console.log(removeTashkeel('الخَيْلُ وَاللّيْلُ وَالبَيْداءُ تَعرِفُني'));
 // Output: 'الخيل والليل والبيداء تعرفني'
 ```
 
@@ -93,8 +106,8 @@ console.log(ArabicServices.removeTashkeel('الخَيْلُ وَاللّيْلُ
 
 Arabic Services is made publicly available to provide a well tested and well documented library for processing and transforming Arabic text to all developers. We accept feature contributions provided that they are properly documented and include the appropriate unit tests.
 
--   🚀 If you want to contribute to this project and make it better with new ideas, your pull request is very welcomed.
--   📝 If you find any issue just put it in the repository issue section, thank you.
+- 🚀 If you want to contribute to this project and make it better with new ideas, your pull request is very welcomed.
+- 📝 If you find any issue just put it in the repository issue section, thank you.
 
 ## 🌟 Star this repository
 
@@ -106,5 +119,5 @@ This project is licensed under the GPL-3.0 License. See the [LICENSE](./LICENSE)
 
 ## 💬 Contact
 
--   📩 Email: [SeenDevelopment@gmail.com](mailto:SeenDevelopment@gmail.com)
--   🌎 [Website](https://seen-arabic.github.io/)
+- 📩 Email: [SeenDevelopment@gmail.com](mailto:SeenDevelopment@gmail.com)
+- 🌎 [Website](https://seen-arabic.github.io/)

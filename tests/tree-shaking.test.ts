@@ -1,3 +1,4 @@
+import { execSync } from 'node:child_process';
 import ArabicServicesDefault, {
 	ArabicServices,
 	removeTashkeel,
@@ -34,10 +35,9 @@ describe('Tree Shaking & Named Exports', () => {
 	});
 
 	it('should support native Node.js ESM import with named exports', () => {
-		const { execSync } = require('child_process');
 		const stdout = execSync(
-			'node --input-type=module -e "import(\'./dist/esm/index.js\').then(m => console.log(JSON.stringify({ hasRemoveTashkeel: typeof m.removeTashkeel, hasArabicServices: typeof m.ArabicServices, sampleResult: m.removeTashkeel(\'مَرْحَبًا\') })))"',
-			{ encoding: 'utf8' }
+			"node --input-type=module -e \"import('./dist/esm/index.js').then(m => console.log(JSON.stringify({ hasRemoveTashkeel: typeof m.removeTashkeel, hasArabicServices: typeof m.ArabicServices, sampleResult: m.removeTashkeel('مَرْحَبًا') })))\"",
+			{ encoding: 'utf8' },
 		);
 		const result = JSON.parse(stdout);
 		expect(result.hasRemoveTashkeel).toBe('function');
