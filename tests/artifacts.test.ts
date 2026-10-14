@@ -1,5 +1,6 @@
 import { execSync } from 'node:child_process';
 import * as fs from 'node:fs';
+import { createRequire } from 'node:module';
 import * as path from 'node:path';
 import * as vm from 'node:vm';
 import { describe, expect, it } from 'vitest';
@@ -100,6 +101,18 @@ describe('Package Artifacts & Module Integrity', () => {
 
 		expect(arabicServices.removeTashkeel('الخَيْلُ وَاللّيْلُ')).toBe('الخيل والليل');
 		expect(arabicServices.removeTatweel('كتــــاب')).toBe('كتاب');
+	});
+
+	it('should support in-process CommonJS loading via Node.js createRequire()', () => {
+		const nodeRequire = createRequire(import.meta.url);
+		const cjsDist = nodeRequire('../dist');
+
+		expect(cjsDist).toBeDefined();
+		expect(typeof cjsDist.removeTashkeel).toBe('function');
+		expect(typeof cjsDist.toOldArabic).toBe('function');
+		expect(typeof cjsDist.ArabicServices).toBe('object');
+		expect(cjsDist.removeTashkeel('مَرْحَبًا')).toBe('مرحبا');
+		expect(cjsDist.ArabicServices.removeTatweel('رائـــــع')).toBe('رائع');
 	});
 
 	it('should execute purely as Isomorphic/Universal functions without DOM dependencies', async () => {
