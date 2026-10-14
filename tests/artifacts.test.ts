@@ -1,8 +1,8 @@
-import { describe, it, expect } from 'vitest';
+import { execSync } from 'node:child_process';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 import * as vm from 'node:vm';
-import { execSync } from 'node:child_process';
+import { describe, expect, it } from 'vitest';
 
 describe('Package Artifacts & Module Integrity', () => {
 	const rootDir = path.resolve(__dirname, '..');
@@ -28,9 +28,7 @@ describe('Package Artifacts & Module Integrity', () => {
 				true,
 			);
 			const stats = fs.statSync(absolutePath);
-			expect(stats.size, `File specified in ${entry.field} (${entry.path}) must not be empty`).toBeGreaterThan(
-				0,
-			);
+			expect(stats.size, `File specified in ${entry.field} (${entry.path}) must not be empty`).toBeGreaterThan(0);
 		}
 	});
 
@@ -104,12 +102,12 @@ describe('Package Artifacts & Module Integrity', () => {
 		expect(arabicServices.removeTatweel('كتــــاب')).toBe('كتاب');
 	});
 
-	it('should execute purely as Isomorphic/Universal functions without DOM dependencies', () => {
+	it('should execute purely as Isomorphic/Universal functions without DOM dependencies', async () => {
 		// Import all scripts in current process (where window and document are undefined)
 		expect(typeof window).toBe('undefined');
 		expect(typeof document).toBe('undefined');
 
-		const dist = require(path.join(rootDir, 'dist'));
+		const dist = await import('../dist');
 		expect(dist.removeTashkeel('فَحَصَ')).toBe('فحص');
 		expect(dist.removeTatweel('مـلـف')).toBe('ملف');
 		expect(dist.toOldArabic('بَيْت')).toBe('ٮىٮ');

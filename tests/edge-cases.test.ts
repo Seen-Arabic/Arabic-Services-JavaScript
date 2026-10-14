@@ -8,7 +8,6 @@ import {
 	tashfeerBannedWords,
 	wordToLetters,
 	removeArabicAffixes,
-	BANNED_WORDS,
 } from '../src';
 
 describe('Arabic NLP Edge Cases & Robustness', () => {
@@ -126,7 +125,8 @@ describe('Arabic NLP Edge Cases & Robustness', () => {
 
 	describe('Performance & ReDoS Resilience', () => {
 		it('should process large texts (50,000+ chars) in under 150ms without catastrophic backtracking', () => {
-			const sampleUnit = 'الخَيْلُ وَاللّيْلُ وَالبَيْداءُ تَعرِفُني، وَالسّيفُ وَالرّمحُ والقرْطاسُ وَالقَلَـمُ! ';
+			const sampleUnit =
+				'الخَيْلُ وَاللّيْلُ وَالبَيْداءُ تَعرِفُني، وَالسّيفُ وَالرّمحُ والقرْطاسُ وَالقَلَـمُ! ';
 			const largeText = sampleUnit.repeat(600); // ~54,000 characters
 			expect(largeText.length).toBeGreaterThan(50000);
 
