@@ -8,7 +8,8 @@
 		"dev": "ts-node src/index.ts",
 		"build": "tsc",
 		"clean": "node -e \"fs.rmSync('dist', { recursive: true, force: true })\"",
-		"test": "jest --config jest.config.cjs --coverage",
+		"test": "vitest run --coverage",
+		"test:watch": "vitest",
 		"prepublishOnly": "npm run build",
 		"format": "npx prettier --write . --ignore-path .gitignore",
 		"lint": "eslint src --quiet",
@@ -41,16 +42,15 @@
 	},
 	"homepage": "https://github.com/Seen-Arabic/Arabic-Services-JavaScript#readme",
 	"devDependencies": {
-		"@types/jest": "^29.5.14",
+		"@vitest/coverage-v8": "^5.0.4",
 		"eslint": "^9.20.0",
 		"eslint-config-prettier": "^10.0.1",
 		"eslint-plugin-prettier": "^5.2.3",
-		"jest": "^29.7.0",
 		"prettier": "^3.5.2",
-		"ts-jest": "^29.2.5",
 		"ts-loader": "^9.5.2",
 		"typescript": "^5.7.3",
 		"typescript-eslint": "^8.24.0",
+		"vitest": "^5.0.4",
 		"webpack": "^5.98.0",
 		"webpack-cli": "^5.1.4"
 	}
