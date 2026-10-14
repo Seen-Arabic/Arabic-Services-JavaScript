@@ -37,8 +37,8 @@
 		"test:watch": "vitest",
 		"prepublishOnly": "npm run build",
 		"format": "npx prettier --write . --ignore-path .gitignore",
-		"lint": "eslint src --quiet",
-		"lint:fix": "eslint src --fix",
+		"lint": "eslint . --quiet",
+		"lint:fix": "eslint . --fix",
 		"bundle": "webpack"
 	},
 	"repository": {
