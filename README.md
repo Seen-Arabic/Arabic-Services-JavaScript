@@ -54,7 +54,7 @@ Arabic-Services was designed to work in both the browser and NodeJS applications
 
 ### Browser
 
-You can use the library directly in the browser via CDN using **jsdelivr** or **unpkg**:
+You can use the library directly in the browser via CDN using **jsdelivr** or **unpkg**, or download standalone bundle files from the latest [GitHub Releases](https://github.com/Seen-Arabic/Arabic-Services-JavaScript/releases):
 
 ```html
 <!-- Via jsdelivr (Recommended) -->

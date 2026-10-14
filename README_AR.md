@@ -51,7 +51,7 @@
 
 ### المتصفح (Browser)
 
-يمكنك استخدام المكتبة مباشرة في المتصفح عبر شبكات الـ CDN العالمية (**jsdelivr** أو **unpkg**):
+يمكنك استخدام المكتبة مباشرة في المتصفح عبر شبكات الـ CDN العالمية (**jsdelivr** أو **unpkg**)، أو تنزيل ملفات الـ Bundles الجاهزة من صفحة [GitHub Releases](https://github.com/Seen-Arabic/Arabic-Services-JavaScript/releases):
 
 ```html
 <!-- عبر jsdelivr (موصى به) -->
