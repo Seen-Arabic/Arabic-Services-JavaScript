@@ -9,6 +9,8 @@ jobs:
     build:
         # Specify the runner environment
         runs-on: ubuntu-latest
+        permissions:
+            contents: write
 
         steps:
             # Step 1: Check out the repository's code
@@ -26,8 +28,22 @@ jobs:
             - name: Install dependencies
               run: npm ci
 
-            # Step 4: Publish the package to npm
+            # Step 4: Build package and bundles
+            - name: Build package and bundles
+              run: npm run build
+
+            # Step 5: Publish the package to npm
             - name: Publish to npm
               run: npm publish
               env:
                   NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+            # Step 6: Upload bundle assets to release
+            - name: Upload bundle assets to release
+              uses: softprops/action-gh-release@v2
+              with:
+                  files: |
+                      dist/umd/arabic-services.umd.js
+                      dist/esm/arabic-services.esm.js
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
