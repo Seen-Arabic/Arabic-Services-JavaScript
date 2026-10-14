@@ -17,7 +17,7 @@ jobs:
 
             # Step 2: Set up Node.js environment
             - name: Set up Node.js
-              uses: actions/setup-node@v3
+              uses: actions/setup-node@v4
               with:
                   node-version: '22.x' # Specify the Node.js version
                   registry-url: 'https://registry.npmjs.org'
