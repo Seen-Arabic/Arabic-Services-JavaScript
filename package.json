@@ -1,11 +1,19 @@
 {
 	"name": "arabic-services",
-	"version": "1.0.8",
+	"version": "1.1.0",
 	"description": "Utility functions on Arabic text",
 	"main": "./dist/index.js",
 	"module": "./dist/esm/index.js",
+	"unpkg": "./dist/umd/arabic-services.umd.js",
+	"jsdelivr": "./dist/umd/arabic-services.umd.js",
 	"types": "./dist/index.d.ts",
 	"sideEffects": false,
+	"files": [
+		"dist",
+		"README.md",
+		"README_AR.md",
+		"LICENSE"
+	],
 	"exports": {
 		".": {
 			"import": {
@@ -23,7 +31,7 @@
 		"dev": "ts-node src/index.ts",
 		"build:cjs": "tsc -p tsconfig.json",
 		"build:esm": "tsc -p tsconfig.esm.json && node -e \"fs.writeFileSync('dist/esm/package.json', JSON.stringify({ type: 'module', sideEffects: false }))\"",
-		"build": "npm run clean && npm run build:cjs && npm run build:esm",
+		"build": "npm run clean && npm run build:cjs && npm run build:esm && npm run bundle",
 		"clean": "node -e \"fs.rmSync('dist', { recursive: true, force: true })\"",
 		"test": "vitest run --coverage",
 		"test:watch": "vitest",

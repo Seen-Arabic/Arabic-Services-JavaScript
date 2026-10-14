@@ -1,18 +1,23 @@
 <h1 align=center>📜 Changelog - سجل التغيير</h1>
 <p align=center>All notable changes to this project will be documented in this file.</p>
 
-## [Unreleased](https://github.com/Seen-Arabic/Arabic-Services-JavaScript/compare/v1.0.8...HEAD)
+## [1.1.0](https://github.com/Seen-Arabic/Arabic-Services-JavaScript/releases/tag/v1.1.0) - 2026-10-14 (03 Jumada al-Awwal 1448)
 
 ### Added
 
 -   **Tree Shaking & Named Exports**: Full support for tree shaking with direct named exports for all functions, constants, and utilities, reducing bundle size by over 96% when importing specific functions ([#28](https://github.com/Seen-Arabic/Arabic-Services-JavaScript/issues/28)).
 -   **Dual Module System (ESM & CommonJS)**: Added native ES Module build under `dist/esm/` with `sideEffects: false` and conditional typed exports in `package.json`.
+-   **Browser UMD Bundle**: Bundled single-file UMD build under `dist/umd/arabic-services.umd.js` for direct `<script>` and CDN usage (unpkg / jsdelivr).
 -   **Documentation & Guidelines**: Added `CONTRIBUTING.md` with Conventional Commits specifications and `AGENT.md` tailored for zero-runtime-dependency npm library development ([PR #30](https://github.com/Seen-Arabic/Arabic-Services-JavaScript/pull/30)).
 
 ### Updated
 
+-   **Test Runner Modernization**: Migrated test runner from Jest to Vitest for native TypeScript execution, faster test execution (under 700ms), and 0-vulnerability dependency tree ([PR #32](https://github.com/Seen-Arabic/Arabic-Services-JavaScript/pull/32)).
 -   **Tooling Modernization**: Migrated to ESLint 9 Flat Config (`eslint.config.mjs`) with `typescript-eslint` v8 ([PR #31](https://github.com/Seen-Arabic/Arabic-Services-JavaScript/pull/31)).
--   **Dependencies**: Upgraded devDependencies (`typescript` 5.7, `webpack` 5.98, `prettier` 3.5, `ts-jest` 29.2) and replaced deprecated `rimraf` with native Node.js `fs.rmSync`.
+-   **Dependencies**: Upgraded devDependencies (`typescript` 5.7, `webpack` 5.98, `prettier` 3.5) and replaced deprecated `rimraf` with native Node.js `fs.rmSync`.
+-   **Package Publishing Cleanliness**: Added `"files"` whitelist in `package.json` to prevent development/CI configurations from being published to npm.
+
+[Full Changelog](https://github.com/Seen-Arabic/Arabic-Services-JavaScript/compare/v1.0.8...v1.1.0)
 
 ## [1.0.8](https://github.com/Seen-Arabic/Arabic-Services-JavaScript/releases/tag/v1.0.8) - 2025-09-04 (12 Rabi' al-Awwal 1446)
 
