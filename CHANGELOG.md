@@ -3,6 +3,17 @@
 
 ## [Unreleased](https://github.com/Seen-Arabic/Arabic-Services-JavaScript/compare/v1.0.8...HEAD)
 
+### Added
+
+-   **Tree Shaking & Named Exports**: Full support for tree shaking with direct named exports for all functions, constants, and utilities, reducing bundle size by over 96% when importing specific functions ([#28](https://github.com/Seen-Arabic/Arabic-Services-JavaScript/issues/28)).
+-   **Dual Module System (ESM & CommonJS)**: Added native ES Module build under `dist/esm/` with `sideEffects: false` and conditional typed exports in `package.json`.
+-   **Documentation & Guidelines**: Added `CONTRIBUTING.md` with Conventional Commits specifications and `AGENT.md` tailored for zero-runtime-dependency npm library development ([PR #30](https://github.com/Seen-Arabic/Arabic-Services-JavaScript/pull/30)).
+
+### Updated
+
+-   **Tooling Modernization**: Migrated to ESLint 9 Flat Config (`eslint.config.mjs`) with `typescript-eslint` v8 ([PR #31](https://github.com/Seen-Arabic/Arabic-Services-JavaScript/pull/31)).
+-   **Dependencies**: Upgraded devDependencies (`typescript` 5.7, `webpack` 5.98, `prettier` 3.5, `ts-jest` 29.2) and replaced deprecated `rimraf` with native Node.js `fs.rmSync`.
+
 ## [1.0.8](https://github.com/Seen-Arabic/Arabic-Services-JavaScript/releases/tag/v1.0.8) - 2025-09-04 (12 Rabi' al-Awwal 1446)
 
 ### Added
