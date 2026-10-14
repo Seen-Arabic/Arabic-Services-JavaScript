@@ -11,6 +11,7 @@ jobs:
         runs-on: ubuntu-latest
         permissions:
             contents: write
+            id-token: write
 
         steps:
             # Step 1: Check out the repository's code
@@ -22,7 +23,6 @@ jobs:
               uses: actions/setup-node@v4
               with:
                   node-version: '22.x' # Specify the Node.js version
-                  registry-url: 'https://registry.npmjs.org'
 
             # Step 3: Install dependencies using npm ci
             - name: Install dependencies
@@ -32,11 +32,9 @@ jobs:
             - name: Build package and bundles
               run: npm run build
 
-            # Step 5: Publish the package to npm
+            # Step 5: Publish the package to npm using Trusted Publishing (OIDC)
             - name: Publish to npm
-              run: npm publish
-              env:
-                  NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+              run: npm publish --provenance --access public
 
             # Step 6: Upload bundle assets to release
             - name: Upload bundle assets to release
