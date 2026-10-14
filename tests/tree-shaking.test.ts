@@ -32,4 +32,16 @@ describe('Tree Shaking & Named Exports', () => {
 		expect(typeof ArabicServicesDefault.removeTashkeel).toBe('function');
 		expect(ArabicServicesDefault.removeTashkeel('مَرْحَبًا')).toBe('مرحبا');
 	});
+
+	it('should support native Node.js ESM import with named exports', () => {
+		const { execSync } = require('child_process');
+		const stdout = execSync(
+			'node --input-type=module -e "import(\'./dist/esm/index.js\').then(m => console.log(JSON.stringify({ hasRemoveTashkeel: typeof m.removeTashkeel, hasArabicServices: typeof m.ArabicServices, sampleResult: m.removeTashkeel(\'مَرْحَبًا\') })))"',
+			{ encoding: 'utf8' }
+		);
+		const result = JSON.parse(stdout);
+		expect(result.hasRemoveTashkeel).toBe('function');
+		expect(result.hasArabicServices).toBe('object');
+		expect(result.sampleResult).toBe('مرحبا');
+	});
 });

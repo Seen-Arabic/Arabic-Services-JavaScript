@@ -4,6 +4,6 @@ export {
 	ARABIC_SUFFIXES,
 	PRONOUNCED_LETTERS,
 	STANDARD_LETTERS,
-} from './arabic-letters';
-export { BANNED_WORDS } from './banned-words';
-export { TASHKEEL } from './tashkeel';
+} from './arabic-letters.js';
+export { BANNED_WORDS } from './banned-words.js';
+export { TASHKEEL } from './tashkeel.js';
