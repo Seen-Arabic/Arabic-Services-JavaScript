@@ -8,6 +8,7 @@
 - Direct CDN links (jsdelivr & unpkg) and GitHub release bundle guide in documentation.
 
 ### Changed
+- Modularized monolithic `src/scripts/scripts.ts` into focused single-responsibility files (`tashkeel.ts`, `old-arabic.ts`, `tashfeer.ts`, `affixes.ts`, `letters.ts`) while keeping public exports and backward compatibility completely unchanged.
 - Relocated standalone browser demo to `examples/browser/index.html`.
 - Unified CI workflow across Node.js 22.x and 24.x with ESLint.
 

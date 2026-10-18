@@ -30,7 +30,12 @@ This repository contains `arabic-services`: a zero-runtime-dependency TypeScript
   - `tashkeel.ts`: Diacritics (Harakat, Tanween, Quranic sequential tanween).
   - `banned-words.ts`: Word lists used in obfuscation/tashfeer algorithms.
 - `src/scripts/`:
-  - `scripts.ts`: Implementation of text manipulation functions (Tashkeel removal, Tatweel removal, Tashfeer, Old Arabic conversion, Affixes removal, etc.).
+  - `tashkeel.ts`: Tashkeel and Tatweel removal (`removeTashkeel`, `removeTatweel`).
+  - `old-arabic.ts`: Dotless Old Arabic script transformation (`toOldArabic`).
+  - `tashfeer.ts`: Visual obfuscation and banned-word encoding (`tashfeer`, `tashfeerBannedWords`, `toOldArabicAndTashfeerBannedWords`).
+  - `affixes.ts`: Prefix and suffix stripping heuristic (`removeArabicAffixes`).
+  - `letters.ts`: Conversion of words to pronounced letter names (`wordToLetters`).
+  - `index.ts`: Barrel file re-exporting all script operations.
 - `src/utils/`:
   - `string.util.ts`: Internal string manipulation and regex utility functions.
 - `tests/`:
@@ -50,7 +55,7 @@ This repository contains `arabic-services`: a zero-runtime-dependency TypeScript
 - **Unicode Code Point Integrity**: Arabic characters have unique Unicode points for letters, ligatures, Tatweel (`\u0640`), Tashkeel (`\u064B`-`\u0652`, `\u0670`, sequential tanween, etc.). Avoid naive character splitting that breaks multi-byte or combining marks; always respect Unicode boundaries.
 - **Regular Expressions & ReDoS**: Regular expressions must be tested against catastrophic backtracking (ReDoS). Prefer pre-compiled regexes or Set/Dictionary lookups for character replacement rather than dynamic nested patterns.
 - **Dual Runtime Support**: The core library runs in both Node.js and web browsers. Never import Node-specific built-ins (`fs`, `path`, `crypto`, `os`) inside `src/`.
-- **Test-Driven Changes**: Every bug fix, edge case, or new feature in `src/scripts/scripts.ts` must be accompanied by unit tests in `tests/scripts.test.ts`.
+- **Test-Driven Changes**: Every bug fix, edge case, or new feature in `src/scripts/` must be accompanied by unit tests in `tests/scripts.test.ts` or `tests/edge-cases.test.ts`.
 
 ---
 
