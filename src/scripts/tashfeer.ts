@@ -1,180 +1,15 @@
-import { ARABIC_DOTLESS_DICT, BANNED_WORDS, TASHKEEL } from '../constants/index.js';
+import { BANNED_WORDS } from '../constants/index.js';
 import {
 	ALEF,
 	ALONE_LETTERS,
-	ARABIC_PREFIXES,
-	ARABIC_SUFFIXES,
 	LETTERS_TASHFEER_REPLACEMENT_DICT,
-	PRONOUNCED_LETTERS,
 	STANDARD_LETTERS,
 	WAW,
 	YAA,
 } from '../constants/arabic-letters.js';
-import { fillDefaultOptions, type OldArabicOptions } from '../options.js';
-import { setCharAt, similarityScore } from '../utils/index.js';
-
-/**
- * Remove all tashkeel from text
- * @param text string to remove tashkeel from
- * @returns string without tashkeel
- * @example
- *   Input: "الخَيْلُ وَاللّيْلُ وَالبَيْداءُ تَعرِفُني"
- *   Output: "الخيل والليل والبيداء تعرفني"
- */
-export function removeTashkeel(text: string): string {
-	return text
-		.trim()
-		.replace(new RegExp('[' + TASHKEEL.join('') + ']', 'g'), '')
-		.replace(/ٱ/g, 'ا');
-}
-
-/**
- * Remove all dots & tashkeel from text
- * @param sentence string to convert to old arabic
- * @param option
- * @returns string in old arabic
- * @example
- *   Input: "الخَيْلُ وَاللّيْلُ وَالبَيْداءُ تَعرِفُني"
- *   Output: "الحىل واللىل والٮىدا ٮعرڡٮى"
- */
-export function toOldArabic(sentence: string, option: OldArabicOptions = {}): string {
-	const { replaceMidNoonWithBah, replaceMidYahWithBah } = fillDefaultOptions(option);
-	sentence = removeTashkeel(sentence.trim());
-	let newSentence = '';
-	for (let letter = 0; letter < sentence.length; letter++) {
-		// if letter is not Arabic letter => append to newSentence
-		if (!ARABIC_DOTLESS_DICT.hasOwnProperty(sentence[letter])) {
-			newSentence += sentence[letter];
-		}
-		// Handle 'ن' Issue:
-		// if 'ن' is not last character && next character is Arabic letter or 'ـ'
-		// then replace it with 'ب' corresponding dotless letter => 'ٮ'
-		else if (
-			replaceMidNoonWithBah &&
-			sentence[letter] == 'ن' &&
-			letter + 1 < sentence.length &&
-			(ARABIC_DOTLESS_DICT.hasOwnProperty(sentence[letter + 1]) || sentence[letter + 1] == 'ـ')
-		) {
-			newSentence += ARABIC_DOTLESS_DICT['ب'];
-		}
-		// Handle 'ي' Issue
-		// if 'ي' is not last character && next character is Arabic letter or 'ـ'
-		// then replace it with 'ب' corresponding dotless letter => 'ٮ'
-		else if (
-			replaceMidYahWithBah &&
-			sentence[letter] == 'ي' &&
-			letter + 1 < sentence.length &&
-			(ARABIC_DOTLESS_DICT.hasOwnProperty(sentence[letter + 1]) || sentence[letter + 1] == 'ـ')
-		) {
-			newSentence += ARABIC_DOTLESS_DICT['ب'];
-		} else {
-			// if letter is Arabic letter => append corresponding dotless letter to newSentence
-			newSentence += ARABIC_DOTLESS_DICT[sentence[letter]];
-		}
-	}
-	return newSentence;
-}
-
-export function toOldArabicAndTashfeerBannedWords(sentence: string, levelOfTashfeer: number = 2): string {
-	validateTashfeerLevel(levelOfTashfeer);
-	let new_sentence = '';
-	const words = sentence.trim().split(' ');
-	for (const word of words) {
-		if (checkIfBannedWord(word)) {
-			new_sentence += tashfeerHandler(word, levelOfTashfeer) + ' ';
-		} else {
-			new_sentence += toOldArabic(word) + ' ';
-		}
-	}
-	return new_sentence.trim();
-}
-
-/**
- * Remove all tatweel from text
- * @param text string to remove tatweel from
- * @returns string without tatweel
- * @example
- *   Input: "رائـــــــع"
- *   Output: "رائع"
- */
-export function removeTatweel(text: string): string {
-	return text.trim().replace(/ـ/g, '');
-}
-
-/**
- * Converts a word to its pronounced letter representations based on PRONOUNCED_LETTERS.
- * @param {string} word - The word to convert.
- * @returns {string} The word with pronounced letters separated by spaces.
- */
-export function wordToLetters(word: string): string {
-	const trimmedWord = word.trim();
-	let newWord = '';
-
-	// Loop through each character in the input word
-	for (let i = 0; i < trimmedWord.length; i++) {
-		const letter = trimmedWord[i];
-
-		// Check if the current letter has a pronunciation in PRONOUNCED_LETTERS
-		if (PRONOUNCED_LETTERS.hasOwnProperty(letter)) {
-			newWord += PRONOUNCED_LETTERS[letter];
-
-			// Add a space after the pronounced letter unless it's the last letter in the word
-			if (i !== trimmedWord.length - 1) {
-				newWord += ' ';
-			}
-		} else {
-			// If the letter is not in PRONOUNCED_LETTERS, keep it unchanged
-			newWord += letter;
-		}
-	}
-
-	return newWord.trim();
-}
-
-/**
- * Removes predefined affixes (prefixes and suffixes) from an Arabic word if it starts or ends with those affixes.
- * This function is designed specifically for processing Arabic text, where certain affixes might need to be removed
- * for linguistic, stylistic, or morphological reasons.
- *
- * @param {string} word - The Arabic word from which the affixes are to be removed.
- * @returns {string} The word after removing any matching affixes. Returns the original word trimmed if no affix matches are found.
- */
-function removeArabicAffixesFromWord(word: string): string {
-	word = word.trim();
-	if (ARABIC_PREFIXES.includes(word.substring(0, 2))) {
-		// For: ALEF & LAM
-		word = setCharAt(word, 0, '');
-		word = setCharAt(word, 0, '');
-	} else if (ARABIC_PREFIXES.includes(word.substring(0, 1))) {
-		word = setCharAt(word, 0, '');
-	}
-
-	if (ARABIC_SUFFIXES.includes(word.substring(word.length - 2))) {
-		word = setCharAt(word, word.length - 1, '');
-		word = setCharAt(word, word.length - 1, '');
-	} else if (ARABIC_SUFFIXES.includes(word[word.length - 1])) {
-		word = setCharAt(word, word.length - 1, '');
-	}
-
-	return word;
-}
-
-/**
- * Removes predefined affixes (prefixes and suffixes) from an Arabic text if words start or end with those affixes.
- * This function is designed specifically for processing Arabic text, where certain affixes might need to be removed
- * for linguistic, stylistic, or morphological reasons.
- *
- * @param {string} text - The Arabic text from which the affixes are to be removed.
- * @returns {string} The text after removing any matching affixes from each word. Returns the original text trimmed if no affix matches are found.
- */
-export function removeArabicAffixes(text: string): string {
-	let new_sentence = '';
-	text = text.trim();
-	for (const word of text.split(' ')) {
-		new_sentence += removeArabicAffixesFromWord(word) + ' ';
-	}
-	return new_sentence.trim();
-}
+import { similarityScore } from '../utils/index.js';
+import { removeArabicAffixes } from './affixes.js';
+import { toOldArabic } from './old-arabic.js';
 
 /**
  * Validates the encryption level to guarantee bounded execution and prevent infinite loops.
@@ -319,6 +154,7 @@ function tashfeerHandler(word: string, level: number = 0): string {
 /**
  * Performs tashfeer encryption on a given sentence.
  * @param {string} sentence - The input sentence to be encrypted.
+ * @param {number} [levelOfTashfeer=1] - The encryption level.
  * @returns {string} The encrypted sentence.
  */
 export function tashfeer(sentence: string, levelOfTashfeer: number = 1): string {
@@ -376,6 +212,26 @@ export function tashfeerBannedWords(sentence: string, levelOfTashfeer: number = 
 			new_sentence += tashfeerHandler(word, levelOfTashfeer) + ' ';
 		} else {
 			new_sentence += word + ' ';
+		}
+	}
+	return new_sentence.trim();
+}
+
+/**
+ * Converts a sentence to old Arabic script and applies tashfeer to banned words.
+ * @param {string} sentence - The input sentence.
+ * @param {number} [levelOfTashfeer=2] - The encryption level (default is 2).
+ * @returns {string} The processed sentence.
+ */
+export function toOldArabicAndTashfeerBannedWords(sentence: string, levelOfTashfeer: number = 2): string {
+	validateTashfeerLevel(levelOfTashfeer);
+	let new_sentence = '';
+	const words = sentence.trim().split(' ');
+	for (const word of words) {
+		if (checkIfBannedWord(word)) {
+			new_sentence += tashfeerHandler(word, levelOfTashfeer) + ' ';
+		} else {
+			new_sentence += toOldArabic(word) + ' ';
 		}
 	}
 	return new_sentence.trim();
