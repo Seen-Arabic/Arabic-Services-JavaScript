@@ -101,7 +101,7 @@ describe('Arabic NLP Edge Cases & Robustness', () => {
 		});
 
 		it('should handle Tashfeer with Alef, Waw, and Yaa variants', () => {
-			const sentence = 'أحمد يؤمن بالرئيس';
+			const sentence = 'وفي النفس حاجات إذا لم يقل بها فؤادي كفاني أن دمعي قائل';
 			const result = tashfeer(sentence, 2);
 			expect(result).toBeDefined();
 			expect(result.length).toBeGreaterThan(0);
