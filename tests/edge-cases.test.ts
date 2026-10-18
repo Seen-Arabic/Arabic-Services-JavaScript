@@ -8,6 +8,7 @@ import {
 	tashfeerBannedWords,
 	wordToLetters,
 	removeArabicAffixes,
+	setCharAt,
 } from '../src';
 
 describe('Arabic NLP Edge Cases & Robustness', () => {
@@ -44,6 +45,10 @@ describe('Arabic NLP Edge Cases & Robustness', () => {
 			const res = removeArabicAffixes(sentence);
 			expect(res).toContain('موظف');
 			expect(res).toContain('عمل');
+		});
+
+		it('should return original string when index is out of bounds in setCharAt', () => {
+			expect(setCharAt('كتاب', 10, 'ـ')).toBe('كتاب');
 		});
 	});
 
@@ -101,6 +106,12 @@ describe('Arabic NLP Edge Cases & Robustness', () => {
 		});
 
 		it('should handle Tashfeer with Alef, Waw, and Yaa variants', () => {
+			['أ', 'ؤ', 'ئ'].forEach((char) => {
+				const singleCharResult = tashfeer(char, 1);
+				expect(singleCharResult).toBeDefined();
+				expect(singleCharResult.length).toBeGreaterThan(0);
+			});
+
 			const sentence = 'وفي النفس حاجات إذا لم يقل بها فؤادي كفاني أن دمعي قائل';
 			const result = tashfeer(sentence, 2);
 			expect(result).toBeDefined();
