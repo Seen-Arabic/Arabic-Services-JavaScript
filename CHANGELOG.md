@@ -6,6 +6,11 @@
 - Integration tests for CJS, ESM, and browser UMD artifacts.
 - Arabic NLP boundary and ReDoS resilience test suites.
 - Direct CDN links (jsdelivr & unpkg) and GitHub release bundle guide in documentation.
+- `AffixOptions` interface for configuring `minStemLength` and prefix/suffix stripping flags.
+
+### Fixed
+- Fixed destructive affix stripping in `removeArabicAffixes` by introducing minimum stem length constraint (`minStemLength >= 3`) to protect root letters, supporting compound prefixes (`بال`, `كال`, `ولل`), and preventing mangling of common words like "بيت" and "تفاح" (fixes [#26](https://github.com/Seen-Arabic/Arabic-Services-JavaScript/issues/26)).
+- Improved banned word detection in `tashfeerBannedWords` to verify both raw and stripped word similarity.
 
 ### Changed
 - Modularized monolithic `src/scripts/scripts.ts` into focused single-responsibility files (`tashkeel.ts`, `old-arabic.ts`, `tashfeer.ts`, `affixes.ts`, `letters.ts`) while keeping public exports and backward compatibility completely unchanged.

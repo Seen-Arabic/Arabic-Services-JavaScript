@@ -32,12 +32,13 @@ describe('Arabic NLP Edge Cases & Robustness', () => {
 		});
 
 		it('should handle words that are shorter than standard affix length', () => {
-			// 'و' is not in ARABIC_PREFIXES so it stays unchanged
+			// 'و' is a single letter so it stays unchanged
 			expect(removeArabicAffixes('و')).toBe('و');
-			// 'ال' is an exact 2-letter prefix and is removed completely
-			expect(removeArabicAffixes('ال')).toBe('');
-			// single letter prefix 'ي'
-			expect(removeArabicAffixes('يقرأ')).toBe('قرأ');
+			// 'ال' is 2 letters; with default minStemLength=3 it is preserved, or stripped when minStemLength=0
+			expect(removeArabicAffixes('ال')).toBe('ال');
+			expect(removeArabicAffixes('ال', { minStemLength: 0 })).toBe('');
+			// Words with root letters are preserved
+			expect(removeArabicAffixes('يقرأ')).toBe('يقرأ');
 		});
 
 		it('should handle sentences with irregular spacing', () => {

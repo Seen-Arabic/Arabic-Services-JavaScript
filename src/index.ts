@@ -19,3 +19,4 @@ export const ArabicServices = {
 export default ArabicServices;
 
 export type { OldArabicOptions };
+export type { AffixOptions } from './scripts/index.js';
