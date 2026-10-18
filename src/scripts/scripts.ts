@@ -76,6 +76,7 @@ export function toOldArabic(sentence: string, option: OldArabicOptions = {}): st
 }
 
 export function toOldArabicAndTashfeerBannedWords(sentence: string, levelOfTashfeer: number = 2): string {
+	validateTashfeerLevel(levelOfTashfeer);
 	let new_sentence = '';
 	const words = sentence.trim().split(' ');
 	for (const word of words) {
@@ -176,12 +177,29 @@ export function removeArabicAffixes(text: string): string {
 }
 
 /**
- * Calculates the encryption level based on the input level and word length.
+ * Validates the encryption level to guarantee bounded execution and prevent infinite loops.
+ * @param {unknown} level - The input encryption level.
+ */
+function validateTashfeerLevel(level: unknown): void {
+	if (typeof level !== 'number') {
+		throw new TypeError('Level of tashfeer must be a number');
+	}
+	if (!Number.isFinite(level) || !Number.isInteger(level) || level < 0) {
+		throw new RangeError('Level of tashfeer must be a non-negative finite integer');
+	}
+}
+
+/**
+ * Calculates the encryption level based on the input level and the length of the word.
+ *
  * @param {number} level - The input encryption level.
  * @param {number} wordLength - The length of the word to be encrypted.
  * @returns {number} The calculated encryption level.
  */
 function calculateEncryptionLevel(level: number, wordLength: number): number {
+	if (wordLength <= 0) {
+		return 0;
+	}
 	// Check if the word length is less than or equal to 4
 	if (wordLength <= 4) {
 		// If so, return the minimum of (1 + level) and the word length
@@ -204,11 +222,16 @@ function calculateEncryptionLevel(level: number, wordLength: number): number {
  * @returns {number[]} An array of random indexes.
  */
 function getRandomIndexes(numOfIndexesToNeeded: number, wordLength: number): number[] {
+	if (wordLength <= 0 || numOfIndexesToNeeded <= 0) {
+		return [];
+	}
+
+	const count = Math.min(numOfIndexesToNeeded, wordLength);
 	// Create a Set to store unique random indexes
 	const randomIndexes = new Set<number>();
 
-	// Continue generating random indexes until the desired number is reached
-	while (randomIndexes.size !== numOfIndexesToNeeded) {
+	// Continue generating random indexes until the desired count is reached
+	while (randomIndexes.size < count) {
 		// Generate a random index within the word length
 		randomIndexes.add(Math.floor(Math.random() * wordLength));
 	}
@@ -299,6 +322,7 @@ function tashfeerHandler(word: string, level: number = 0): string {
  * @returns {string} The encrypted sentence.
  */
 export function tashfeer(sentence: string, levelOfTashfeer: number = 1): string {
+	validateTashfeerLevel(levelOfTashfeer);
 	sentence = sentence.trim();
 	let new_sentence = '';
 	for (const word of sentence.split(' ')) {
@@ -344,6 +368,7 @@ function checkIfBannedWord(string: string): boolean {
  * @returns {string} The encrypted sentence with tashfeer applied to banned words.
  */
 export function tashfeerBannedWords(sentence: string, levelOfTashfeer: number = 2): string {
+	validateTashfeerLevel(levelOfTashfeer);
 	let new_sentence = '';
 	sentence = sentence.trim();
 	for (const word of sentence.split(' ')) {

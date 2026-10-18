@@ -123,6 +123,56 @@ describe('Arabic NLP Edge Cases & Robustness', () => {
 		});
 	});
 
+	describe('Tashfeer Level Validation and Nontermination Prevention (#35)', () => {
+		it('should throw RangeError for negative levels', () => {
+			expect(() => tashfeer('سلام', -2)).toThrow(RangeError);
+			expect(() => tashfeer('سلام', -1)).toThrow(RangeError);
+			expect(() => tashfeerBannedWords('هذا السلاح ممنوع', -1)).toThrow(RangeError);
+			expect(() => toOldArabicAndTashfeerBannedWords('هذا السلاح ممنوع', -2)).toThrow(RangeError);
+		});
+
+		it('should throw RangeError for fractional levels', () => {
+			expect(() => tashfeer('سلام', 0.5)).toThrow(RangeError);
+			expect(() => tashfeer('سلام', 1.2)).toThrow(RangeError);
+			expect(() => tashfeerBannedWords('هذا السلاح ممنوع', 2.5)).toThrow(RangeError);
+			expect(() => toOldArabicAndTashfeerBannedWords('هذا السلاح ممنوع', 0.1)).toThrow(RangeError);
+		});
+
+		it('should throw RangeError for NaN and non-finite levels', () => {
+			expect(() => tashfeer('سلام', NaN)).toThrow(RangeError);
+			expect(() => tashfeer('سلام', Infinity)).toThrow(RangeError);
+			expect(() => tashfeer('سلام', -Infinity)).toThrow(RangeError);
+			expect(() => tashfeerBannedWords('هذا السلاح ممنوع', NaN)).toThrow(RangeError);
+			expect(() => toOldArabicAndTashfeerBannedWords('هذا السلاح ممنوع', Infinity)).toThrow(RangeError);
+		});
+
+		it('should throw TypeError for non-number levels', () => {
+			// @ts-expect-error testing JS caller invalid type
+			expect(() => tashfeer('سلام', '1')).toThrow(TypeError);
+			// @ts-expect-error testing JS caller invalid type
+			expect(() => tashfeer('سلام', null)).toThrow(TypeError);
+			// @ts-expect-error testing JS caller invalid type
+			expect(() => tashfeer('سلام', {})).toThrow(TypeError);
+			// @ts-expect-error testing JS caller invalid type
+			expect(() => tashfeerBannedWords('هذا السلاح ممنوع', '2')).toThrow(TypeError);
+			// @ts-expect-error testing JS caller invalid type
+			expect(() => toOldArabicAndTashfeerBannedWords('هذا السلاح ممنوع', null)).toThrow(TypeError);
+		});
+
+		it('should terminate promptly and handle valid level 0, defaults, and large levels', () => {
+			const start = performance.now();
+			const resDefault = tashfeer('سلام');
+			const res0 = tashfeer('سلام', 0);
+			const resLarge = tashfeer('سلام', 50);
+			const duration = performance.now() - start;
+
+			expect(resDefault).toBeDefined();
+			expect(res0).toBeDefined();
+			expect(resLarge).toBeDefined();
+			expect(duration).toBeLessThan(100);
+		});
+	});
+
 	describe('Performance & ReDoS Resilience', () => {
 		it('should process large texts (50,000+ chars) in under 150ms without catastrophic backtracking', () => {
 			const sampleUnit =
