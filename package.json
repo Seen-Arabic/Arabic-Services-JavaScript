@@ -10,6 +10,7 @@
 	"sideEffects": false,
 	"files": [
 		"dist",
+		"src",
 		"README.md",
 		"README_AR.md",
 		"LICENSE"

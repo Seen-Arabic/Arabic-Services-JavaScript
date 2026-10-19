@@ -45,6 +45,8 @@ jobs:
               with:
                   files: |
                       dist/umd/arabic-services.umd.js
+                      dist/umd/arabic-services.umd.js.map
                       dist/esm/arabic-services.esm.js
+                      dist/esm/arabic-services.esm.js.map
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
