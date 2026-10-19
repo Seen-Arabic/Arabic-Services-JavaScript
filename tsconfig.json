@@ -5,6 +5,8 @@
 		"module": "CommonJS",
 		"strict": true,
 		"declaration": true,
+		"declarationMap": true,
+		"sourceMap": true,
 		"outDir": "./dist",
 		"esModuleInterop": true,
 		"skipLibCheck": true

@@ -6,6 +6,7 @@ module.exports = [
 		// Configuration for UMD bundle
 		entry: './src/index.ts',
 		mode: 'production',
+		devtool: 'source-map',
 		module: {
 			rules: [
 				{
@@ -34,6 +35,7 @@ module.exports = [
 		// Configuration for ESM bundle
 		entry: './src/index.ts',
 		mode: 'production',
+		devtool: 'source-map',
 		module: {
 			rules: [
 				{
