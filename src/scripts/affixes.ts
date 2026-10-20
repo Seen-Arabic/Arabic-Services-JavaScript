@@ -1,47 +1,134 @@
-import { ARABIC_PREFIXES, ARABIC_SUFFIXES } from '../constants/index.js';
-import { setCharAt } from '../utils/index.js';
+/**
+ * Options for configuring affix removal.
+ */
+export interface AffixOptions {
+	/**
+	 * Minimum length of the remaining stem after affix removal.
+	 * Words shorter than or equal to this length will not have affixes removed.
+	 * @default 3
+	 */
+	minStemLength?: number;
+	/**
+	 * Whether to remove common Arabic prefixes (e.g. "ال", "بال", "ولل", "و").
+	 * @default true
+	 */
+	prefixes?: boolean;
+	/**
+	 * Whether to remove common Arabic suffixes (e.g. "ون", "ين", "ات", "هم", "ة").
+	 * @default true
+	 */
+	suffixes?: boolean;
+}
+
+const COMPOUND_PREFIXES = ['كال', 'بال', 'فال', 'وال', 'ولل', 'فلل'];
+const DEFINITE_PREFIXES = ['ال', 'لل'];
+const CONJUNCTION_PREFIXES = ['و'];
+
+const LONG_SUFFIXES = ['تما', 'هما', 'كما'];
+const MEDIUM_SUFFIXES = ['هم', 'هن', 'كم', 'كن', 'نا', 'ها', 'ون', 'ين', 'ات', 'ية'];
+const SHORT_SUFFIXES = ['ة', 'ه', 'ي', 'ى'];
 
 /**
- * Removes predefined affixes (prefixes and suffixes) from an Arabic word if it starts or ends with those affixes.
- * This function is designed specifically for processing Arabic text, where certain affixes might need to be removed
- * for linguistic, stylistic, or morphological reasons.
- *
- * @param {string} word - The Arabic word from which the affixes are to be removed.
- * @returns {string} The word after removing any matching affixes. Returns the original word trimmed if no affix matches are found.
+ * Removes a matching prefix from a word if the remaining stem length satisfies minStemLength.
  */
-function removeArabicAffixesFromWord(word: string): string {
-	word = word.trim();
-	if (ARABIC_PREFIXES.includes(word.substring(0, 2))) {
-		// For: ALEF & LAM
-		word = setCharAt(word, 0, '');
-		word = setCharAt(word, 0, '');
-	} else if (ARABIC_PREFIXES.includes(word.substring(0, 1))) {
-		word = setCharAt(word, 0, '');
+function removePrefix(word: string, minStemLength: number): string {
+	for (const p of COMPOUND_PREFIXES) {
+		if (word.startsWith(p) && word.length - p.length >= minStemLength) {
+			return word.slice(p.length);
+		}
 	}
-
-	if (ARABIC_SUFFIXES.includes(word.substring(word.length - 2))) {
-		word = setCharAt(word, word.length - 1, '');
-		word = setCharAt(word, word.length - 1, '');
-	} else if (ARABIC_SUFFIXES.includes(word[word.length - 1])) {
-		word = setCharAt(word, word.length - 1, '');
+	for (const p of DEFINITE_PREFIXES) {
+		if (word.startsWith(p) && word.length - p.length >= minStemLength) {
+			return word.slice(p.length);
+		}
 	}
-
+	for (const p of CONJUNCTION_PREFIXES) {
+		if (word.startsWith(p) && word.length - p.length >= minStemLength) {
+			return word.slice(p.length);
+		}
+	}
 	return word;
 }
 
 /**
- * Removes predefined affixes (prefixes and suffixes) from an Arabic text if words start or end with those affixes.
- * This function is designed specifically for processing Arabic text, where certain affixes might need to be removed
- * for linguistic, stylistic, or morphological reasons.
- *
- * @param {string} text - The Arabic text from which the affixes are to be removed.
- * @returns {string} The text after removing any matching affixes from each word. Returns the original text trimmed if no affix matches are found.
+ * Removes a matching suffix from a word if the remaining stem length satisfies minStemLength.
  */
-export function removeArabicAffixes(text: string): string {
-	let new_sentence = '';
-	text = text.trim();
-	for (const word of text.split(' ')) {
-		new_sentence += removeArabicAffixesFromWord(word) + ' ';
+function removeSuffix(word: string, minStemLength: number): string {
+	for (const s of LONG_SUFFIXES) {
+		if (word.endsWith(s) && word.length - s.length >= minStemLength) {
+			return word.slice(0, -s.length);
+		}
 	}
-	return new_sentence.trim();
+	for (const s of MEDIUM_SUFFIXES) {
+		if (word.endsWith(s) && word.length - s.length >= minStemLength) {
+			return word.slice(0, -s.length);
+		}
+	}
+	for (const s of SHORT_SUFFIXES) {
+		if (word.endsWith(s) && word.length - s.length >= minStemLength) {
+			return word.slice(0, -s.length);
+		}
+	}
+	return word;
+}
+
+/**
+ * Removes predefined affixes (prefixes and suffixes) from an Arabic word while
+ * preserving a minimum stem length to prevent corrupting root letters.
+ *
+ * @param {string} word - The Arabic word from which affixes are to be removed.
+ * @param {AffixOptions} [options] - Configuration options for affix removal.
+ * @returns {string} The word after removing matching affixes.
+ */
+function removeArabicAffixesFromWord(word: string, options: AffixOptions = {}): string {
+	const minStemLength = options.minStemLength ?? 3;
+	const stripPrefixes = options.prefixes ?? true;
+	const stripSuffixes = options.suffixes ?? true;
+
+	word = word.trim();
+	if (word.length <= minStemLength) {
+		return word;
+	}
+
+	if (stripPrefixes) {
+		word = removePrefix(word, minStemLength);
+	}
+	if (stripSuffixes) {
+		word = removeSuffix(word, minStemLength);
+	}
+	return word;
+}
+
+/**
+ * Removes predefined affixes (prefixes and suffixes) from words in an Arabic text while
+ * preserving minimum stem length to protect root consonants.
+ *
+ * @param {string} text - The Arabic text from which affixes are to be removed.
+ * @param {AffixOptions} [options] - Configuration options for affix removal.
+ * @returns {string} The text after removing matching affixes from each word.
+ *
+ * @example
+ * ```typescript
+ * removeArabicAffixes('المدرسون يخلصون لطلابهم');
+ * // returns 'مدرس يخلص طلاب'
+ * ```
+ */
+export function removeArabicAffixes(text: string, options: AffixOptions = {}): string {
+	if (!text || typeof text !== 'string') {
+		return '';
+	}
+	text = text.trim();
+	if (text.length === 0) {
+		return '';
+	}
+	const words = text.split(' ');
+	const processedWords: string[] = [];
+	for (const word of words) {
+		if (word === '') {
+			processedWords.push('');
+		} else {
+			processedWords.push(removeArabicAffixesFromWord(word, options));
+		}
+	}
+	return processedWords.join(' ');
 }

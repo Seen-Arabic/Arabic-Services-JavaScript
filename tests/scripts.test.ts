@@ -182,52 +182,51 @@ describe('#wordToLetters', () => {
 });
 
 describe('#removeArabicAffixes', () => {
-	it('should remove "أ" prefix from a word', () => {
-		const word = 'أمل';
-		const result = ArabicServices.removeArabicAffixes(word);
-		expect(result).toEqual('مل');
-	});
-
-	it('should remove "ا" prefix & suffix "ة" from a word', () => {
-		const word = 'امرأة';
-		const result = ArabicServices.removeArabicAffixes(word);
-		expect(result).toEqual('مرأ');
-	});
-
-	it('should remove "إ" prefix from a word', () => {
-		const word = 'إنسان';
-		const result = ArabicServices.removeArabicAffixes(word);
-		expect(result).toEqual('نسان');
-	});
-
 	it('should remove "ال" prefix from a word', () => {
 		const word = 'الكتاب';
 		const result = ArabicServices.removeArabicAffixes(word);
 		expect(result).toEqual('كتاب');
 	});
 
-	it('should remove "ي" prefix from a word', () => {
-		const word = 'يوم';
+	it('should remove compound prefix "بال" from a word', () => {
+		const word = 'بالكتاب';
 		const result = ArabicServices.removeArabicAffixes(word);
-		expect(result).toEqual('وم');
+		expect(result).toEqual('كتاب');
 	});
 
-	it('should remove "ت" prefix from a word', () => {
-		const word = 'تفاح';
+	it('should remove compound prefix "كال" from a word', () => {
+		const word = 'كالمطر';
 		const result = ArabicServices.removeArabicAffixes(word);
-		expect(result).toEqual('فاح');
+		expect(result).toEqual('مطر');
 	});
 
-	it('should remove "ن" prefix from a word', () => {
-		const word = 'نجم';
+	it('should remove compound prefix "ولل" from a word', () => {
+		const word = 'وللقدس';
 		const result = ArabicServices.removeArabicAffixes(word);
-		expect(result).toEqual('جم');
+		expect(result).toEqual('قدس');
 	});
 
-	it('should remove "ب" prefix from a word', () => {
-		const word = 'بيت';
+	it('should remove prefix "لل" from a word', () => {
+		const word = 'للمعلمين';
 		const result = ArabicServices.removeArabicAffixes(word);
-		expect(result).toEqual('يت');
+		expect(result).toEqual('معلم');
+	});
+
+	it('should remove conjunction prefix "و" from a word', () => {
+		const word = 'وكتاب';
+		const result = ArabicServices.removeArabicAffixes(word);
+		expect(result).toEqual('كتاب');
+	});
+
+	it('should preserve original root letters and not mangle non-affixed words', () => {
+		expect(ArabicServices.removeArabicAffixes('بيت')).toEqual('بيت');
+		expect(ArabicServices.removeArabicAffixes('تفاح')).toEqual('تفاح');
+		expect(ArabicServices.removeArabicAffixes('أمل')).toEqual('أمل');
+		expect(ArabicServices.removeArabicAffixes('نجم')).toEqual('نجم');
+		expect(ArabicServices.removeArabicAffixes('يوم')).toEqual('يوم');
+		expect(ArabicServices.removeArabicAffixes('إنسان')).toEqual('إنسان');
+		expect(ArabicServices.removeArabicAffixes('كبير')).toEqual('كبير');
+		expect(ArabicServices.removeArabicAffixes('ولد')).toEqual('ولد');
 	});
 
 	it('should remove "ة" suffix from a word', () => {
@@ -278,10 +277,34 @@ describe('#removeArabicAffixes', () => {
 		expect(result).toEqual('طلاب');
 	});
 
-	it('should remove prefix & suffix from a sentence', () => {
+	it('should remove "نا" suffix from a word', () => {
+		const word = 'كتابنا';
+		const result = ArabicServices.removeArabicAffixes(word);
+		expect(result).toEqual('كتاب');
+	});
+
+	it('should remove prefix & suffix from words in a sentence', () => {
 		const word = 'المدرسون يحبون طلابهم';
 		const result = ArabicServices.removeArabicAffixes(word);
-		expect(result).toEqual('مدرس حب طلاب');
+		expect(result).toEqual('مدرس يحب طلاب');
+	});
+
+	it('should remove "هما" suffix from a word', () => {
+		const word = 'كتابهما';
+		const result = ArabicServices.removeArabicAffixes(word);
+		expect(result).toEqual('كتاب');
+	});
+
+	it('should respect custom options when provided', () => {
+		const word = 'الكتاب';
+		expect(ArabicServices.removeArabicAffixes(word, { prefixes: false })).toEqual('الكتاب');
+		expect(ArabicServices.removeArabicAffixes('كتابنا', { suffixes: false })).toEqual('كتابنا');
+		expect(ArabicServices.removeArabicAffixes('كتابة', { minStemLength: 5 })).toEqual('كتابة');
+	});
+
+	it('should handle whitespace-only and invalid input', () => {
+		expect(ArabicServices.removeArabicAffixes('   ')).toEqual('');
+		expect(ArabicServices.removeArabicAffixes(null as unknown as string)).toEqual('');
 	});
 });
 
