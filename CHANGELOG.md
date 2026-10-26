@@ -6,11 +6,32 @@
 - Integration tests for CJS, ESM, and browser UMD artifacts.
 - Arabic NLP boundary and ReDoS resilience test suites.
 - Direct CDN links (jsdelivr & unpkg) and GitHub release bundle guide in documentation.
+- JavaScript source maps and TypeScript declaration maps for CommonJS and native ESM builds, plus source maps for UMD and ESM browser bundles ([PR #40](https://github.com/Seen-Arabic/Arabic-Services-JavaScript/pull/40)).
+- Original TypeScript source files in the npm package and companion browser bundle maps in GitHub release uploads ([PR #40](https://github.com/Seen-Arabic/Arabic-Services-JavaScript/pull/40)).
+- Regression tests for invalid obfuscation levels, Arabic character variants, and out-of-range `setCharAt` indices ([PR #36](https://github.com/Seen-Arabic/Arabic-Services-JavaScript/pull/36), [PR #37](https://github.com/Seen-Arabic/Arabic-Services-JavaScript/pull/37)).
+
+- Automated checks for npm package contents, source/declaration map references, and real tree shaking of built ESM consumers.
 
 ### Changed
 - Modularized monolithic `src/scripts/scripts.ts` into focused single-responsibility files (`tashkeel.ts`, `old-arabic.ts`, `tashfeer.ts`, `affixes.ts`, `letters.ts`) while keeping public exports and backward compatibility completely unchanged.
 - Relocated standalone browser demo to `examples/browser/index.html`.
 - Unified CI workflow across Node.js 22.x and 24.x with ESLint.
+- Expanded lint commands from `src/` to all non-ignored repository files.
+- Declared ES2020 and DOM type libraries in the TypeScript configuration to resolve missing API type diagnostics in editors ([PR #38](https://github.com/Seen-Arabic/Arabic-Services-JavaScript/pull/38)).
+- Updated the npm publishing workflow to Node.js 24.
+- Consolidated agent instructions in `AGENTS.md`.
+
+- Separated source and artifact test commands; `npm test` now builds once between the two suites.
+- Standardized LF line endings, refreshed contribution and PR guidance, and clarified visual-obfuscation terminology.
+- Release publishing now validates the tag/version and runs formatting, lint, and tests before publishing the verified build.
+
+### Fixed
+- Prevent invalid levels from hanging `tashfeer`, `tashfeerBannedWords`, and `toOldArabicAndTashfeerBannedWords`: non-number values throw `TypeError`; negative, fractional, and non-finite numbers throw `RangeError`. Random-index generation handles empty input and caps the requested count at the word length ([#35](https://github.com/Seen-Arabic/Arabic-Services-JavaScript/issues/35), [PR #36](https://github.com/Seen-Arabic/Arabic-Services-JavaScript/pull/36)).
+- Attempt browser bundle uploads after a successful build even if npm publishing fails ([commit 598035a](https://github.com/Seen-Arabic/Arabic-Services-JavaScript/commit/598035a)).
+
+- Removed the unused `dev` command, which depended on the uninstalled `ts-node` runner.
+
+[Full Changelog](https://github.com/Seen-Arabic/Arabic-Services-JavaScript/compare/v1.1.0...main)
 
 ## [1.1.0](https://github.com/Seen-Arabic/Arabic-Services-JavaScript/releases/tag/v1.1.0) - 2026-10-14 (03 Jumada al-Awwal 1448)
 

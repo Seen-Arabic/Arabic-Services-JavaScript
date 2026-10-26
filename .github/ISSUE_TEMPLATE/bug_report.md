@@ -26,9 +26,9 @@ assignees: ''
 
 يرجى توضيح البيئة التي كنت تستخدمها عند حدوث المشكلة. يمكن ذلك أن يشمل:
 
--   بيئة التشغيل (مثل Node.js 22.x، أو المتصفح Chrome، أو Next.js / Vite)
--   إصدار الحزمة arabic-services (مثل 1.1.0)
--   نظام التشغيل (مثل Windows أو Linux أو macOS)
+- بيئة التشغيل (مثل Node.js 22.x، أو المتصفح Chrome، أو Next.js / Vite)
+- إصدار الحزمة arabic-services (مثل 1.1.0)
+- نظام التشغيل (مثل Windows أو Linux أو macOS)
 
 ## السلوك المتوقع (Expected Behavior)
 

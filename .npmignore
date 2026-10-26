@@ -1,7 +1,6 @@
 # Testing
-__tests__/
+tests/
 coverage/
-jest.config.js
 *.test.ts
 *.test.ts.snap
 

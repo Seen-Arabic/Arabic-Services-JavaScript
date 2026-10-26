@@ -29,15 +29,17 @@
 		"./package.json": "./package.json"
 	},
 	"scripts": {
-		"dev": "ts-node src/index.ts",
 		"build:cjs": "tsc -p tsconfig.json",
 		"build:esm": "tsc -p tsconfig.esm.json && node -e \"fs.writeFileSync('dist/esm/package.json', JSON.stringify({ type: 'module', sideEffects: false }))\"",
 		"build": "npm run clean && npm run build:cjs && npm run build:esm && npm run bundle",
 		"clean": "node -e \"fs.rmSync('dist', { recursive: true, force: true })\"",
-		"test": "vitest run --coverage",
+		"test": "npm run test:unit && npm run build && npm run test:artifacts",
+		"test:unit": "vitest run --coverage",
+		"test:artifacts": "vitest run --mode artifacts",
 		"test:watch": "vitest",
 		"prepublishOnly": "npm run build",
-		"format": "npx prettier --write . --ignore-path .gitignore",
+		"format": "prettier --write . --ignore-path .gitignore --ignore-path .prettierignore",
+		"format:check": "prettier --check . --ignore-path .gitignore --ignore-path .prettierignore",
 		"lint": "eslint . --quiet",
 		"lint:fix": "eslint . --fix",
 		"bundle": "webpack"

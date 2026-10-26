@@ -1,4 +1,4 @@
-import { ArabicServices } from '../dist';
+import { ArabicServices } from '../src';
 
 describe('#removeTashkeel()', () => {
 	describe('Test with Poetry Text', () => {
@@ -125,7 +125,7 @@ describe('#toOldArabic()', () => {
 });
 
 describe('#toOldArabicAndTashfeerBannedWords()', () => {
-	it('should perform tashfeer encryption on banned words only and convert the rest to old arabic script', () => {
+	it('should perform tashfeer obfuscation on banned words only and convert the rest to old arabic script', () => {
 		const sentence = 'جيش العدو يقتل الأطفال';
 		const result = ArabicServices.toOldArabicAndTashfeerBannedWords(sentence);
 		expect(result).not.toEqual(sentence);
@@ -324,7 +324,7 @@ describe('#similarityScore', () => {
 });
 
 describe('#tashfeerBannedWords', () => {
-	it('should perform tashfeer encryption on banned words only', () => {
+	it('should perform tashfeer obfuscation on banned words only', () => {
 		const sentence = 'جيش العدو يقتل الأطفال';
 		const result = ArabicServices.tashfeerBannedWords(sentence);
 		expect(result).not.toEqual(sentence);
@@ -334,7 +334,7 @@ describe('#tashfeerBannedWords', () => {
 		expect(result).not.toMatch(/يقتل/);
 	});
 
-	it('should not perform tashfeer encryption on non-banned words', () => {
+	it('should not perform tashfeer obfuscation on non-banned words', () => {
 		const sentence = 'هذه جملة غير مشفرة';
 		const result = ArabicServices.tashfeerBannedWords(sentence);
 		expect(result).toEqual(sentence);

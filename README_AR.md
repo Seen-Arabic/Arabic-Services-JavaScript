@@ -23,7 +23,7 @@
 <a href="https://github.com/Seen-Arabic/Arabic-Services-JavaScript/stargazers">
 <img src="https://img.shields.io/github/stars/Seen-Arabic/Arabic-Services-JavaScript"/>
 </a>
-<a href="https://github.com/Seen-Arabic/Arabic-Services-JavaScript/blob/master/LICENSE">
+<a href="https://github.com/Seen-Arabic/Arabic-Services-JavaScript/blob/main/LICENSE">
 <img src="https://img.shields.io/github/license/Seen-Arabic/Arabic-Services-JavaScript"/>
 </a>
 <a href="https://github.com/Seen-Arabic/Arabic-Services-JavaScript/actions/workflows/ci.yml">
@@ -76,7 +76,7 @@ npm install arabic-services
 
 #### نظام ES Module ودعم Tree Shaking (موصى به):
 
-استيراد الدوال التي تحتاجها فقط لتقليل حجم الحزمة إلى أدنى حد (أقل من 400 بايت للدالة):
+استيراد الدوال التي تحتاجها فقط لتقليل حجم الحزمة:
 
 ```javascript
 import { removeTashkeel, removeTatweel, toOldArabic } from 'arabic-services';

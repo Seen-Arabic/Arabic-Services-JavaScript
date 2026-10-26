@@ -12,8 +12,8 @@ import { removeArabicAffixes } from './affixes.js';
 import { toOldArabic } from './old-arabic.js';
 
 /**
- * Validates the encryption level to guarantee bounded execution and prevent infinite loops.
- * @param {unknown} level - The input encryption level.
+ * Rejects invalid obfuscation levels before random-index generation.
+ * @param {unknown} level - The input obfuscation level.
  */
 function validateTashfeerLevel(level: unknown): void {
 	if (typeof level !== 'number') {
@@ -25,11 +25,11 @@ function validateTashfeerLevel(level: unknown): void {
 }
 
 /**
- * Calculates the encryption level based on the input level and the length of the word.
+ * Calculates the obfuscation level based on the input level and the length of the word.
  *
- * @param {number} level - The input encryption level.
- * @param {number} wordLength - The length of the word to be encrypted.
- * @returns {number} The calculated encryption level.
+ * @param {number} level - The input obfuscation level.
+ * @param {number} wordLength - The length of the word to be obfuscated.
+ * @returns {number} The calculated obfuscation level.
  */
 function calculateEncryptionLevel(level: number, wordLength: number): number {
 	if (wordLength <= 0) {
@@ -51,7 +51,7 @@ function calculateEncryptionLevel(level: number, wordLength: number): number {
 }
 
 /**
- * Generates a list of random indexes for encryption.
+ * Generates a list of random indexes for obfuscation.
  * @param {number} numOfIndexesToNeeded - The number of random indexes to generate.
  * @param {number} wordLength - The length of the word.
  * @returns {number[]} An array of random indexes.
@@ -76,10 +76,10 @@ function getRandomIndexes(numOfIndexesToNeeded: number, wordLength: number): num
 }
 
 /**
- * Processes the word for encryption using random indexes.
- * @param {string} word - The word to be encrypted.
- * @param {number[]} randomIndexes - The random indexes for encryption.
- * @returns {string} The encrypted word.
+ * Processes the word for obfuscation using random indexes.
+ * @param {string} word - The word to be obfuscated.
+ * @param {number[]} randomIndexes - The random indexes for obfuscation.
+ * @returns {string} The obfuscated word.
  */
 function tashfeerWord(word: string, randomIndexes: number[]): string {
 	let outputWord = '';
@@ -98,7 +98,7 @@ function tashfeerWord(word: string, randomIndexes: number[]): string {
 				outputWord += 'ـ';
 			}
 
-			// Add the replacement letter to the encrypted word
+			// Add the replacement letter to the obfuscated word
 			outputWord += letter;
 		} else {
 			// If the character doesn't need to be replaced, add it as it is
@@ -135,27 +135,27 @@ function tashfeerCharacter(character: string): string {
 }
 
 /**
- * Performs tashfeer encryption on a given word.
- * @param {string} word - The input word to be encrypted.
- * @param {number} [level=0] - The encryption level (default is 0).
- * @returns {string} The encrypted word.
+ * Performs tashfeer obfuscation on a given word.
+ * @param {string} word - The input word to be obfuscated.
+ * @param {number} [level=0] - The obfuscation level (default is 0).
+ * @returns {string} The obfuscated word.
  */
 function tashfeerHandler(word: string, level: number = 0): string {
 	const wordLength = word.length;
-	// Calculate the encryption level based on the input level and word length
+	// Calculate the obfuscation level based on the input level and word length
 	const n = calculateEncryptionLevel(level, wordLength);
-	// Generate a list of random indexes for encryption
+	// Generate a list of random indexes for obfuscation
 	const randomIndexes = getRandomIndexes(n, wordLength);
-	// Process the word for encryption using random indexes
+	// Process the word for obfuscation using random indexes
 	const outputWord = tashfeerWord(word, randomIndexes);
 	return outputWord;
 }
 
 /**
- * Performs tashfeer encryption on a given sentence.
- * @param {string} sentence - The input sentence to be encrypted.
- * @param {number} [levelOfTashfeer=1] - The encryption level.
- * @returns {string} The encrypted sentence.
+ * Performs tashfeer obfuscation on a given sentence.
+ * @param {string} sentence - The input sentence to be obfuscated.
+ * @param {number} [levelOfTashfeer=1] - The obfuscation level.
+ * @returns {string} The obfuscated sentence.
  */
 export function tashfeer(sentence: string, levelOfTashfeer: number = 1): string {
 	validateTashfeerLevel(levelOfTashfeer);
@@ -196,12 +196,12 @@ function checkIfBannedWord(string: string): boolean {
 }
 
 /**
- * Performs tashfeer encryption on a given sentence, but only for words that are considered "banned" words.
+ * Performs tashfeer obfuscation on a given sentence, but only for words that are considered "banned" words.
  * Banned words are determined based on a predefined similarity ratio.
  *
- * @param {string} sentence - The input sentence to be encrypted.
- * @param {number} [levelOfTashfeer=2] - The encryption level (default is 2).
- * @returns {string} The encrypted sentence with tashfeer applied to banned words.
+ * @param {string} sentence - The input sentence to be obfuscated.
+ * @param {number} [levelOfTashfeer=2] - The obfuscation level (default is 2).
+ * @returns {string} The obfuscated sentence with tashfeer applied to banned words.
  */
 export function tashfeerBannedWords(sentence: string, levelOfTashfeer: number = 2): string {
 	validateTashfeerLevel(levelOfTashfeer);
@@ -220,7 +220,7 @@ export function tashfeerBannedWords(sentence: string, levelOfTashfeer: number = 
 /**
  * Converts a sentence to old Arabic script and applies tashfeer to banned words.
  * @param {string} sentence - The input sentence.
- * @param {number} [levelOfTashfeer=2] - The encryption level (default is 2).
+ * @param {number} [levelOfTashfeer=2] - The obfuscation level (default is 2).
  * @returns {string} The processed sentence.
  */
 export function toOldArabicAndTashfeerBannedWords(sentence: string, levelOfTashfeer: number = 2): string {
