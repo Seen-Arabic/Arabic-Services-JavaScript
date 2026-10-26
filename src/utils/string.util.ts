@@ -12,13 +12,17 @@ export function setCharAt(str: string, index: number, chr: string): string {
 }
 
 /**
- * Calculates a similarity score between two strings, potentially based on their edit distance.
+ * Calculates a case-insensitive similarity score using Levenshtein distance over UTF-16 code units.
+ * Both the distance and string lengths are measured after lowercasing.
  *
  * @param {string} s1 - The first string to compare.
  * @param {string} s2 - The second string to compare.
  * @returns {number} A similarity score representing how similar the two strings are. The score is between 0 and 1.
  */
 export function similarityScore(s1: string, s2: string): number {
+	s1 = s1.toLowerCase();
+	s2 = s2.toLowerCase();
+
 	let longer = s1;
 	let shorter = s2;
 	// swap them if s1 is bigger than s2
@@ -45,9 +49,6 @@ export function similarityScore(s1: string, s2: string): number {
  * @returns {number} The edit distance between the two strings.
  */
 function editDistance(s1: string, s2: string): number {
-	s1 = s1.toLowerCase();
-	s2 = s2.toLowerCase();
-
 	const costs = new Array<number>();
 	for (let i = 0; i <= s1.length; i++) {
 		let lastValue = i;

@@ -286,6 +286,17 @@ describe('#removeArabicAffixes', () => {
 });
 
 describe('#similarityScore', () => {
+	it.each([
+		['İ', 'a', 0],
+		['İ', 'i', 0.5],
+		['İ', '', 0],
+		['İ', 'i\u0307', 1],
+		['A', 'a', 1],
+	])('should score %j and %j as %s after case conversion in either order', (left, right, expected) => {
+		expect(ArabicServices.utils.similarityScore(left, right)).toBe(expected);
+		expect(ArabicServices.utils.similarityScore(right, left)).toBe(expected);
+	});
+
 	it('should return 1 for identical strings', () => {
 		const s1 = 'مرحبا';
 		const s2 = 'مرحبا';

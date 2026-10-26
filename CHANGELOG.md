@@ -26,6 +26,7 @@
 - Release publishing now validates the tag/version and runs formatting, lint, and tests before publishing the verified build.
 
 ### Fixed
+- Calculate `similarityScore` lengths and edit distance after lowercasing so Unicode case expansion cannot produce negative scores or incorrect similarity ratios.
 - Prevent invalid levels from hanging `tashfeer`, `tashfeerBannedWords`, and `toOldArabicAndTashfeerBannedWords`: non-number values throw `TypeError`; negative, fractional, and non-finite numbers throw `RangeError`. Random-index generation handles empty input and caps the requested count at the word length ([#35](https://github.com/Seen-Arabic/Arabic-Services-JavaScript/issues/35), [PR #36](https://github.com/Seen-Arabic/Arabic-Services-JavaScript/pull/36)).
 - Attempt browser bundle uploads after a successful build even if npm publishing fails ([commit 598035a](https://github.com/Seen-Arabic/Arabic-Services-JavaScript/commit/598035a)).
 
