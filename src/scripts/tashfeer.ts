@@ -192,7 +192,7 @@ function bannedSimilarityRatio(string: string): number {
  */
 function checkIfBannedWord(string: string): boolean {
 	const std_ratio = 70;
-	return bannedSimilarityRatio(removeArabicAffixes(string)) >= std_ratio;
+	return BANNED_WORDS.includes(string) || bannedSimilarityRatio(removeArabicAffixes(string)) >= std_ratio;
 }
 
 /**

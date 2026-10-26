@@ -335,6 +335,14 @@ describe('#similarityScore', () => {
 });
 
 describe('#tashfeerBannedWords', () => {
+	it.each(['فلسطين', 'غزة', 'حرية'])('should obfuscate %s while preserving surrounding non-banned words', (word) => {
+		const sentence = `هذه ${word} جميلة`;
+		const obfuscated = ArabicServices.tashfeerBannedWords(sentence);
+		expect(obfuscated).not.toContain(word);
+		expect(obfuscated.startsWith('هذه ')).toBe(true);
+		expect(obfuscated.endsWith(' جميلة')).toBe(true);
+	});
+
 	it('should perform tashfeer obfuscation on banned words only', () => {
 		const sentence = 'جيش العدو يقتل الأطفال';
 		const result = ArabicServices.tashfeerBannedWords(sentence);
