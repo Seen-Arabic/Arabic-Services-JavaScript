@@ -16,7 +16,9 @@ A zero-runtime-dependency TypeScript library for Arabic text in Node.js and brow
 - Respect Unicode code points, UTF-16 indices and combining marks. Make lossy normalization explicit.
 - Do not describe affix stripping as morphological analysis or visual obfuscation as encryption.
 - Add focused regression tests for behavior changes, including mixed scripts, empty input and adversarial regex cases where relevant.
+- Preserve intentional randomness in visual obfuscation; make randomized tests reproducible without changing production behavior.
 - Update affected English/Arabic docs and release notes. Follow existing contribution conventions.
+- Use Conventional Commits and record notable changes under `[Unreleased]` in `CHANGELOG.md`.
 - Document actual APIs and commands; clearly label proposed features. Do not invent capabilities or performance claims.
 - Verify third-party licenses; do not copy implementations or expose secrets/private input.
 - Do not manually edit generated output or lockfiles unless requested. Ask before commits, pushes, publishing or destructive operations.
@@ -24,7 +26,9 @@ A zero-runtime-dependency TypeScript library for Arabic text in Node.js and brow
 ## Validation
 
 - Use installed tools; start with the narrowest relevant lint, type or test check, then broaden when justified. Current scripts include `npm run lint` and `npm test`.
+- Use `npm run test:unit` for source tests without a build. `npm test` runs source tests, builds once, then runs `test:artifacts` against compiled files and package contents.
 - For export/build changes, verify fresh package artifacts and declarations through CJS, ESM and browser consumers; source tests alone are insufficient. Inspect build/cleanup scripts first.
 - Check bundle size and tree-shaking when changing imports, exports or dependencies; measure before claiming improvements.
 - For documentation-only changes, check formatting and references without building. Avoid autofix during read-only reviews.
+- Preserve published changelog entries and both Gregorian and Hijri dates; add new release notes under `[Unreleased]` only. Exclude `CHANGELOG.md` from bulk formatting.
 - Review the final diff. Report exact checks, results and skipped validation; distinguish evidence from assumptions.

@@ -1,4 +1,4 @@
-import { execSync } from 'node:child_process';
+import { execFileSync, execSync } from 'node:child_process';
 import * as fs from 'node:fs';
 import { createRequire } from 'node:module';
 import * as path from 'node:path';
@@ -43,7 +43,7 @@ describe('Package Artifacts & Module Integrity', () => {
 
 	it('should support standalone CommonJS require() in isolated Node.js process', () => {
 		const script = `
-			const { removeTashkeel, toOldArabic, ArabicServices } = require('./dist');
+			const { removeTashkeel, toOldArabic, ArabicServices } = require('arabic-services');
 			const res1 = removeTashkeel('مَرْحَبًا');
 			const res2 = ArabicServices.removeTatweel('رائـــــع');
 			console.log(JSON.stringify({ res1, res2, hasToOldArabic: typeof toOldArabic === 'function' }));
@@ -60,7 +60,7 @@ describe('Package Artifacts & Module Integrity', () => {
 
 	it('should support standalone ES Module import in isolated Node.js process', () => {
 		const script = `
-			import { removeTashkeel, toOldArabic, ArabicServices } from './dist/esm/index.js';
+			import { removeTashkeel, toOldArabic, ArabicServices } from 'arabic-services';
 			const res1 = removeTashkeel('مَرْحَبًا');
 			const res2 = ArabicServices.removeTatweel('رائـــــع');
 			console.log(JSON.stringify({ res1, res2, hasToOldArabic: typeof toOldArabic === 'function' }));
@@ -105,7 +105,7 @@ describe('Package Artifacts & Module Integrity', () => {
 
 	it('should support in-process CommonJS loading via Node.js createRequire()', () => {
 		const nodeRequire = createRequire(import.meta.url);
-		const cjsDist = nodeRequire('../dist');
+		const cjsDist = nodeRequire('arabic-services');
 
 		expect(cjsDist).toBeDefined();
 		expect(typeof cjsDist.removeTashkeel).toBe('function');
@@ -120,9 +120,57 @@ describe('Package Artifacts & Module Integrity', () => {
 		expect(typeof window).toBe('undefined');
 		expect(typeof document).toBe('undefined');
 
-		const dist = await import('../dist');
+		const dist = await import('arabic-services');
 		expect(dist.removeTashkeel('فَحَصَ')).toBe('فحص');
 		expect(dist.removeTatweel('مـلـف')).toBe('ملف');
 		expect(dist.toOldArabic('بَيْت')).toBe('ٮىٮ');
 	});
+
+	it('should package entry points and source maps with resolvable original sources', () => {
+		const npmCli = process.env.npm_execpath;
+		if (!npmCli) throw new Error('Run package checks through npm run test:artifacts');
+		const [pack] = JSON.parse(
+			execFileSync(process.execPath, [npmCli, 'pack', '--dry-run', '--ignore-scripts', '--json'], {
+				cwd: rootDir,
+				encoding: 'utf8',
+				timeout: 10_000,
+			}),
+		) as [{ files: { path: string }[] }];
+		const files = new Set(pack.files.map((file) => file.path));
+		for (const entry of [packageJson.main, packageJson.module, packageJson.types, packageJson.unpkg]) {
+			expect(files.has(entry.replace(/^\.\//, '')), `Packaged entry point: ${entry}`).toBe(true);
+		}
+		expect([...files].some((file) => /^(tests|coverage|\.github)\//.test(file))).toBe(false);
+		for (const source of fs.readdirSync(path.join(rootDir, 'src'), { recursive: true })) {
+			if (typeof source === 'string' && source.endsWith('.ts')) {
+				expect(files.has(`src/${source.replaceAll(path.sep, '/')}`), `Packaged source: ${source}`).toBe(true);
+			}
+		}
+
+		for (const file of files) {
+			if (!file.startsWith('dist/') || (!file.endsWith('.js') && !file.endsWith('.d.ts'))) continue;
+			const output = fs.readFileSync(path.join(rootDir, file), 'utf8');
+			const mapName = output.match(/\/\/# sourceMappingURL=(.+)/)?.[1].trim();
+			if (!mapName) throw new Error(`Missing source map reference: ${file}`);
+			const mapPath = path.posix.join(path.posix.dirname(file), mapName);
+			expect(files.has(mapPath), `Packaged map: ${mapPath}`).toBe(true);
+			const map = JSON.parse(fs.readFileSync(path.join(rootDir, mapPath), 'utf8')) as {
+				version: number;
+				file: string;
+				sourceRoot?: string;
+				sources: string[];
+				sourcesContent?: (string | null)[];
+				mappings: string;
+			};
+			expect(map.version).toBe(3);
+			expect(map.mappings.length, `Mappings: ${mapPath}`).toBeGreaterThan(0);
+			expect(path.posix.join(path.posix.dirname(mapPath), map.file)).toBe(file);
+			expect(map.sources.length, `Original sources: ${mapPath}`).toBeGreaterThan(0);
+			map.sources.forEach((source, index) => {
+				if (typeof map.sourcesContent?.[index] === 'string') return;
+				const sourcePath = path.posix.join(path.posix.dirname(mapPath), map.sourceRoot ?? '', source);
+				expect(files.has(sourcePath), `Original source for ${mapPath}: ${sourcePath}`).toBe(true);
+			});
+		}
+	}, 15_000);
 });

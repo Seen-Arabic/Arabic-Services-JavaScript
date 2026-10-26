@@ -26,7 +26,7 @@ Can be used in Node.js and the browser.
 <a href="https://github.com/Seen-Arabic/Arabic-Services-JavaScript/stargazers">
 <img src="https://img.shields.io/github/stars/Seen-Arabic/Arabic-Services-JavaScript"/>
 </a>
-<a href="https://github.com/Seen-Arabic/Arabic-Services-JavaScript/blob/master/LICENSE">
+<a href="https://github.com/Seen-Arabic/Arabic-Services-JavaScript/blob/main/LICENSE">
 <img src="https://img.shields.io/github/license/Seen-Arabic/Arabic-Services-JavaScript"/>
 </a>
 <a href="https://github.com/Seen-Arabic/Arabic-Services-JavaScript/actions/workflows/ci.yml">

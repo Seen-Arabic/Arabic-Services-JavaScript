@@ -1,4 +1,8 @@
 import { execSync } from 'node:child_process';
+import * as fs from 'node:fs';
+import * as path from 'node:path';
+import * as vm from 'node:vm';
+import webpack from 'webpack';
 import ArabicServicesDefault, {
 	ArabicServices,
 	removeTashkeel,
@@ -6,7 +10,7 @@ import ArabicServicesDefault, {
 	toOldArabic,
 	TASHKEEL,
 	setCharAt,
-} from '../dist';
+} from '../dist/esm/index.js';
 
 describe('Tree Shaking & Named Exports', () => {
 	it('should support direct named export of functions', () => {
@@ -44,4 +48,50 @@ describe('Tree Shaking & Named Exports', () => {
 		expect(result.hasArabicServices).toBe('object');
 		expect(result.sampleResult).toBe('مرحبا');
 	});
+
+	it('should omit unused APIs when bundling a single named import', async () => {
+		const tempDir = fs.mkdtempSync(path.join(path.resolve(__dirname, '..'), '.tree-shaking-'));
+		const entryPoint = JSON.stringify('arabic-services');
+		try {
+			fs.writeFileSync(
+				path.join(tempDir, 'single.mjs'),
+				`import { removeTashkeel } from ${entryPoint}; globalThis.result = removeTashkeel('مَرْحَبًا');`,
+			);
+			fs.writeFileSync(
+				path.join(tempDir, 'full.mjs'),
+				`import { ArabicServices } from ${entryPoint}; globalThis.result = ArabicServices;`,
+			);
+			await new Promise<void>((resolve, reject) => {
+				webpack(
+					{
+						mode: 'production',
+						entry: { single: path.join(tempDir, 'single.mjs'), full: path.join(tempDir, 'full.mjs') },
+						output: { path: path.join(tempDir, 'output'), filename: '[name].js' },
+						devtool: false,
+					},
+					(error, stats) => {
+						if (error) reject(error);
+						else if (!stats || stats.hasErrors())
+							reject(new Error(stats?.toString({ all: false, errors: true })));
+						else resolve();
+					},
+				);
+			});
+			const singleBundle = fs.readFileSync(path.join(tempDir, 'output/single.js'), 'utf8');
+			const fullBundle = fs.readFileSync(path.join(tempDir, 'output/full.js'), 'utf8');
+			const singleContext = { result: undefined };
+			const fullContext = { result: undefined };
+			vm.runInNewContext(singleBundle, singleContext);
+			vm.runInNewContext(fullBundle, fullContext);
+			expect(singleContext.result).toBe('مرحبا');
+			expect(fullContext.result).toHaveProperty('tashfeerBannedWords', expect.any(Function));
+			expect(singleBundle).not.toContain('tashfeerBannedWords');
+			expect(Buffer.byteLength(singleBundle)).toBeLessThan(Buffer.byteLength(fullBundle) / 2);
+			console.info(
+				`Minified consumer bundles: single=${Buffer.byteLength(singleBundle)} B, full=${Buffer.byteLength(fullBundle)} B`,
+			);
+		} finally {
+			fs.rmSync(tempDir, { recursive: true, force: true });
+		}
+	}, 15_000);
 });

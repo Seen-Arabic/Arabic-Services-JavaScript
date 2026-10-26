@@ -15,6 +15,7 @@ Thumbs.db
 
 # Test results and coverage
 coverage/
+.tree-shaking-*/
 *.test.ts.snap
 
 # Environment variables
