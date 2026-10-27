@@ -8,7 +8,7 @@ import {
 	YAA,
 } from '../constants/arabic-letters.js';
 import { similarityScore } from '../utils/index.js';
-import { removeArabicAffixes } from './affixes.js';
+import { removeArabicAffixesFromWord } from './affixes.js';
 import { toOldArabic } from './old-arabic.js';
 
 /**
@@ -192,7 +192,7 @@ function bannedSimilarityRatio(string: string): number {
  */
 function checkIfBannedWord(string: string): boolean {
 	const std_ratio = 70;
-	return BANNED_WORDS.includes(string) || bannedSimilarityRatio(removeArabicAffixes(string)) >= std_ratio;
+	return BANNED_WORDS.includes(string) || bannedSimilarityRatio(removeArabicAffixesFromWord(string)) >= std_ratio;
 }
 
 /**

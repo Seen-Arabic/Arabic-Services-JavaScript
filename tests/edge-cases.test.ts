@@ -34,8 +34,8 @@ describe('Arabic NLP Edge Cases & Robustness', () => {
 		it('should handle words that are shorter than standard affix length', () => {
 			// 'و' is not in ARABIC_PREFIXES so it stays unchanged
 			expect(removeArabicAffixes('و')).toBe('و');
-			// 'ال' is an exact 2-letter prefix and is removed completely
-			expect(removeArabicAffixes('ال')).toBe('');
+			// Keep the original when removing the prefix would leave no Arabic letters.
+			expect(removeArabicAffixes('ال')).toBe('ال');
 			// single letter prefix 'ي'
 			expect(removeArabicAffixes('يقرأ')).toBe('قرأ');
 		});

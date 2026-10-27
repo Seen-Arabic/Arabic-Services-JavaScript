@@ -42,7 +42,7 @@ Can be used in Node.js and the browser.
 - **Convert To Old Arabic And Tashfeer Banned Words**: Transform Arabic text into old script and replace Banned Arabic text with visually similar characters for encoding purposes. (Banned words are words that considered as hate speech in social media)
 - **Tashfeer**: Replaces Arabic text with visually similar characters for encoding purposes.
 - **Tashfeer Banned Words**: Replaces Banned Arabic text with visually similar characters for encoding purposes. (Banned words are words that considered as hate speech in social media)
-- **Remove Arabic Affixes**: Removes predefined affixes (prefixes and suffixes) from an Arabic word if it starts or ends with those affixes.
+- **Remove Arabic Affixes**: Removes listed prefixes and suffixes from letter/mark/number sequences, preserving interior whitespace, punctuation, and symbols. Retains the original word when the complete result has fewer than three Arabic letters. This heuristic can retain legitimate two-letter stems (e.g. `اليد` stays `اليد`) and still strip original letters in longer words; it is not morphological analysis. This function requires Unicode property escape support; other APIs do not acquire that requirement on import. Banned-word matching retains its previous stripping rules.
 - **Word To Letters**: Convert Arabic word to its pronounced letters.
 - ... and more!
 

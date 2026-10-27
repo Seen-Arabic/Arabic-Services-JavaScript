@@ -182,10 +182,10 @@ describe('#wordToLetters', () => {
 });
 
 describe('#removeArabicAffixes', () => {
-	it('should remove "أ" prefix from a word', () => {
+	it('should preserve a word when removing "أ" leaves fewer than three Arabic letters', () => {
 		const word = 'أمل';
 		const result = ArabicServices.removeArabicAffixes(word);
-		expect(result).toEqual('مل');
+		expect(result).toEqual('أمل');
 	});
 
 	it('should remove "ا" prefix & suffix "ة" from a word', () => {
@@ -206,10 +206,10 @@ describe('#removeArabicAffixes', () => {
 		expect(result).toEqual('كتاب');
 	});
 
-	it('should remove "ي" prefix from a word', () => {
+	it('should preserve a word when removing "ي" leaves fewer than three Arabic letters', () => {
 		const word = 'يوم';
 		const result = ArabicServices.removeArabicAffixes(word);
-		expect(result).toEqual('وم');
+		expect(result).toEqual('يوم');
 	});
 
 	it('should remove "ت" prefix from a word', () => {
@@ -218,16 +218,16 @@ describe('#removeArabicAffixes', () => {
 		expect(result).toEqual('فاح');
 	});
 
-	it('should remove "ن" prefix from a word', () => {
+	it('should preserve a word when removing "ن" leaves fewer than three Arabic letters', () => {
 		const word = 'نجم';
 		const result = ArabicServices.removeArabicAffixes(word);
-		expect(result).toEqual('جم');
+		expect(result).toEqual('نجم');
 	});
 
-	it('should remove "ب" prefix from a word', () => {
+	it('should preserve a word when removing "ب" leaves fewer than three Arabic letters', () => {
 		const word = 'بيت';
 		const result = ArabicServices.removeArabicAffixes(word);
-		expect(result).toEqual('يت');
+		expect(result).toEqual('بيت');
 	});
 
 	it('should remove "ة" suffix from a word', () => {
@@ -281,7 +281,7 @@ describe('#removeArabicAffixes', () => {
 	it('should remove prefix & suffix from a sentence', () => {
 		const word = 'المدرسون يحبون طلابهم';
 		const result = ArabicServices.removeArabicAffixes(word);
-		expect(result).toEqual('مدرس حب طلاب');
+		expect(result).toEqual('مدرس يحبون طلاب');
 	});
 });
 

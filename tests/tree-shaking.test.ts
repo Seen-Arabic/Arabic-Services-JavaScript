@@ -61,11 +61,19 @@ describe('Tree Shaking & Named Exports', () => {
 				path.join(tempDir, 'full.mjs'),
 				`import { ArabicServices } from ${entryPoint}; globalThis.result = ArabicServices;`,
 			);
+			fs.writeFileSync(
+				path.join(tempDir, 'affixes.mjs'),
+				`import { removeArabicAffixes } from ${entryPoint}; globalThis.result = removeArabicAffixes('نور بنت الكتاب');`,
+			);
 			await new Promise<void>((resolve, reject) => {
 				webpack(
 					{
 						mode: 'production',
-						entry: { single: path.join(tempDir, 'single.mjs'), full: path.join(tempDir, 'full.mjs') },
+						entry: {
+							single: path.join(tempDir, 'single.mjs'),
+							full: path.join(tempDir, 'full.mjs'),
+							affixes: path.join(tempDir, 'affixes.mjs'),
+						},
 						output: { path: path.join(tempDir, 'output'), filename: '[name].js' },
 						devtool: false,
 					},
@@ -79,16 +87,24 @@ describe('Tree Shaking & Named Exports', () => {
 			});
 			const singleBundle = fs.readFileSync(path.join(tempDir, 'output/single.js'), 'utf8');
 			const fullBundle = fs.readFileSync(path.join(tempDir, 'output/full.js'), 'utf8');
+			const affixesBundle = fs.readFileSync(path.join(tempDir, 'output/affixes.js'), 'utf8');
 			const singleContext = { result: undefined };
 			const fullContext = { result: undefined };
+			const affixesContext = { result: undefined };
 			vm.runInNewContext(singleBundle, singleContext);
 			vm.runInNewContext(fullBundle, fullContext);
+			vm.runInNewContext(affixesBundle, affixesContext);
 			expect(singleContext.result).toBe('مرحبا');
 			expect(fullContext.result).toHaveProperty('tashfeerBannedWords', expect.any(Function));
 			expect(singleBundle).not.toContain('tashfeerBannedWords');
+			expect(affixesContext.result).toBe('نور بنت كتاب');
+			expect(affixesBundle).not.toContain('tashfeerBannedWords');
+			expect(affixesBundle).not.toContain('فلسطين');
+			expect(fullContext.result).not.toHaveProperty('removeArabicAffixesFromWord');
 			expect(Buffer.byteLength(singleBundle)).toBeLessThan(Buffer.byteLength(fullBundle) / 2);
+			expect(Buffer.byteLength(affixesBundle)).toBeLessThan(Buffer.byteLength(fullBundle) / 2);
 			console.info(
-				`Minified consumer bundles: single=${Buffer.byteLength(singleBundle)} B, full=${Buffer.byteLength(fullBundle)} B`,
+				`Minified consumer bundles: single=${Buffer.byteLength(singleBundle)} B, affixes=${Buffer.byteLength(affixesBundle)} B, full=${Buffer.byteLength(fullBundle)} B`,
 			);
 		} finally {
 			fs.rmSync(tempDir, { recursive: true, force: true });
