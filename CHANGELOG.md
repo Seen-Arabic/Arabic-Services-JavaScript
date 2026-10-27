@@ -26,6 +26,8 @@
 - Release publishing now validates the tag/version and runs formatting, lint, and tests before publishing the verified build.
 
 ### Fixed
+- Retain each original word in `removeArabicAffixes` when the complete stripped result has fewer than three Arabic letters, excluding marks, tatweel, digits, and other scripts from the count. This changes outputs such as `نور`, `بنت`, and `اليد`; banned-word recognition retains its existing stripping behavior.
+- Process affix removal independently across whitespace, punctuation, and symbol boundaries while preserving interior separators. Defer Unicode property regular expressions until this function is called, so unsupported engines can still load and use unrelated APIs.
 - Recognize exact banned-word matches before stripping affixes, so listed words such as `فلسطين` are obfuscated while retaining existing affix-based similarity matching.
 - Calculate `similarityScore` lengths and edit distance after lowercasing so Unicode case expansion cannot produce negative scores or incorrect similarity ratios.
 - Prevent invalid levels from hanging `tashfeer`, `tashfeerBannedWords`, and `toOldArabicAndTashfeerBannedWords`: non-number values throw `TypeError`; negative, fractional, and non-finite numbers throw `RangeError`. Random-index generation handles empty input and caps the requested count at the word length ([#35](https://github.com/Seen-Arabic/Arabic-Services-JavaScript/issues/35), [PR #36](https://github.com/Seen-Arabic/Arabic-Services-JavaScript/pull/36)).

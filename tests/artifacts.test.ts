@@ -101,6 +101,32 @@ describe('Package Artifacts & Module Integrity', () => {
 
 		expect(arabicServices.removeTashkeel('الخَيْلُ وَاللّيْلُ')).toBe('الخيل والليل');
 		expect(arabicServices.removeTatweel('كتــــاب')).toBe('كتاب');
+		expect(arabicServices.removeArabicAffixes('نور بنت الكتاب')).toBe('نور بنت كتاب');
+		expect(arabicServices).not.toHaveProperty('removeArabicAffixesFromWord');
+	});
+
+	it('should load unrelated APIs without Unicode property escapes and defer that requirement to affix removal', () => {
+		class LimitedRegExp extends RegExp {
+			constructor(pattern: string | RegExp, flags?: string) {
+				if (typeof pattern === 'string' && pattern.includes('\\p{')) {
+					throw new SyntaxError('Unicode property escapes are unavailable');
+				}
+				super(pattern, flags);
+			}
+		}
+		const sandbox: {
+			window: Record<string, unknown>;
+			RegExp: typeof LimitedRegExp;
+			ArabicServices?: Record<string, (text: string) => string>;
+		} = { window: {}, RegExp: LimitedRegExp };
+		vm.runInNewContext(fs.readFileSync(path.join(rootDir, packageJson.unpkg), 'utf8'), sandbox);
+		const api = (sandbox.window.ArabicServices || sandbox.ArabicServices) as Record<
+			string,
+			(text: string) => string
+		>;
+		expect(api.removeTashkeel('مَرْحَبًا')).toBe('مرحبا');
+		expect(api.tashfeerBannedWords('نور')).toBe('نور');
+		expect(() => api.removeArabicAffixes('نور')).toThrow('Unicode property escapes are unavailable');
 	});
 
 	it('should support in-process CommonJS loading via Node.js createRequire()', () => {
@@ -113,6 +139,8 @@ describe('Package Artifacts & Module Integrity', () => {
 		expect(typeof cjsDist.ArabicServices).toBe('object');
 		expect(cjsDist.removeTashkeel('مَرْحَبًا')).toBe('مرحبا');
 		expect(cjsDist.ArabicServices.removeTatweel('رائـــــع')).toBe('رائع');
+		expect(cjsDist.removeArabicAffixes('نور بنت الكتاب')).toBe('نور بنت كتاب');
+		expect(cjsDist).not.toHaveProperty('removeArabicAffixesFromWord');
 	});
 
 	it('should execute purely as Isomorphic/Universal functions without DOM dependencies', async () => {
