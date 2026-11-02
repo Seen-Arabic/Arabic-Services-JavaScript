@@ -50,6 +50,8 @@ Can be used in Node.js and the browser.
 
 ## 🚀 Getting Started
 
+For implementation details, examples, and known limitations, see the [technical documentation](docs/README.md).
+
 Arabic-Services was designed to work in both the browser and NodeJS applications.
 
 ### Browser

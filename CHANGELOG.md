@@ -3,6 +3,7 @@
 ## [Unreleased]
 
 ### Added
+- Technical articles explaining Arabic affix removal and banned-word matching, including design decisions, examples, and known limitations.
 - Integration tests for CJS, ESM, and browser UMD artifacts.
 - Arabic NLP boundary and ReDoS resilience test suites.
 - Direct CDN links (jsdelivr & unpkg) and GitHub release bundle guide in documentation.
