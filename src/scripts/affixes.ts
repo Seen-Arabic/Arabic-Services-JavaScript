@@ -1,18 +1,10 @@
-import { ARABIC_PREFIXES, ARABIC_SUFFIXES } from '../constants/index.js';
-import { setCharAt } from '../utils/index.js';
+import { ARABIC_PREFIXES, ARABIC_SUFFIXES } from '../constants/arabic-letters.js';
+import { setCharAt } from '../utils/string.util.js';
 
-/**
- * Removes predefined affixes (prefixes and suffixes) from an Arabic word if it starts or ends with those affixes.
- * This function is designed specifically for processing Arabic text, where certain affixes might need to be removed
- * for linguistic, stylistic, or morphological reasons.
- *
- * @param {string} word - The Arabic word from which the affixes are to be removed.
- * @returns {string} The word after removing any matching affixes. Returns the original word trimmed if no affix matches are found.
- */
-function removeArabicAffixesFromWord(word: string): string {
+/** Legacy word stripping, retained independently for banned-word recognition. */
+export function removeArabicAffixesFromWord(word: string): string {
 	word = word.trim();
 	if (ARABIC_PREFIXES.includes(word.substring(0, 2))) {
-		// For: ALEF & LAM
 		word = setCharAt(word, 0, '');
 		word = setCharAt(word, 0, '');
 	} else if (ARABIC_PREFIXES.includes(word.substring(0, 1))) {
@@ -30,18 +22,25 @@ function removeArabicAffixesFromWord(word: string): string {
 }
 
 /**
- * Removes predefined affixes (prefixes and suffixes) from an Arabic text if words start or end with those affixes.
- * This function is designed specifically for processing Arabic text, where certain affixes might need to be removed
- * for linguistic, stylistic, or morphological reasons.
+ * Removes listed affixes from each word, retaining its original form if the complete
+ * stripped result has fewer than three Arabic-script letters. Diacritics, tatweel,
+ * digits and other scripts do not count toward that minimum. This is a heuristic,
+ * not morphological analysis; legitimate two-letter stems are also retained in full.
+ * Words are letter/mark/number sequences; interior whitespace, punctuation and
+ * symbols are preserved. Unicode property escapes are required when this is called.
  *
  * @param {string} text - The Arabic text from which the affixes are to be removed.
  * @returns {string} The text after removing any matching affixes from each word. Returns the original text trimmed if no affix matches are found.
  */
 export function removeArabicAffixes(text: string): string {
-	let new_sentence = '';
-	text = text.trim();
-	for (const word of text.split(' ')) {
-		new_sentence += removeArabicAffixesFromWord(word) + ' ';
-	}
-	return new_sentence.trim();
+	const wordPattern = new RegExp('[\\p{L}\\p{M}\\p{N}]+', 'gu');
+	const arabicLetterPattern = new RegExp('(?=\\p{Script=Arabic})\\p{Letter}', 'gu');
+	return text.trim().replace(wordPattern, (word) => {
+		const stripped = removeArabicAffixesFromWord(word);
+		arabicLetterPattern.lastIndex = 0;
+		for (let count = 0; count < 3; count++) {
+			if (!arabicLetterPattern.exec(stripped)) return word;
+		}
+		return stripped;
+	});
 }
