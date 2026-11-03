@@ -1,5 +1,5 @@
-import { ARABIC_PREFIXES, ARABIC_SUFFIXES } from '../constants/arabic-letters.js';
-import { setCharAt } from '../utils/string.util.js';
+import { ARABIC_PREFIXES, ARABIC_SUFFIXES } from '../constants';
+import { setCharAt } from '../utils';
 
 /** Legacy word stripping, retained independently for banned-word recognition. */
 export function removeArabicAffixesFromWord(word: string): string {
