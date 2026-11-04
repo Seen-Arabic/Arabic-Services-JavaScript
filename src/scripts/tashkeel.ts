@@ -1,4 +1,4 @@
-import { TASHKEEL } from '../constants/index.js';
+import { TASHKEEL } from '../constants';
 
 /**
  * Remove all tashkeel from text

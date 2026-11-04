@@ -30,7 +30,7 @@
 	},
 	"scripts": {
 		"build:cjs": "tsc -p tsconfig.json",
-		"build:esm": "tsc -p tsconfig.esm.json && node -e \"fs.writeFileSync('dist/esm/package.json', JSON.stringify({ type: 'module', sideEffects: false }))\"",
+		"build:esm": "tsc --noEmit -p tsconfig.esm.json && tsdown --config tsdown.config.mts && node -e \"fs.writeFileSync('dist/esm/package.json', JSON.stringify({ type: 'module', sideEffects: false }))\"",
 		"build": "npm run clean && npm run build:cjs && npm run build:esm && npm run bundle",
 		"clean": "node -e \"fs.rmSync('dist', { recursive: true, force: true })\"",
 		"test": "npm run test:unit && npm run build && npm run test:artifacts",
@@ -76,6 +76,7 @@
 		"eslint-plugin-prettier": "^5.2.3",
 		"prettier": "^3.5.2",
 		"ts-loader": "^9.5.2",
+		"tsdown": "0.21.10",
 		"typescript": "^5.7.3",
 		"typescript-eslint": "^8.24.0",
 		"vitest": "^5.0.4",

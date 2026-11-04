@@ -3,6 +3,7 @@
 ## [Unreleased]
 
 ### Added
+- Extensionless static relative imports and directory barrels in TypeScript source builds, with NodeNext-compatible ESM JavaScript and declarations.
 - Technical articles explaining Arabic affix removal and banned-word matching, including design decisions, examples, and known limitations.
 - Integration tests for CJS, ESM, and browser UMD artifacts.
 - Arabic NLP boundary and ReDoS resilience test suites.

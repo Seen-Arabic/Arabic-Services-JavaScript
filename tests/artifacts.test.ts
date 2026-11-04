@@ -1,6 +1,6 @@
 import { execFileSync, execSync } from 'node:child_process';
 import * as fs from 'node:fs';
-import { createRequire } from 'node:module';
+import { createRequire, SourceMap } from 'node:module';
 import * as path from 'node:path';
 import * as vm from 'node:vm';
 import { describe, expect, it } from 'vitest';
@@ -143,6 +143,127 @@ describe('Package Artifacts & Module Integrity', () => {
 		expect(cjsDist).not.toHaveProperty('removeArabicAffixesFromWord');
 	});
 
+	it('should resolve emitted CJS and ESM declarations with NodeNext', () => {
+		const fixtureDirectory = fs.mkdtempSync(path.join(rootDir, '.node-next-consumer-'));
+		const fixtures = [
+			{
+				path: path.join(fixtureDirectory, 'consumer.mts'),
+				content: "import { setCharAt } from 'arabic-services';\nsetCharAt('abc', 0, 'x');\n",
+			},
+			{
+				path: path.join(fixtureDirectory, 'consumer.cts'),
+				content: "import { setCharAt } from 'arabic-services';\nsetCharAt('abc', 0, 'x');\n",
+			},
+		];
+
+		try {
+			for (const fixture of fixtures) fs.writeFileSync(fixture.path, fixture.content);
+			execFileSync(
+				process.execPath,
+				[
+					require.resolve('typescript/bin/tsc'),
+					'--noEmit',
+					'--strict',
+					'--module',
+					'NodeNext',
+					'--moduleResolution',
+					'NodeNext',
+					'--target',
+					'ES2022',
+					'--types',
+					'node',
+					'--skipLibCheck',
+					'false',
+					...fixtures.map(({ path: fixturePath }) => fixturePath),
+				],
+				{ cwd: rootDir, encoding: 'utf8', timeout: 10_000 },
+			);
+		} finally {
+			fs.rmSync(fixtureDirectory, { recursive: true, force: true });
+		}
+	}, 20_000);
+
+	it('should resolve relative modules from emitted JavaScript and declarations', () => {
+		const specifiers = (content: string) =>
+			[...content.matchAll(/(?:from\s*|require\s*\()\s*["'](\.{1,2}\/[^"']+)["']/g)].map(
+				([, specifier]) => specifier,
+			);
+
+		for (const emittedFile of fs.readdirSync(path.join(rootDir, 'dist'), { recursive: true })) {
+			if (typeof emittedFile !== 'string' || (!emittedFile.endsWith('.js') && !emittedFile.endsWith('.d.ts')))
+				continue;
+			const emittedPath = path.join('dist', emittedFile);
+			const emitted = fs.readFileSync(path.join(rootDir, emittedPath), 'utf8');
+			const relativeSpecifiers = specifiers(emitted);
+			for (const specifier of relativeSpecifiers) {
+				const target = path.resolve(path.dirname(path.join(rootDir, emittedPath)), specifier);
+				const declaration = emittedPath.endsWith('.d.ts');
+				const isEsm = emittedPath.replaceAll(path.sep, '/').startsWith('dist/esm/');
+				if (isEsm) expect(specifier, `${emittedPath}: ${specifier}`).toMatch(/\.js$/);
+				const declarationTarget = target.endsWith('.js') ? target.replace(/\.js$/, '.d.ts') : target;
+				const candidates = isEsm
+					? [declaration ? declarationTarget : target]
+					: declaration
+						? [declarationTarget, `${declarationTarget}.d.ts`, path.join(declarationTarget, 'index.d.ts')]
+						: [target, `${target}.js`, path.join(target, 'index.js')];
+				expect(
+					candidates.some((candidate) => fs.existsSync(candidate) && fs.statSync(candidate).isFile()),
+					`${emittedPath}: ${specifier}`,
+				).toBe(true);
+			}
+		}
+	});
+
+	it('should map public JavaScript and declaration definitions to their TypeScript sources', () => {
+		const definitions = [
+			{
+				name: 'setCharAt',
+				source: 'src/utils/string.util.ts',
+				javascript: 'dist/esm/utils/string.util.js',
+				declaration: 'dist/esm/utils/string.util.d.ts',
+			},
+			{
+				name: 'removeArabicAffixes',
+				source: 'src/scripts/affixes.ts',
+				javascript: 'dist/esm/scripts/affixes.js',
+				declaration: 'dist/esm/scripts/affixes.d.ts',
+			},
+		];
+
+		for (const definition of definitions) {
+			for (const generatedPath of [definition.javascript, definition.declaration]) {
+				const generated = fs.readFileSync(path.join(rootDir, generatedPath), 'utf8');
+				const declaration = generatedPath.endsWith('.d.ts');
+				const mapReference = generated.match(/\/\/# sourceMappingURL=(.+)/)?.[1].trim();
+				if (!mapReference) throw new Error(`Missing source map reference: ${generatedPath}`);
+				const mapPath = path.join(path.dirname(path.join(rootDir, generatedPath)), mapReference);
+				const sourceMap = new SourceMap(
+					JSON.parse(fs.readFileSync(mapPath, 'utf8')) as ConstructorParameters<typeof SourceMap>[0],
+				);
+				const generatedMarker = `${declaration ? 'declare ' : ''}function ${definition.name}(`;
+				const generatedMarkerIndex = generated.indexOf(generatedMarker);
+				expect(generatedMarkerIndex).toBeGreaterThanOrEqual(0);
+				const generatedNameIndex = generatedMarkerIndex + generatedMarker.indexOf(definition.name);
+				const generatedPrefix = generated.slice(0, generatedNameIndex);
+				const generatedLine = generatedPrefix.split('\n').length;
+				const generatedColumn = generatedNameIndex - generatedPrefix.lastIndexOf('\n');
+
+				const source = fs.readFileSync(path.join(rootDir, definition.source), 'utf8');
+				const sourceMarker = `export function ${definition.name}(`;
+				const sourceMarkerIndex = source.indexOf(sourceMarker);
+				expect(sourceMarkerIndex).toBeGreaterThanOrEqual(0);
+				const sourceNameIndex = sourceMarkerIndex + sourceMarker.indexOf(definition.name);
+				const sourcePrefix = source.slice(0, sourceNameIndex);
+				const sourceLine = sourcePrefix.split('\n').length;
+				const sourceColumn = sourceNameIndex - sourcePrefix.lastIndexOf('\n');
+				const origin = sourceMap.findOrigin(generatedLine, generatedColumn);
+
+				expect(origin.fileName.replaceAll('\\', '/')).toContain(definition.source);
+				expect(origin).toMatchObject({ lineNumber: sourceLine, columnNumber: sourceColumn });
+			}
+		}
+	});
+
 	it('should execute purely as Isomorphic/Universal functions without DOM dependencies', async () => {
 		// Import all scripts in current process (where window and document are undefined)
 		expect(typeof window).toBe('undefined');
@@ -165,10 +286,17 @@ describe('Package Artifacts & Module Integrity', () => {
 			}),
 		) as [{ files: { path: string }[] }];
 		const files = new Set(pack.files.map((file) => file.path));
+		const generatedRuntime = 'dist/esm/_virtual/_rolldown/runtime.js';
 		for (const entry of [packageJson.main, packageJson.module, packageJson.types, packageJson.unpkg]) {
 			expect(files.has(entry.replace(/^\.\//, '')), `Packaged entry point: ${entry}`).toBe(true);
 		}
 		expect([...files].some((file) => /^(tests|coverage|\.github)\//.test(file))).toBe(false);
+		expect(files.has(generatedRuntime)).toBe(true);
+		const runtimeCode = fs.readFileSync(path.join(rootDir, generatedRuntime), 'utf8');
+		expect(runtimeCode).toContain('rolldown/runtime.js');
+		expect(runtimeCode).toContain('__exportAll');
+		expect(runtimeCode).not.toMatch(/\b(?:require\s*\(|from\s+["'](?!\.{1,2}\/))/);
+		expect(packageJson.dependencies ?? {}).toEqual({});
 		for (const source of fs.readdirSync(path.join(rootDir, 'src'), { recursive: true })) {
 			if (typeof source === 'string' && source.endsWith('.ts')) {
 				expect(files.has(`src/${source.replaceAll(path.sep, '/')}`), `Packaged source: ${source}`).toBe(true);
@@ -177,6 +305,7 @@ describe('Package Artifacts & Module Integrity', () => {
 
 		for (const file of files) {
 			if (!file.startsWith('dist/') || (!file.endsWith('.js') && !file.endsWith('.d.ts'))) continue;
+			if (file === generatedRuntime) continue;
 			const output = fs.readFileSync(path.join(rootDir, file), 'utf8');
 			const mapName = output.match(/\/\/# sourceMappingURL=(.+)/)?.[1].trim();
 			if (!mapName) throw new Error(`Missing source map reference: ${file}`);
@@ -191,7 +320,17 @@ describe('Package Artifacts & Module Integrity', () => {
 				mappings: string;
 			};
 			expect(map.version).toBe(3);
-			expect(map.mappings.length, `Mappings: ${mapPath}`).toBeGreaterThan(0);
+			const emptyMapBarrels = [
+				'dist/esm/constants/index.d.ts',
+				'dist/esm/constants/index.js',
+				'dist/esm/scripts/index.js',
+				'dist/esm/utils/index.d.ts',
+				'dist/esm/utils/index.js',
+			];
+			if (map.mappings.length === 0) {
+				expect(emptyMapBarrels).toContain(file);
+				expect(output).toMatch(/from\s+["']\.\.?\//);
+			}
 			expect(path.posix.join(path.posix.dirname(mapPath), map.file)).toBe(file);
 			expect(map.sources.length, `Original sources: ${mapPath}`).toBeGreaterThan(0);
 			map.sources.forEach((source, index) => {

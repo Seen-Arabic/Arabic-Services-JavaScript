@@ -61,6 +61,7 @@ Before submitting a Pull Request, please ensure:
     npm test
     ```
     `npm test` runs source tests, builds the package once, then checks the compiled artifacts.
+    CommonJS output retains extensionless relative specifiers for Node.js to resolve; the unbundled ESM build uses tsdown to emit Node.js-compatible `.js` specifiers and declarations. Webpack handles source resolution for the browser bundles.
     Use `npm run test:unit` (or `npm run test:watch`) during development without building.
     After an existing build, use `npm run test:artifacts` to check CJS/ESM/UMD consumers, npm package contents, source maps, and real bundle tree shaking. It reports minified sizes for a single-function consumer and the full object; results depend on the imports and installed bundler version.
     Add focused source regression tests for new logic or bug fixes, and artifact tests for packaging or export changes.

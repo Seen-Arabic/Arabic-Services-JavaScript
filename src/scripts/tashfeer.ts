@@ -1,4 +1,4 @@
-import { BANNED_WORDS } from '../constants/index.js';
+import { BANNED_WORDS } from '../constants';
 import {
 	ALEF,
 	ALONE_LETTERS,
@@ -6,10 +6,10 @@ import {
 	STANDARD_LETTERS,
 	WAW,
 	YAA,
-} from '../constants/arabic-letters.js';
-import { similarityScore } from '../utils/index.js';
-import { removeArabicAffixesFromWord } from './affixes.js';
-import { toOldArabic } from './old-arabic.js';
+} from '../constants/arabic-letters';
+import { similarityScore } from '../utils';
+import { removeArabicAffixesFromWord } from './affixes';
+import { toOldArabic } from './old-arabic';
 
 /**
  * Rejects invalid obfuscation levels before random-index generation.

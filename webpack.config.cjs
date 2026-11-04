@@ -11,7 +11,15 @@ module.exports = [
 			rules: [
 				{
 					test: /\.tsx?$/,
-					use: 'ts-loader',
+					use: {
+						loader: 'ts-loader',
+						options: {
+							compilerOptions: {
+								declaration: false,
+								declarationMap: false,
+							},
+						},
+					},
 					exclude: /node_modules/,
 				},
 			],
@@ -40,7 +48,15 @@ module.exports = [
 			rules: [
 				{
 					test: /\.tsx?$/,
-					use: 'ts-loader',
+					use: {
+						loader: 'ts-loader',
+						options: {
+							compilerOptions: {
+								declaration: false,
+								declarationMap: false,
+							},
+						},
+					},
 					exclude: /node_modules/,
 				},
 			],

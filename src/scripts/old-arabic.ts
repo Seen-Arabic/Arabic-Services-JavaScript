@@ -1,6 +1,7 @@
-import { ARABIC_DOTLESS_DICT } from '../constants/index.js';
-import { fillDefaultOptions, OldArabicOptions } from '../options.js';
-import { removeTashkeel } from './tashkeel.js';
+import { ARABIC_DOTLESS_DICT } from '../constants';
+import { fillDefaultOptions } from '../options';
+import type { OldArabicOptions } from '../options';
+import { removeTashkeel } from './tashkeel';
 
 /**
  * Remove all dots & tashkeel from text

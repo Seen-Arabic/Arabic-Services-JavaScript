@@ -1,4 +1,4 @@
-import { PRONOUNCED_LETTERS } from '../constants/index.js';
+import { PRONOUNCED_LETTERS } from '../constants';
 
 /**
  * Converts a word to its pronounced letter representations based on PRONOUNCED_LETTERS.
