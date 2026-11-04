@@ -1,6 +1,6 @@
 {
 	"name": "arabic-services",
-	"version": "1.1.0",
+	"version": "1.1.1",
 	"description": "Utility functions on Arabic text",
 	"main": "./dist/index.js",
 	"module": "./dist/esm/index.js",
