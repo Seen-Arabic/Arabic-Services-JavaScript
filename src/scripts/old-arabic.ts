@@ -1,5 +1,6 @@
 import { ARABIC_DOTLESS_DICT } from '../constants';
-import { fillDefaultOptions, OldArabicOptions } from '../options';
+import { fillDefaultOptions } from '../options';
+import type { OldArabicOptions } from '../options';
 import { removeTashkeel } from './tashkeel';
 
 /**
