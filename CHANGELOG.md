@@ -2,42 +2,37 @@
 <p align=center>All notable changes to this project will be documented in this file.</p>
 ## [Unreleased]
 
+## [1.1.1](https://github.com/Seen-Arabic/Arabic-Services-JavaScript/releases/tag/v1.1.1) - 2026-11-04 (24 Jumada al-Awwal 1448)
+
 ### Added
-- Extensionless static relative imports and directory barrels in TypeScript source builds, with NodeNext-compatible ESM JavaScript and declarations.
-- Technical articles explaining Arabic affix removal and banned-word matching, including design decisions, examples, and known limitations.
-- Integration tests for CJS, ESM, and browser UMD artifacts.
-- Arabic NLP boundary and ReDoS resilience test suites.
-- Direct CDN links (jsdelivr & unpkg) and GitHub release bundle guide in documentation.
-- JavaScript source maps and TypeScript declaration maps for CommonJS and native ESM builds, plus source maps for UMD and ESM browser bundles ([PR #40](https://github.com/Seen-Arabic/Arabic-Services-JavaScript/pull/40)).
-- Original TypeScript source files in the npm package and companion browser bundle maps in GitHub release uploads ([PR #40](https://github.com/Seen-Arabic/Arabic-Services-JavaScript/pull/40)).
-- Regression tests for invalid obfuscation levels, Arabic character variants, and out-of-range `setCharAt` indices ([PR #36](https://github.com/Seen-Arabic/Arabic-Services-JavaScript/pull/36), [PR #37](https://github.com/Seen-Arabic/Arabic-Services-JavaScript/pull/37)).
+-   **Extensionless TypeScript Imports**: Enabled extensionless static relative imports and directory barrels in source builds; the ESM build emits explicit `.js` relative references while retaining the CJS and browser UMD package entry paths ([PR #45](https://github.com/Seen-Arabic/Arabic-Services-JavaScript/pull/45)).
+-   **Built Artifact Coverage**: Added CJS, ESM, and browser UMD integration checks, package-content and source-map checks, and built-consumer tree-shaking checks.
+-   **Arabic Affix and Banned-Word Guides**: Added focused technical documentation, direct jsDelivr and unpkg links, and a GitHub browser-bundle guide.
+-   **Published Sources and Maps**: Included original TypeScript sources and JavaScript source maps for CJS, ESM, UMD, and browser ESM outputs, plus declaration maps for CJS and ESM ([PR #40](https://github.com/Seen-Arabic/Arabic-Services-JavaScript/pull/40)).
 
-- Automated checks for npm package contents, source/declaration map references, and real tree shaking of built ESM consumers.
-
-### Changed
-- Modularized monolithic `src/scripts/scripts.ts` into focused single-responsibility files (`tashkeel.ts`, `old-arabic.ts`, `tashfeer.ts`, `affixes.ts`, `letters.ts`) while keeping public exports and backward compatibility completely unchanged.
-- Relocated standalone browser demo to `examples/browser/index.html`.
-- Unified CI workflow across Node.js 22.x and 24.x with ESLint.
-- Expanded lint commands from `src/` to all non-ignored repository files.
-- Declared ES2020 and DOM type libraries in the TypeScript configuration to resolve missing API type diagnostics in editors ([PR #38](https://github.com/Seen-Arabic/Arabic-Services-JavaScript/pull/38)).
-- Updated the npm publishing workflow to Node.js 24.
-- Consolidated agent instructions in `AGENTS.md`.
-
-- Separated source and artifact test commands; `npm test` now builds once between the two suites.
-- Standardized LF line endings, refreshed contribution and PR guidance, and clarified visual-obfuscation terminology.
-- Release publishing now validates the tag/version and runs formatting, lint, and tests before publishing the verified build.
+### Updated
+-   **Modular TypeScript Sources**: Split the monolithic script implementation into focused modules while preserving function names and the public function export set ([PR #38](https://github.com/Seen-Arabic/Arabic-Services-JavaScript/pull/38)).
+-   **ESM Namespace Objects**: Kept the keys and values of `ArabicServices.constants` and `ArabicServices.utils` while changing their object prototypes, extensibility, and property descriptors.
+-   **Browser Demo and Test Commands**: Moved the standalone browser demo to `examples/browser/index.html` and separated source and compiled-artifact test commands; `npm test` runs both suites around one build.
+-   **CI and Publishing Runtime**: Added CI coverage for Node.js 22.x and 24.x and moved the publish workflow to Node.js 24.
+-   **Development Dependencies**: Refreshed `typescript-eslint` and its packages to 8.72.1, `fast-uri` to 3.1.9, and `ignore` to 7.0.14 within existing manifest ranges.
 
 ### Fixed
-- Retain each original word in `removeArabicAffixes` when the complete stripped result has fewer than three Arabic letters, excluding marks, tatweel, digits, and other scripts from the count. This changes outputs such as `نور`, `بنت`, and `اليد`; banned-word recognition retains its existing stripping behavior.
-- Process affix removal independently across whitespace, punctuation, and symbol boundaries while preserving interior separators. Defer Unicode property regular expressions until this function is called, so unsupported engines can still load and use unrelated APIs.
-- Recognize exact banned-word matches before stripping affixes, so listed words such as `فلسطين` are obfuscated while retaining existing affix-based similarity matching.
-- Calculate `similarityScore` lengths and edit distance after lowercasing so Unicode case expansion cannot produce negative scores or incorrect similarity ratios.
-- Prevent invalid levels from hanging `tashfeer`, `tashfeerBannedWords`, and `toOldArabicAndTashfeerBannedWords`: non-number values throw `TypeError`; negative, fractional, and non-finite numbers throw `RangeError`. Random-index generation handles empty input and caps the requested count at the word length ([#35](https://github.com/Seen-Arabic/Arabic-Services-JavaScript/issues/35), [PR #36](https://github.com/Seen-Arabic/Arabic-Services-JavaScript/pull/36)).
-- Attempt browser bundle uploads after a successful build even if npm publishing fails ([commit 598035a](https://github.com/Seen-Arabic/Arabic-Services-JavaScript/commit/598035a)).
+-   **Short Affix Results**: Preserve the original word when removing listed affixes would leave fewer than three Arabic-script letters. This changes results for some short words, including `نور`, `بنت`, and `اليد`; the transformation remains heuristic ([PR #44](https://github.com/Seen-Arabic/Arabic-Services-JavaScript/pull/44)).
+-   **Separator Handling**: Process affix removal independently across letter, mark, and number sequences while preserving separators. Unicode property escape support is required when this function is called ([PR #44](https://github.com/Seen-Arabic/Arabic-Services-JavaScript/pull/44)).
+-   **Exact Banned-Word Matching**: Check listed words such as `فلسطين` before lossy affix stripping, while retaining the existing affix-based similarity path. Exact matching is case-sensitive and does not normalize tokens ([PR #43](https://github.com/Seen-Arabic/Arabic-Services-JavaScript/pull/43)).
+-   **Similarity Scores**: Calculate string lengths after lowercasing so Unicode case expansion does not produce scores outside the documented 0–1 range; edit distance remains based on UTF-16 code units ([PR #42](https://github.com/Seen-Arabic/Arabic-Services-JavaScript/pull/42)).
+-   **Obfuscation-Level Validation**: Reject non-number levels with `TypeError` and negative, fractional, or non-finite levels with `RangeError`; empty input terminates and random-index counts are capped at the word length ([PR #36](https://github.com/Seen-Arabic/Arabic-Services-JavaScript/pull/36)).
+-   **Publishing Workflow**: Continue browser-bundle upload after a successful build when npm publishing fails.
+-   **Development Script**: Removed the unused `dev` command, which relied on an uninstalled `ts-node` runner.
 
-- Removed the unused `dev` command, which depended on the uninstalled `ts-node` runner.
+### Compatibility notes
+- The short-result guard changes some prior affix-removal outputs. Direct JavaScript callers passing string levels now receive `TypeError`; valid numeric inputs remain the typed API.
+- In ESM, `ArabicServices.constants` and `.utils` changed from null-prototype, non-extensible namespace objects with data properties to `Object.prototype` objects that are extensible and expose getters. Their keys and values are unchanged, but reflection and augmentation observe the difference.
+- Source maps are provided, but some generated re-export facades and a helper remain unmapped; this release does not claim complete map coverage.
+- The lockfile audit reported 13 moderate advisories in development-tool dependency paths and no runtime dependencies; this release does not claim an audit-free dependency tree.
 
-[Full Changelog](https://github.com/Seen-Arabic/Arabic-Services-JavaScript/compare/v1.1.0...main)
+[Full Changelog](https://github.com/Seen-Arabic/Arabic-Services-JavaScript/compare/v1.1.0...v1.1.1)
 
 ## [1.1.0](https://github.com/Seen-Arabic/Arabic-Services-JavaScript/releases/tag/v1.1.0) - 2026-10-14 (03 Jumada al-Awwal 1448)
 
