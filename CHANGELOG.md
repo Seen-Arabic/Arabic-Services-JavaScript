@@ -2,6 +2,9 @@
 <p align=center>All notable changes to this project will be documented in this file.</p>
 ## [Unreleased]
 
+### Added
+-   **Bundle Size Report**: Added `npm run size:report` to compare packed package contents and representative production consumer bundle sizes, including gzip measurements.
+
 ## [1.1.1](https://github.com/Seen-Arabic/Arabic-Services-JavaScript/releases/tag/v1.1.1) - 2026-11-04 (24 Jumada al-Awwal 1448)
 
 ### Added

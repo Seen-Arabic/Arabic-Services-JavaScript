@@ -90,6 +90,8 @@ console.log(removeTashkeel('الخَيْلُ وَاللّيْلُ وَالبَي
 // Output: 'الخيل والليل والبيداء تعرفني'
 ```
 
+ESM named imports can be tree-shaken by production bundlers. Importing the full default object retains the full API; CommonJS `require` does not provide native tree-shaking. The browser UMD bundle is also the full API. See [bundle size reporting](docs/bundle-size.md) for reproducible package and bundle measurements.
+
 Or import the full object:
 
 ```javascript

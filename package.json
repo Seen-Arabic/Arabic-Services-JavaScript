@@ -37,6 +37,7 @@
 		"test:unit": "vitest run --coverage",
 		"test:artifacts": "vitest run --mode artifacts",
 		"test:watch": "vitest",
+		"size:report": "node scripts/size-report.mjs",
 		"prepublishOnly": "npm run build",
 		"format": "prettier --write . --ignore-path .gitignore --ignore-path .prettierignore",
 		"format:check": "prettier --check . --ignore-path .gitignore --ignore-path .prettierignore",

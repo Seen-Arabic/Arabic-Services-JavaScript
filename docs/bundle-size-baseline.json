@@ -1,0 +1,42 @@
+{
+	"schemaVersion": 1,
+	"current": {
+		"metadata": {
+			"packageVersion": "1.1.1",
+			"npmVersion": "10.9.2",
+			"webpackVersion": "5.111.1",
+			"nodeVersion": "v22.17.1",
+			"gzipLevel": 9
+		},
+		"package": {
+			"packedBytes": 79261,
+			"unpackedBytes": 310114,
+			"fileCount": 134,
+			"categoryBytes": {
+				"maps": 137682,
+				"src": 23337,
+				"declarations": 16575,
+				"runtimeJS": 80437,
+				"other": 52083
+			}
+		},
+		"bundles": {
+			"removeTashkeel": {
+				"bytes": 505,
+				"gzipBytes": 323
+			},
+			"removeArabicAffixes": {
+				"bytes": 736,
+				"gzipBytes": 424
+			},
+			"defaultObject": {
+				"bytes": 6618,
+				"gzipBytes": 3151
+			},
+			"umd": {
+				"bytes": 12241,
+				"gzipBytes": 4227
+			}
+		}
+	}
+}
