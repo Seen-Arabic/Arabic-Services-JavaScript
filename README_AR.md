@@ -44,6 +44,7 @@
 - ...والمزيد!
 
 <h3 align=center><a href="https://github.com/Seen-Arabic/Arabic-Services-JavaScript/wiki/Features%E2%80%90Documentation%E2%80%90AR">➡️ شاهد استخدام كل ميزة من المكتبة وطريقة استخدامها في الكود ⬅️</a></h3>
+<p align=center><a href="https://seen-arabic.github.io/Arabic-Services/">🌐 جرّب أدوات خدمات اللغة العربية مباشرة في المتصفح</a> · <a href="https://seen-arabic.github.io/blog/">📝 مدونة س</a></p>
 
 ## 🚀 التثبيت
 

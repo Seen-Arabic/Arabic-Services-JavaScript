@@ -47,6 +47,7 @@ Can be used in Node.js and the browser.
 - ... and more!
 
 <h3 align=center><a href="https://github.com/Seen-Arabic/Arabic-Services-JavaScript/wiki/Features-Documentation">➡️ Check out the usage and detailed documentation on each feature ⬅️</a></h3>
+<p align=center><a href="https://seen-arabic.github.io/Arabic-Services/">🌐 Try Arabic Services live in your browser</a> · <a href="https://seen-arabic.github.io/blog/">📝 Seen Blog</a></p>
 
 ## 🚀 Getting Started
 
