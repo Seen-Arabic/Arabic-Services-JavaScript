@@ -77,24 +77,26 @@ function getRandomIndexes(numOfIndexesToNeeded: number, wordLength: number): num
 
 /**
  * Processes the word for obfuscation using random indexes.
- * @param {string} word - The word to be obfuscated.
+ * @param {string[]} chars - The characters of the word to be obfuscated.
  * @param {number[]} randomIndexes - The random indexes for obfuscation.
  * @returns {string} The obfuscated word.
  */
-function tashfeerWord(word: string, randomIndexes: number[]): string {
+function tashfeerWord(chars: string[], randomIndexes: number[]): string {
 	let outputWord = '';
 
-	for (let i = 0; i < word.length; i++) {
+	for (let i = 0; i < chars.length; i++) {
 		// Check if the character is a standard Arabic letter and needs to be replaced
 		// and ignore any other character such as Latin or digits
 		// Also, check if the current index is in the list of random indexes for replacement
-		if (STANDARD_LETTERS.includes(word[i]) && randomIndexes.includes(i)) {
+		if (STANDARD_LETTERS.includes(chars[i]) && randomIndexes.includes(i)) {
 			// Get the replacement letter for the current character
-			const letter = tashfeerCharacter(word[i]);
+			const letter = tashfeerCharacter(chars[i]);
 
-			// Check if the previous character is not an "alone" letter
-			if (i !== 0 && !ALONE_LETTERS.includes(word[i - 1])) {
-				// Add a Maddah character for better readability
+			// Check if the previous character is a connecting standard Arabic letter.
+			// This prevents inserting Tatweel after newlines, emojis, spaces, or non-connecting letters.
+			const prevChar = i > 0 ? chars[i - 1] : '';
+			if (STANDARD_LETTERS.includes(prevChar) && !ALONE_LETTERS.includes(prevChar)) {
+				// Add a Maddah / Tatweel character for better readability
 				outputWord += 'ـ';
 			}
 
@@ -102,7 +104,7 @@ function tashfeerWord(word: string, randomIndexes: number[]): string {
 			outputWord += letter;
 		} else {
 			// If the character doesn't need to be replaced, add it as it is
-			outputWord += word[i];
+			outputWord += chars[i];
 		}
 	}
 
@@ -141,14 +143,47 @@ function tashfeerCharacter(character: string): string {
  * @returns {string} The obfuscated word.
  */
 function tashfeerHandler(word: string, level: number = 0): string {
-	const wordLength = word.length;
+	const chars = Array.from(word);
+	const wordLength = chars.length;
 	// Calculate the obfuscation level based on the input level and word length
 	const n = calculateEncryptionLevel(level, wordLength);
 	// Generate a list of random indexes for obfuscation
 	const randomIndexes = getRandomIndexes(n, wordLength);
 	// Process the word for obfuscation using random indexes
-	const outputWord = tashfeerWord(word, randomIndexes);
+	const outputWord = tashfeerWord(chars, randomIndexes);
 	return outputWord;
+}
+
+/**
+ * Helper function that tokenizes a sentence by whitespace boundaries, preserves
+ * all whitespace and newline sequences, and applies a transformation callback to words.
+ * @param {string} sentence - The input sentence.
+ * @param {number} levelOfTashfeer - The obfuscation level.
+ * @param {(word: string) => string} transformWord - Callback to transform each non-whitespace word.
+ * @returns {string} The transformed sentence with preserved whitespace.
+ */
+function transformSentenceTokens(
+	sentence: string,
+	levelOfTashfeer: number,
+	transformWord: (word: string) => string,
+): string {
+	validateTashfeerLevel(levelOfTashfeer);
+	sentence = sentence.trim();
+	if (!sentence) {
+		return '';
+	}
+
+	const tokens = sentence.split(/(\s+)/);
+	let new_sentence = '';
+	for (let i = 0; i < tokens.length; i++) {
+		const token = tokens[i];
+		if (i % 2 === 1) {
+			new_sentence += token;
+		} else {
+			new_sentence += transformWord(token);
+		}
+	}
+	return new_sentence;
 }
 
 /**
@@ -158,13 +193,7 @@ function tashfeerHandler(word: string, level: number = 0): string {
  * @returns {string} The obfuscated sentence.
  */
 export function tashfeer(sentence: string, levelOfTashfeer: number = 1): string {
-	validateTashfeerLevel(levelOfTashfeer);
-	sentence = sentence.trim();
-	let new_sentence = '';
-	for (const word of sentence.split(' ')) {
-		new_sentence += tashfeerHandler(word, levelOfTashfeer) + ' ';
-	}
-	return new_sentence.trim();
+	return transformSentenceTokens(sentence, levelOfTashfeer, (word) => tashfeerHandler(word, levelOfTashfeer));
 }
 
 /**
@@ -204,17 +233,9 @@ function checkIfBannedWord(string: string): boolean {
  * @returns {string} The obfuscated sentence with tashfeer applied to banned words.
  */
 export function tashfeerBannedWords(sentence: string, levelOfTashfeer: number = 2): string {
-	validateTashfeerLevel(levelOfTashfeer);
-	let new_sentence = '';
-	sentence = sentence.trim();
-	for (const word of sentence.split(' ')) {
-		if (checkIfBannedWord(word)) {
-			new_sentence += tashfeerHandler(word, levelOfTashfeer) + ' ';
-		} else {
-			new_sentence += word + ' ';
-		}
-	}
-	return new_sentence.trim();
+	return transformSentenceTokens(sentence, levelOfTashfeer, (word) =>
+		checkIfBannedWord(word) ? tashfeerHandler(word, levelOfTashfeer) : word,
+	);
 }
 
 /**
@@ -224,15 +245,7 @@ export function tashfeerBannedWords(sentence: string, levelOfTashfeer: number = 
  * @returns {string} The processed sentence.
  */
 export function toOldArabicAndTashfeerBannedWords(sentence: string, levelOfTashfeer: number = 2): string {
-	validateTashfeerLevel(levelOfTashfeer);
-	let new_sentence = '';
-	const words = sentence.trim().split(' ');
-	for (const word of words) {
-		if (checkIfBannedWord(word)) {
-			new_sentence += tashfeerHandler(word, levelOfTashfeer) + ' ';
-		} else {
-			new_sentence += toOldArabic(word) + ' ';
-		}
-	}
-	return new_sentence.trim();
+	return transformSentenceTokens(sentence, levelOfTashfeer, (word) =>
+		checkIfBannedWord(word) ? tashfeerHandler(word, levelOfTashfeer) : toOldArabic(word),
+	);
 }
