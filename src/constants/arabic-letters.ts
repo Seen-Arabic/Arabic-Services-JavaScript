@@ -83,7 +83,7 @@ export const STANDARD_LETTERS: string[] = [
 export const PRONOUNCED_LETTERS: { [key: string]: string } = {
 	ا: 'ألف',
 	إ: 'ألف_مكسورة',
-	أ: 'ألف ',
+	أ: 'ألف',
 	آ: 'ألف_مد',
 	ء: 'همزة', // Not in STANDARD_LETTERS[]
 	ب: 'باء',

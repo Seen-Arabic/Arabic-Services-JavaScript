@@ -5,6 +5,13 @@
 ### Added
 -   **Bundle Size Report**: Added `npm run size:report` to compare packed package contents and representative production consumer bundle sizes, including gzip measurements.
 
+### Fixed
+-   **Multiline & Whitespace Obfuscation**: Preserve newlines (`\n`, `\r\n`), tabs, and whitespace formatting in `tashfeer`, `tashfeerBannedWords`, and `toOldArabicAndTashfeerBannedWords` by tokenizing on whitespace boundaries.
+-   **Tatweel Insertion Guards**: Restrict tatweel (`ـ`) insertion to positions preceded by connecting Arabic letters, preventing tatweel from attaching to newlines, emojis, punctuation, or non-Arabic characters.
+-   **Surrogate Pair & Emoji Handling**: Measure lengths and select obfuscation indices across Unicode code points with `Array.from()`, preventing surrogate pair splitting and length inflation in `tashfeer`.
+-   **Pronounced Hamza On Alef**: Removed the trailing space from `PRONOUNCED_LETTERS['أ']` in `arabic-letters.ts`, eliminating unintended double spaces within words in `wordToLetters`.
+-   **Whitespace Normalization in `wordToLetters`**: Collapsed irregular consecutive whitespace between words while maintaining the established inter-word double space and intra-word single space.
+
 ## [1.1.1](https://github.com/Seen-Arabic/Arabic-Services-JavaScript/releases/tag/v1.1.1) - 2026-11-04 (24 Jumada al-Awwal 1448)
 
 ### Added

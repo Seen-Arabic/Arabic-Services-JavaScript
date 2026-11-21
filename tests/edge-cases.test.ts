@@ -212,4 +212,49 @@ describe('Arabic NLP Edge Cases & Robustness', () => {
 			expect(oldArabicDuration, 'toOldArabic should process large text within 150ms').toBeLessThan(150);
 		});
 	});
+
+	describe('Multiline, Emojis & Word Spacing Robustness (v1.1.2)', () => {
+		it('should preserve newlines and tabs in tashfeer without adding tatweel after newlines', () => {
+			const multiline = 'سلاح\nقتل\tحرب';
+			for (let level = 1; level <= 5; level++) {
+				const result = tashfeer(multiline, level);
+				expect(result).toContain('\n');
+				expect(result).toContain('\t');
+				// Tatweel must never appear immediately after a newline
+				expect(result).not.toContain('\nـ');
+			}
+		});
+
+		it('should detect banned words separated by newlines and preserve whitespace formatting', () => {
+			const input = 'سلاح\nمرحبا';
+			const resBanned = tashfeerBannedWords(input);
+			expect(resBanned).toContain('\n');
+			expect(resBanned).toContain('مرحبا');
+			// 'سلاح' is a banned word and should be obfuscated
+			expect(resBanned.startsWith('سلاح')).toBe(false);
+
+			const resOldArabic = toOldArabicAndTashfeerBannedWords(input);
+			expect(resOldArabic).toContain('\n');
+			expect(resOldArabic.startsWith('سلاح')).toBe(false);
+		});
+
+		it('should handle emojis without splitting surrogate pairs or appending tatweel to emojis', () => {
+			const emojiText = '😀سلاح';
+			for (let i = 0; i < 10; i++) {
+				const res = tashfeer(emojiText, 5);
+				expect(res.startsWith('😀')).toBe(true);
+				expect(res).not.toContain('😀ـ');
+			}
+		});
+
+		it('should format wordToLetters without intra-word double spaces for Alef with Hamza', () => {
+			expect(wordToLetters('أب')).toBe('ألف باء');
+			expect(wordToLetters('أحمد')).toBe('ألف حاء ميم دال');
+		});
+
+		it('should collapse multiple consecutive whitespaces in wordToLetters to standard two spaces', () => {
+			expect(wordToLetters('هذه    جملة')).toBe('هاء ذال هاء  جيم ميم لام تاء_مربوطة');
+			expect(wordToLetters('ب    ت')).toBe('باء  تاء');
+		});
+	});
 });
