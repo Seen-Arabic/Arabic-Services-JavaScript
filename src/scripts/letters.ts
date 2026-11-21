@@ -24,9 +24,7 @@ export function wordToLetters(word: string): string {
 			}
 		} else if (/\s/.test(letter)) {
 			// Normalize multiple whitespace characters between words
-			if (!newWord.endsWith('  ')) {
-				newWord += ' ';
-			}
+			newWord += ' ';
 			while (i + 1 < chars.length && /\s/.test(chars[i + 1])) {
 				i++;
 			}

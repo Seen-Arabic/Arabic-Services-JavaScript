@@ -155,12 +155,18 @@ function tashfeerHandler(word: string, level: number = 0): string {
 }
 
 /**
- * Performs tashfeer obfuscation on a given sentence.
- * @param {string} sentence - The input sentence to be obfuscated.
- * @param {number} [levelOfTashfeer=1] - The obfuscation level.
- * @returns {string} The obfuscated sentence.
+ * Helper function that tokenizes a sentence by whitespace boundaries, preserves
+ * all whitespace and newline sequences, and applies a transformation callback to words.
+ * @param {string} sentence - The input sentence.
+ * @param {number} levelOfTashfeer - The obfuscation level.
+ * @param {(word: string) => string} transformWord - Callback to transform each non-whitespace word.
+ * @returns {string} The transformed sentence with preserved whitespace.
  */
-export function tashfeer(sentence: string, levelOfTashfeer: number = 1): string {
+function transformSentenceTokens(
+	sentence: string,
+	levelOfTashfeer: number,
+	transformWord: (word: string) => string,
+): string {
 	validateTashfeerLevel(levelOfTashfeer);
 	sentence = sentence.trim();
 	if (!sentence) {
@@ -173,11 +179,21 @@ export function tashfeer(sentence: string, levelOfTashfeer: number = 1): string 
 		const token = tokens[i];
 		if (i % 2 === 1) {
 			new_sentence += token;
-		} else if (token) {
-			new_sentence += tashfeerHandler(token, levelOfTashfeer);
+		} else {
+			new_sentence += transformWord(token);
 		}
 	}
 	return new_sentence;
+}
+
+/**
+ * Performs tashfeer obfuscation on a given sentence.
+ * @param {string} sentence - The input sentence to be obfuscated.
+ * @param {number} [levelOfTashfeer=1] - The obfuscation level.
+ * @returns {string} The obfuscated sentence.
+ */
+export function tashfeer(sentence: string, levelOfTashfeer: number = 1): string {
+	return transformSentenceTokens(sentence, levelOfTashfeer, (word) => tashfeerHandler(word, levelOfTashfeer));
 }
 
 /**
@@ -217,27 +233,9 @@ function checkIfBannedWord(string: string): boolean {
  * @returns {string} The obfuscated sentence with tashfeer applied to banned words.
  */
 export function tashfeerBannedWords(sentence: string, levelOfTashfeer: number = 2): string {
-	validateTashfeerLevel(levelOfTashfeer);
-	sentence = sentence.trim();
-	if (!sentence) {
-		return '';
-	}
-
-	const tokens = sentence.split(/(\s+)/);
-	let new_sentence = '';
-	for (let i = 0; i < tokens.length; i++) {
-		const token = tokens[i];
-		if (i % 2 === 1) {
-			new_sentence += token;
-		} else if (token) {
-			if (checkIfBannedWord(token)) {
-				new_sentence += tashfeerHandler(token, levelOfTashfeer);
-			} else {
-				new_sentence += token;
-			}
-		}
-	}
-	return new_sentence;
+	return transformSentenceTokens(sentence, levelOfTashfeer, (word) =>
+		checkIfBannedWord(word) ? tashfeerHandler(word, levelOfTashfeer) : word,
+	);
 }
 
 /**
@@ -247,25 +245,7 @@ export function tashfeerBannedWords(sentence: string, levelOfTashfeer: number = 
  * @returns {string} The processed sentence.
  */
 export function toOldArabicAndTashfeerBannedWords(sentence: string, levelOfTashfeer: number = 2): string {
-	validateTashfeerLevel(levelOfTashfeer);
-	sentence = sentence.trim();
-	if (!sentence) {
-		return '';
-	}
-
-	const tokens = sentence.split(/(\s+)/);
-	let new_sentence = '';
-	for (let i = 0; i < tokens.length; i++) {
-		const token = tokens[i];
-		if (i % 2 === 1) {
-			new_sentence += token;
-		} else if (token) {
-			if (checkIfBannedWord(token)) {
-				new_sentence += tashfeerHandler(token, levelOfTashfeer);
-			} else {
-				new_sentence += toOldArabic(token);
-			}
-		}
-	}
-	return new_sentence;
+	return transformSentenceTokens(sentence, levelOfTashfeer, (word) =>
+		checkIfBannedWord(word) ? tashfeerHandler(word, levelOfTashfeer) : toOldArabic(word),
+	);
 }
